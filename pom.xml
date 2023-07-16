@@ -14,6 +14,7 @@
 	<name>crm-service</name>
 	<description>crm-service</description>
 	<properties>
+		<project.ecr-base>247423452789.dkr.ecr.ap-south-1.amazonaws.com</project.ecr-base>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
@@ -32,6 +33,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>

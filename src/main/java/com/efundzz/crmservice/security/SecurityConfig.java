@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.List;
+
 /**
  * Configures our application with Spring Security to restrict access to our API endpoints.
  */
@@ -16,24 +18,36 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Value("${auth0.audience}")
-    private String audience;
+    private List<String> audience;
 
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuer;
 
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        /*
-        This is where we configure the security required for our endpoints and setup our app to serve as
-        an OAuth2 Resource Server, using JWT validation.
-        */
         http.authorizeRequests()
-                .mvcMatchers("/api/public").permitAll()
-                .mvcMatchers("/api/private").authenticated()
+                .mvcMatchers("/api/applications").authenticated()
                 .mvcMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
                 .and().cors()
                 .and().oauth2ResourceServer().jwt();
         return http.build();
+        /*
+                http
+                .oauth2ResourceServer()
+                .bearerTokenResolver(new CustomBearerTokenResolver())
+                .and()
+                .authorizeRequests()
+                .mvcMatchers("/api/applications").permitAll()
+                .mvcMatchers("/api/private").authenticated()
+                .mvcMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
+                .and().cors()
+                .and().oauth2ResourceServer().jwt()
+                .decoder(jwtDecoder());
+
+        return http.build();
+         */
     }
 
     @Bean
@@ -43,8 +57,7 @@ public class SecurityConfig {
         indeed intended for our app. Adding our own validator is easy to do:
         */
 
-        NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
-                JwtDecoders.fromOidcIssuerLocation(issuer);
+        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromOidcIssuerLocation(issuer);
 
         OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(audience);
         OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuer);

@@ -17,8 +17,13 @@ public class LoanService {
     @Autowired
     private LoanRepository loanRepository;
 
-    public List<CRMAppliacationResponseDTO> getAllLoanDataWithMergedStepData() {
-        List<CRMAppliacationResponseDTO> fetchedData = loanRepository.findAllWithStepData();
+    public List<CRMAppliacationResponseDTO> getAllLoanDataWithMergedStepData(String brand) {
+        List<CRMAppliacationResponseDTO> fetchedData;
+        if (brand.equalsIgnoreCase("ALL")) {
+            fetchedData = loanRepository.findAllWithStepData(null);
+        } else {
+            fetchedData = loanRepository.findAllWithStepData(brand);
+        }
 
         Map<String, CRMAppliacationResponseDTO> resultMap = new LinkedHashMap<>();
 
