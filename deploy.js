@@ -25,7 +25,7 @@ let repositoryName = pom.project.artifactId[0];
 
 let tag;
 
-if (branch === 'main' || branch.startsWith('release/')) {
+if (branch === 'main' || branch.startsWith('release')) {
     // Release build
     // Remove -SNAPSHOT if present
     version = version.replace('-SNAPSHOT', '');
