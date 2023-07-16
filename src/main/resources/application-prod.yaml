@@ -1,0 +1,25 @@
+debug: false
+server:
+  port: 8080
+auth0:
+  audience: ${AUDIENCE}
+spring:
+  datasource:
+    url: ${DATABASE_URI}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
