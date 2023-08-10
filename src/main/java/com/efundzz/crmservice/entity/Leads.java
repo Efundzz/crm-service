@@ -53,6 +53,7 @@ public class Leads {
     private String brand;
 
     @Column(name = "additional_params")
-    private LocalDateTime additionalParams;
+    @Type(type = "jsonb")
+    private Map<String, Object> additionalParams;
 
 }

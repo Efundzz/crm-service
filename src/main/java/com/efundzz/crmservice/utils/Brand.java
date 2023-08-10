@@ -10,6 +10,7 @@ public class Brand {
         Map<String, String> permissionsToBrands = new HashMap<>();
         permissionsToBrands.put("read:efundzz_applications", "EF");
         permissionsToBrands.put("read:roboloanz_applications", "RL");
+        permissionsToBrands.put("read:roboloanz_applications", "VH");
         permissionsToBrands.put("read:all_applications", "ALL");
 
         // You can enhance this logic based on your requirements.
