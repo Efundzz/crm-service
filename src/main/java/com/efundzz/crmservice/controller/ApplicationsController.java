@@ -1,15 +1,15 @@
 package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
+import com.efundzz.crmservice.service.LeadService;
 import com.efundzz.crmservice.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
