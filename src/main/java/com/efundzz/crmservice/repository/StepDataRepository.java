@@ -16,4 +16,7 @@ public interface StepDataRepository extends JpaRepository<StepData, Long> {
 
     @Query("SELECT s FROM StepData s WHERE s.stepName IN (:stepNames) AND s.applicationId = :id")
     List<StepData> getStepsByStepName(@Param("id") String id, @Param("stepNames") List<String> stepNames);
+
+    @Query("SELECT s FROM StepData s WHERE s.applicationId = :appId")
+    List<StepData> findLeadDataByApplicationId(@Param("appId") String appId);
 }
