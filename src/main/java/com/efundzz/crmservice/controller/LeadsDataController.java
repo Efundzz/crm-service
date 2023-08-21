@@ -1,5 +1,6 @@
 package com.efundzz.crmservice.controller;
 
+import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadDetailsResponseDTO;
 import com.efundzz.crmservice.service.LeadService;
@@ -32,13 +33,14 @@ public class LeadsDataController {
     }
 
     @GetMapping("/lead/{appId}")
-    public ResponseEntity<List<CRMLeadDetailsResponseDTO>> getLeadDataByAppId(@PathVariable String appId) {
-//        List<String> permissions = token.getToken().getClaim("permissions");
-//        String brand = determineBrand(permissions);
-//        if (brand == null) {
-//            throw new RuntimeException("Invalid permissions");
-//        }
-//        System.out.println(permissions);
-        return ResponseEntity.ok(leadService.getAllLeadDataByAppId(appId));
+    public ResponseEntity<List<CRMAppliacationResponseDTO>> getLeadDataByAppId(JwtAuthenticationToken token,@PathVariable String appId) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        System.out.println(permissions);
+        List<CRMAppliacationResponseDTO> leadData = leadService.getAllLeadDataByAppId(appId, brand);
+        return ResponseEntity.ok(leadData);
     }
 }

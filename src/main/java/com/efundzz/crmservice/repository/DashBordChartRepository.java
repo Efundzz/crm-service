@@ -12,10 +12,10 @@ import java.util.List;
 
 @Repository
 public interface DashBordChartRepository extends JpaRepository<Leads, Serializable> {
-    @Query("SELECT l.loanType, COUNT(*) FROM Loan l WHERE l.createdAt >= :startDate GROUP BY l.loanType")
-    List<Object[]> getLoanTypeCountsByDuration(LocalDateTime startDate);
+    @Query("SELECT l.loanType, COUNT(*) FROM Loan l WHERE l.createdAt >= :startDate AND l.brand = :brand GROUP BY l.loanType")
+    List<Object[]> getCountsByLoanType(LocalDateTime startDate,String brand);
 
-    @Query("SELECT l.status, COUNT(*) FROM Loan l WHERE l.createdAt >= :startDate GROUP BY l.status")
-    List<Object[]> getLoanTypeCountsByStatus(LocalDateTime startDate);
+    @Query("SELECT l.status, COUNT(*) FROM Loan l WHERE l.createdAt >= :startDate AND l.brand = :brand GROUP BY l.status")
+    List<Object[]> getCountsByLoanStatus(LocalDateTime startDate,String brand);
 
 }
