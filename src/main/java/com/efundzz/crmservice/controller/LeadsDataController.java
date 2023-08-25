@@ -1,8 +1,9 @@
 package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
-import com.efundzz.crmservice.DTO.CRMLeadDetailsResponseDTO;
+import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,8 +33,8 @@ public class LeadsDataController {
         return ResponseEntity.ok(leadService.getAllLeadDataByBrand(brand));
     }
 
-    @GetMapping("/lead/{appId}")
-    public ResponseEntity<List<CRMAppliacationResponseDTO>> getLeadDataByAppId(JwtAuthenticationToken token,@PathVariable String appId) {
+    @GetMapping("/leads/{appId}")
+    public ResponseEntity<List<CRMAppliacationResponseDTO>> getLeadDataByAppId(JwtAuthenticationToken token, @PathVariable String appId) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
         if (brand == null) {
@@ -42,5 +43,16 @@ public class LeadsDataController {
         System.out.println(permissions);
         List<CRMAppliacationResponseDTO> leadData = leadService.getAllLeadDataByAppId(appId, brand);
         return ResponseEntity.ok(leadData);
+    }
+
+    @GetMapping("/leads/filter")
+    public ResponseEntity<List<Leads>> getLeadFormDataByFilter(@RequestBody CRMLeadFilterRequestDTO filterRequest) {
+        List<Leads> filteredLeads = leadService.findLeadFormDataByFilter(
+                filterRequest.getBrand(),
+                filterRequest.getLoanType(),
+                filterRequest.getName(),
+                filterRequest.getFormDate(),
+                filterRequest.getToDate());
+        return ResponseEntity.ok(filteredLeads);
     }
 }

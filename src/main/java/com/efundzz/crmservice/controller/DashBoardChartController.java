@@ -26,19 +26,17 @@ public class DashBoardChartController {
         @Autowired
         private DashBordChartService dashBordChartService;
         private LocalDateTime inputDate;
-       // String brand="EF";
-
-        @GetMapping("leads/countByLoan")
-        public List<CRMLoanDashBordResponceDTO> getLeadCountByType(JwtAuthenticationToken token) {
+        @GetMapping("dashBord/loanTypeCounts")
+        public List<CRMLoanDashBordResponceDTO> getLeadCountByLoanType(JwtAuthenticationToken token) {
             List<String> permissions = token.getToken().getClaim("permissions");
             String brand = determineBrand(permissions);
             if (brand == null) {
                 throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
             }
             System.out.println(permissions);
-            return dashBordChartService.getLoanTypeCount(inputDate,brand);
+            return dashBordChartService.getCountsByLoanType(inputDate,brand);
         }
-        @GetMapping("leads/countByStatus")
+        @GetMapping("dashBord/statusCounts")
         public List<CRMLoanDashBordResponceDTO> getLeadsCountByStatus(JwtAuthenticationToken token) {
             List<String> permissions = token.getToken().getClaim("permissions");
             String brand = determineBrand(permissions);
@@ -46,7 +44,7 @@ public class DashBoardChartController {
                 throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
             }
             System.out.println(permissions);
-            return dashBordChartService.getLoanTypeStatus(inputDate,brand);
+            return dashBordChartService.getCountsByLoanStatus(inputDate,brand);
         }
 
        @PostConstruct

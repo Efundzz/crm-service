@@ -2,11 +2,9 @@ package com.efundzz.crmservice.service;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
-import com.efundzz.crmservice.DTO.CRMLeadDetailsResponseDTO;
 import com.efundzz.crmservice.Mapper.CRMLeadMapper;
 import com.efundzz.crmservice.Mapper.CRMStepDataMapper;
 import com.efundzz.crmservice.entity.Leads;
-import com.efundzz.crmservice.entity.StepData;
 import com.efundzz.crmservice.repository.LeadRepository;
 import com.efundzz.crmservice.repository.StepDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +55,16 @@ public class LeadService {
             }
         }
         return new ArrayList<>(resultMap.values());
+    }
+
+    public List<Leads> findLeadFormDataByFilter(String brand, String loanType,String name, String fromDate, String toDate) {
+            List<Leads> fetchedData;
+            if (brand.equalsIgnoreCase("ALL")) {
+                fetchedData = leadRepository.findLeadFormDataByFilter(null, loanType,name,fromDate,toDate);
+            } else {
+                fetchedData = leadRepository.findLeadFormDataByFilter(brand, loanType,name,fromDate,toDate);
+            }
+            return fetchedData;
     }
 }
 

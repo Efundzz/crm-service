@@ -1,6 +1,5 @@
 package com.efundzz.crmservice.repository;
 
-import com.efundzz.crmservice.DTO.CRMLoanDashBordResponceDTO;
 import com.efundzz.crmservice.entity.Leads;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

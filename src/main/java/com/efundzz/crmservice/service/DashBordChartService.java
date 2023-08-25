@@ -18,7 +18,7 @@ public class DashBordChartService{
     @Autowired
     private CRMLoanDashBordResponceMapper crmLoanDashBordResponceMapper;
 
-    public List<CRMLoanDashBordResponceDTO> getLoanTypeCount(LocalDateTime inputDate, String brand) {
+    public List<CRMLoanDashBordResponceDTO> getCountsByLoanType(LocalDateTime inputDate, String brand) {
         List<Object[]> result;
         if (brand != null && brand.equalsIgnoreCase("ALL")) {
             result = dashBordChartRepository.getCountsByLoanType(inputDate, null); // Pass null to fetch all brands
@@ -28,7 +28,7 @@ public class DashBordChartService{
         return crmLoanDashBordResponceMapper.mapToDTO(result);
     }
 
-    public List<CRMLoanDashBordResponceDTO> getLoanTypeStatus(LocalDateTime inputDate, String brand) {
+    public List<CRMLoanDashBordResponceDTO> getCountsByLoanStatus(LocalDateTime inputDate, String brand) {
         List<Object[]> result;
         if (brand != null && brand.equalsIgnoreCase("ALL")) {
             result = dashBordChartRepository.getCountsByLoanStatus(inputDate, null);
