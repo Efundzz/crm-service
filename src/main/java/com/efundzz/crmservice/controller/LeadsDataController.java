@@ -46,7 +46,12 @@ public class LeadsDataController {
     }
 
     @GetMapping("/leads/filter")
-    public ResponseEntity<List<Leads>> getLeadFormDataByFilter(@RequestBody CRMLeadFilterRequestDTO filterRequest) {
+    public ResponseEntity<List<Leads>> getLeadFormDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
         List<Leads> filteredLeads = leadService.findLeadFormDataByFilter(
                 filterRequest.getBrand(),
                 filterRequest.getLoanType(),
@@ -54,5 +59,20 @@ public class LeadsDataController {
                 filterRequest.getFormDate(),
                 filterRequest.getToDate());
         return ResponseEntity.ok(filteredLeads);
+    }
+
+    @GetMapping("/leadsForm/{id}")
+    public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable Long id) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        Leads lead = leadService.getLeadFormDataById(id);
+        if (lead != null) {
+            return ResponseEntity.ok(lead);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -22,7 +22,6 @@ public class LeadService {
     private LeadRepository leadRepository;
     @Autowired
     private CRMLeadMapper crmLeadMapper;
-
     @Autowired
     private CRMStepDataMapper crmStepDataMapper;
 
@@ -34,6 +33,10 @@ public class LeadService {
         return entityList.stream()
                 .map(leads -> crmLeadMapper.mapLeadsToDTO(leads))
                 .collect(Collectors.toList());
+    }
+
+    public Leads getLeadFormDataById(Long id) {
+        return leadRepository.findById(id);
     }
 
     public List<CRMAppliacationResponseDTO> getAllLeadDataByAppId(String appId, String brand) {
@@ -57,14 +60,14 @@ public class LeadService {
         return new ArrayList<>(resultMap.values());
     }
 
-    public List<Leads> findLeadFormDataByFilter(String brand, String loanType,String name, String fromDate, String toDate) {
-            List<Leads> fetchedData;
-            if (brand.equalsIgnoreCase("ALL")) {
-                fetchedData = leadRepository.findLeadFormDataByFilter(null, loanType,name,fromDate,toDate);
-            } else {
-                fetchedData = leadRepository.findLeadFormDataByFilter(brand, loanType,name,fromDate,toDate);
-            }
-            return fetchedData;
+    public List<Leads> findLeadFormDataByFilter(String brand, String loanType, String name, String fromDate, String toDate) {
+        List<Leads> fetchedData;
+        if (brand.equalsIgnoreCase("ALL")) {
+            fetchedData = leadRepository.findLeadFormDataByFilter(null, loanType, name, fromDate, toDate);
+        } else {
+            fetchedData = leadRepository.findLeadFormDataByFilter(brand, loanType, name, fromDate, toDate);
+        }
+        return fetchedData;
     }
 }
 

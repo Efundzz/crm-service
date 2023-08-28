@@ -21,37 +21,39 @@ import static com.efundzz.crmservice.utils.Brand.determineBrand;
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class DashBoardChartController {
-       @Value("${custom.duration.days}")
-        private int durationInDays;
-        @Autowired
-        private DashBordChartService dashBordChartService;
-        private LocalDateTime inputDate;
-        @GetMapping("dashBord/loanTypeCounts")
-        public List<CRMLoanDashBordResponceDTO> getLeadCountByLoanType(JwtAuthenticationToken token) {
-            List<String> permissions = token.getToken().getClaim("permissions");
-            String brand = determineBrand(permissions);
-            if (brand == null) {
-                throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
-            }
-            System.out.println(permissions);
-            return dashBordChartService.getCountsByLoanType(inputDate,brand);
-        }
-        @GetMapping("dashBord/statusCounts")
-        public List<CRMLoanDashBordResponceDTO> getLeadsCountByStatus(JwtAuthenticationToken token) {
-            List<String> permissions = token.getToken().getClaim("permissions");
-            String brand = determineBrand(permissions);
-            if (brand == null) {
-                throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
-            }
-            System.out.println(permissions);
-            return dashBordChartService.getCountsByLoanStatus(inputDate,brand);
-        }
+    @Value("${custom.duration.days}")
+    private int durationInDays;
+    @Autowired
+    private DashBordChartService dashBordChartService;
+    private LocalDateTime inputDate;
 
-       @PostConstruct
-       public void initializeStartDate() {
+    @GetMapping("/dashBord/loanTypeCounts")
+    public List<CRMLoanDashBordResponceDTO> getLeadCountByLoanType(JwtAuthenticationToken token) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        System.out.println(permissions);
+        return dashBordChartService.getCountsByLoanType(inputDate, brand);
+    }
+
+    @GetMapping("/dashBord/statusCounts")
+    public List<CRMLoanDashBordResponceDTO> getLeadsCountByStatus(JwtAuthenticationToken token) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        System.out.println(permissions);
+        return dashBordChartService.getCountsByLoanStatus(inputDate, brand);
+    }
+
+    @PostConstruct
+    public void initializeStartDate() {
         inputDate = LocalDateTime.now().minusDays(durationInDays);
     }
 
-    }
+}
 
 

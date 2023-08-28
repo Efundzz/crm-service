@@ -23,3 +23,5 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://crm-efundzz.eu.auth0.com/
+excel:
+  contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet

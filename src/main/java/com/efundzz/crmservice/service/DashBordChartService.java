@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class DashBordChartService{
-
+public class DashBordChartService {
     @Autowired
     private DashBordChartRepository dashBordChartRepository;
 
@@ -21,7 +20,7 @@ public class DashBordChartService{
     public List<CRMLoanDashBordResponceDTO> getCountsByLoanType(LocalDateTime inputDate, String brand) {
         List<Object[]> result;
         if (brand != null && brand.equalsIgnoreCase("ALL")) {
-            result = dashBordChartRepository.getCountsByLoanType(inputDate, null); // Pass null to fetch all brands
+            result = dashBordChartRepository.getCountsByLoanType(inputDate, null);
         } else {
             result = dashBordChartRepository.getCountsByLoanType(inputDate, brand);
         }
@@ -32,7 +31,7 @@ public class DashBordChartService{
         List<Object[]> result;
         if (brand != null && brand.equalsIgnoreCase("ALL")) {
             result = dashBordChartRepository.getCountsByLoanStatus(inputDate, null);
-        }else {
+        } else {
             result = dashBordChartRepository.getCountsByLoanStatus(inputDate, brand);
         }
         return crmLoanDashBordResponceMapper.mapToDTO(result);

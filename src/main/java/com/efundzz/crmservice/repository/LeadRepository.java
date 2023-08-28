@@ -13,13 +13,14 @@ import java.util.List;
 public interface LeadRepository extends JpaRepository<Leads, Serializable> {
     List<Leads> findByBrand(String brand);
 
+    Leads findById(Long id);
+
     @Query("SELECT l FROM Leads l " +
             "WHERE (:brand is null or l.brand = :brand) " +
             "AND (:loanType is null or l.loanType = :loanType) " +
             "AND (:name is null or l.name LIKE CONCAT('%', :name, '%')) " +
             "AND (:fromDate is null or l.createdAt >= CAST(:fromDate AS date)) " +
             "AND (:toDate is null or l.createdAt <= CAST(:toDate AS date))")
-
     List<Leads> findLeadFormDataByFilter(
             @Param("brand") String brand,
             @Param("loanType") String loanType,

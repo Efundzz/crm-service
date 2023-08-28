@@ -17,6 +17,7 @@ public interface StepDataRepository extends JpaRepository<StepData, Long> {
 
     @Query("SELECT s FROM StepData s WHERE s.stepName IN (:stepNames) AND s.applicationId = :id")
     List<StepData> getStepsByStepName(@Param("id") String id, @Param("stepNames") List<String> stepNames);
+
     @Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
             "l.id, l.userId, l.status, l.loanType, s.data) " +
             "FROM Loan l " +
