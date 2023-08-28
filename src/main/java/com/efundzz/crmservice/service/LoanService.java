@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -35,6 +36,29 @@ public class LoanService {
                             return existingItem;
                         }
                 ));
+        return new ArrayList<>(resultMap.values());
+    }
+
+
+    //findAllStepDataByCriteria
+    public List<CRMAppliacationResponseDTO> findApplicationsByFilter(String brand, String loanType, String fromDate, String toDate, String loanStatus) {
+        List<CRMAppliacationResponseDTO> fetchedData;
+        if (brand.equalsIgnoreCase("ALL")) {
+            fetchedData = loanRepository.findAllStepDataByCriteria(null, loanType, fromDate, toDate, loanStatus);
+        } else {
+            fetchedData = loanRepository.findAllStepDataByCriteria(brand, loanType, fromDate, toDate, loanStatus);
+        }
+
+        Map<String, CRMAppliacationResponseDTO> resultMap = new LinkedHashMap<>();
+
+        for (CRMAppliacationResponseDTO item : fetchedData) {
+            if (!resultMap.containsKey(item.getId())) {
+                resultMap.put(item.getId(), item);
+            } else {
+                CRMAppliacationResponseDTO existingItem = resultMap.get(item.getId());
+                existingItem.getData().putAll(item.getData());
+            }
+        }
 
         return new ArrayList<>(resultMap.values());
     }

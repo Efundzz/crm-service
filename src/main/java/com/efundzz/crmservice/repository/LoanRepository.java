@@ -19,4 +19,20 @@ public interface LoanRepository extends JpaRepository<Loan, Serializable> {
             "JOIN StepData s ON l.id = s.applicationId WHERE (:brand is null or l.brand = :brand)")
     List<CRMAppliacationResponseDTO> findAllWithStepData(@Param("brand") String brand);
 
+    @Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
+            "l.id, l.userId, l.status, l.loanType, s.data) " +
+            "FROM Loan l " +
+            "JOIN StepData s ON l.id = s.applicationId " +
+            "WHERE (:brand is null or l.brand = :brand) " +
+            "AND (:loanType is null or l.loanType = :loanType) " +
+            "AND (l.createdAt >= TO_TIMESTAMP(:fromDate, 'YYYY-MM-DD') OR :fromDate IS NULL) " +
+            "AND (l.createdAt <= TO_TIMESTAMP(:toDate, 'YYYY-MM-DD') OR :toDate IS NULL) " +
+            "AND (:loanStatus is null or l.status = :loanStatus)")
+    List<CRMAppliacationResponseDTO> findAllStepDataByCriteria(
+            @Param("brand") String brand,
+            @Param("loanType") String loanType,
+            @Param("fromDate") String fromDate,
+            @Param("toDate") String toDate,
+            @Param("loanStatus") String loanStatus);
+
 }
