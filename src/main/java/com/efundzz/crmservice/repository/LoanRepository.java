@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Serializable> {
 
+    Loan findById(String id);
+
     @Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
             "l.id, l.userId, l.status, l.loanType, s.data) " +
             "FROM Loan l " +

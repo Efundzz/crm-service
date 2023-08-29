@@ -2,6 +2,7 @@ package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
+import com.efundzz.crmservice.entity.Loan;
 import com.efundzz.crmservice.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,7 +35,7 @@ public class ApplicationsController {
     }
 
 
-    @GetMapping("/filterApplications")
+    @GetMapping("/applications/filter")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getApplicationsDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {
         //  Get all applications from the database
         List<String> permissions = token.getToken().getClaim("permissions");
@@ -50,6 +51,29 @@ public class ApplicationsController {
                 filterRequest.getToDate(),
                 filterRequest.getLoanStatus());
         return ResponseEntity.ok(filteredApplications);
+    }
+
+    @GetMapping("/getApplicationsData/{appId}")
+    public ResponseEntity<List<CRMAppliacationResponseDTO>> getLeadDataByAppId(JwtAuthenticationToken token, @PathVariable String appId) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        System.out.println(permissions);
+        List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
+        return ResponseEntity.ok(leadData);
+    }
+
+    @GetMapping("/getApplicationsStatus/{loanId}")
+    public ResponseEntity<Loan> getStatusByLoanID(JwtAuthenticationToken token, @PathVariable String loanId) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
+        }
+        System.out.println(permissions);
+        return ResponseEntity.ok(loanService.getLoanDetailsByLoanID(loanId));
     }
 
 }
