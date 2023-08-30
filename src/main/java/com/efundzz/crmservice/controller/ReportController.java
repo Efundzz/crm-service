@@ -61,7 +61,7 @@ public class ReportController {
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
         }
-        List<CRMAppliacationResponseDTO> leadsList = loanService.getAllLoanDataWithMergedStepData("ALL");
+        List<CRMAppliacationResponseDTO> leadsList = loanService.getAllLoanDataWithMergedStepData(brand);
 
         Workbook workbook = reportService.generateLeadsDataExcel(leadsList);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

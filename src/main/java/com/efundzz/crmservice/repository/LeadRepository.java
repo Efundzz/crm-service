@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface LeadRepository extends JpaRepository<Leads, Serializable> {
+    @Query("SELECT l FROM Leads l WHERE (:brand is null or l.brand = :brand)")
     List<Leads> findByBrand(String brand);
 
     Leads findById(Long id);
