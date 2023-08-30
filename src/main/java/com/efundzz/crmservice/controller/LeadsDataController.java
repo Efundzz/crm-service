@@ -1,8 +1,7 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
-import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
+import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class LeadsDataController {
     @Autowired
     private LeadService leadService;
 
-    @GetMapping("/leads")
+    @GetMapping("/allLeadFormData")
     public ResponseEntity<List<CRMLeadDataResponseDTO>> getLeadDataByBrand(JwtAuthenticationToken token) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
@@ -33,19 +32,7 @@ public class LeadsDataController {
         return ResponseEntity.ok(leadService.getAllLeadDataByBrand(brand));
     }
 
-    @GetMapping("/leads/{appId}")
-    public ResponseEntity<List<CRMAppliacationResponseDTO>> getLeadDataByAppId(JwtAuthenticationToken token, @PathVariable String appId) {
-        List<String> permissions = token.getToken().getClaim("permissions");
-        String brand = determineBrand(permissions);
-        if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
-        }
-        System.out.println(permissions);
-        List<CRMAppliacationResponseDTO> leadData = leadService.getAllLeadDataByAppId(appId, brand);
-        return ResponseEntity.ok(leadData);
-    }
-
-    @GetMapping("/leads/filter")
+    @GetMapping("/leadFormData/filter")
     public ResponseEntity<List<Leads>> getLeadFormDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
@@ -61,7 +48,7 @@ public class LeadsDataController {
         return ResponseEntity.ok(filteredLeads);
     }
 
-    @GetMapping("/leadsForm/{id}")
+    @GetMapping("/getLeadsFormData/{id}")
     public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable Long id) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);

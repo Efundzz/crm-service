@@ -23,11 +23,8 @@ public class Loan implements Serializable {
     @Column(name = "loan_id")
     private String id;
 
-
     @Column(name = "user_id")
     private String userId;
-
-    // Other loan details
 
     @Column(name = "status")
     private String status;

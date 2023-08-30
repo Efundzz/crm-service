@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -37,38 +36,38 @@ public class ReportController {
     @Value("${excel.contentType}")
     private String excelContentType;
 
-    @GetMapping("/leads/download-pdf")
-    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim("permissions");
-        String brand = determineBrand(permissions);
-        if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
-        }
-        try {
-            byte[] reportBytes = reportService.generateLoanReport(brand);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", "loan-report.pdf");
-            return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/bulkLead/download-excel")
-    public ResponseEntity<Resource> exportLeadsToExcel() throws IOException {
+//    @GetMapping("/leads/download-pdf")
+//    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token) {
 //        List<String> permissions = token.getToken().getClaim("permissions");
 //        String brand = determineBrand(permissions);
 //        if (brand == null) {
 //            throw new RuntimeException("Invalid permissions");
 //        }
-        List<CRMAppliacationResponseDTO> leadsList = loanService.getAllLoanDataWithMergedStepData("ALL");
+//        try {
+//            byte[] reportBytes = reportService.generateLoanReport(brand);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_PDF);
+//            headers.setContentDispositionFormData("attachment", "loan-report.pdf");
+//            return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    @GetMapping("/apps/bulk/download-excel")
+    public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token) throws IOException {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        List<CRMAppliacationResponseDTO> leadsList = loanService.getAllLoanDataWithMergedStepData(brand);
 
         Workbook workbook = reportService.generateLeadsDataExcel(leadsList);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=leadsData.xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllApplicationsData.xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
@@ -78,7 +77,7 @@ public class ReportController {
                 .body(inputStreamResource);
     }
 
-    @GetMapping("/bulkLeadForm/download-excel")
+    @GetMapping("/leadForms/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token) throws IOException {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
@@ -90,7 +89,7 @@ public class ReportController {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=leadsFormData.xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllLeadsFormData.xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
@@ -100,7 +99,7 @@ public class ReportController {
                 .body(inputStreamResource);
     }
 
-    @GetMapping("/leadForm/download-excel/{id}")
+    @GetMapping("/leadForms/single/download-excel/{id}")
     public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable Long id) throws IOException {
 
         List<String> permissions = token.getToken().getClaim("permissions");
@@ -124,20 +123,20 @@ public class ReportController {
                 .body(inputStreamResource);
     }
 
-    @GetMapping("/leadData/download-excel/{appId}")
+    @GetMapping("/apps/single/download-excel/{appId}")
     public ResponseEntity<Resource> exportSingleLeadToExcel(JwtAuthenticationToken token, @PathVariable String appId) throws IOException {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
         }
-        List<CRMAppliacationResponseDTO> leadData = leadService.getAllLeadDataByAppId(appId, brand);
+        List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
 
         Workbook workbook = reportService.generateSingleLeadDataExcel(leadData);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SingleLeadFormData.xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SingleAppData.xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
