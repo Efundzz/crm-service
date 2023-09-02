@@ -31,7 +31,7 @@ public class ApplicationsController {
             throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
         System.out.println(permissions);
-        return ResponseEntity.ok(loanService.getAllLoanDataWithMergedStepData("ALL"));
+        return ResponseEntity.ok(loanService.getAllLoanDataWithMergedStepData(brand));
     }
 
 
