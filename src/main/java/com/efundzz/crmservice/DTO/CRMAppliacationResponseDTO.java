@@ -17,13 +17,15 @@ public class CRMAppliacationResponseDTO {
     private String userId;
     private String status;
     private String loanType;
+    private String loanSubType;
     private Map<String, Object> data;
 
-    public CRMAppliacationResponseDTO(String id, String userId, String status, String loanType, Object data) {
+    public CRMAppliacationResponseDTO(String id, String userId, String status, String loanType,String loanSubType, Object data) {
         this.id = id;
         this.userId = userId;
         this.status = status;
         this.loanType = loanType;
+        this.loanSubType = loanSubType;
         this.data = (Map<String, Object>) data; // Cast Object to Map<String, Object>
     }
 }
