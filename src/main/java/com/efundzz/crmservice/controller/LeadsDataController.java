@@ -32,7 +32,7 @@ public class LeadsDataController {
         return ResponseEntity.ok(leadService.getAllLeadDataByBrand(brand));
     }
 
-    @GetMapping("/leadFormData/filter")
+    @PostMapping("/leadFormData/filter")
     public ResponseEntity<List<Leads>> getLeadFormDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);

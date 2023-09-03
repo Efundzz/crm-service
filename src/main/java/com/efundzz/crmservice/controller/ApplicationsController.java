@@ -31,11 +31,11 @@ public class ApplicationsController {
             throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
         System.out.println(permissions);
-        return ResponseEntity.ok(loanService.getAllLoanDataWithMergedStepData("ALL"));
+        return ResponseEntity.ok(loanService.getAllLoanDataWithMergedStepData(brand));
     }
 
 
-    @GetMapping("/applications/filter")
+    @PostMapping("/applications/filter")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getApplicationsDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {
         //  Get all applications from the database
         List<String> permissions = token.getToken().getClaim("permissions");

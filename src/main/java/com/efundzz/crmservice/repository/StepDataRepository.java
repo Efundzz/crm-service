@@ -19,9 +19,12 @@ public interface StepDataRepository extends JpaRepository<StepData, Long> {
     List<StepData> getStepsByStepName(@Param("id") String id, @Param("stepNames") List<String> stepNames);
 
     @Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
-            "l.id, l.userId, l.status, l.loanType, s.data) " +
+            "l.id, l.userId, " +
+            "COALESCE(ls.status, l.status) AS status, " +
+            "l.loanType,l.loanSubType, s.data) " +
             "FROM Loan l " +
-            "JOIN StepData s ON l.id = s.applicationId " +
+            "LEFT JOIN LeadStatus ls ON l.id = ls.loanId " +
+            "LEFT JOIN StepData s ON l.id = s.applicationId " +
             "WHERE l.id = :appId AND (:brand is null or l.brand = :brand)")
     List<CRMAppliacationResponseDTO> findLeadDataByApplicationId(@Param("appId") String appId, @Param("brand") String brand);
 

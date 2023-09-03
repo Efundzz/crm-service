@@ -56,17 +56,16 @@ public class LoanService {
             fetchedData = loanRepository.findAllStepDataByCriteria(brand, loanType, fromDate, toDate, loanStatus);
         }
 
-        Map<String, CRMAppliacationResponseDTO> resultMap = new LinkedHashMap<>();
-
-        for (CRMAppliacationResponseDTO item : fetchedData) {
-            if (!resultMap.containsKey(item.getId())) {
-                resultMap.put(item.getId(), item);
-            } else {
-                CRMAppliacationResponseDTO existingItem = resultMap.get(item.getId());
-                existingItem.getData().putAll(item.getData());
-            }
-        }
-
+        Map<String, CRMAppliacationResponseDTO> resultMap = fetchedData.stream()
+                .filter(item -> item != null && item.getData() != null)
+                .collect(Collectors.toMap(
+                        CRMAppliacationResponseDTO::getId,
+                        Function.identity(),
+                        (existingItem, newItem) -> {
+                            existingItem.getData().putAll(newItem.getData());
+                            return existingItem;
+                        }
+                ));
         return new ArrayList<>(resultMap.values());
     }
 
@@ -78,16 +77,16 @@ public class LoanService {
         } else {
             fetchedData = stepDataRepository.findLeadDataByApplicationId(appId, brand);
         }
-        Map<String, CRMAppliacationResponseDTO> resultMap = new LinkedHashMap<>();
-
-        for (CRMAppliacationResponseDTO item : fetchedData) {
-            if (!resultMap.containsKey(item.getId())) {
-                resultMap.put(item.getId(), item);
-            } else {
-                CRMAppliacationResponseDTO existingItem = resultMap.get(item.getId());
-                existingItem.getData().putAll(item.getData());
-            }
-        }
+        Map<String, CRMAppliacationResponseDTO> resultMap = fetchedData.stream()
+                .filter(item -> item != null && item.getData() != null)
+                .collect(Collectors.toMap(
+                        CRMAppliacationResponseDTO::getId,
+                        Function.identity(),
+                        (existingItem, newItem) -> {
+                            existingItem.getData().putAll(newItem.getData());
+                            return existingItem;
+                        }
+                ));
         return new ArrayList<>(resultMap.values());
     }
 
@@ -119,5 +118,4 @@ public class LoanService {
             }
         }
     }
-
 }
