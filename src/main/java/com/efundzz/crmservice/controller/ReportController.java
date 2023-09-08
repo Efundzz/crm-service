@@ -1,6 +1,7 @@
 package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.LeadService;
 import com.efundzz.crmservice.service.LoanService;
@@ -54,16 +55,24 @@ public class ReportController {
 //        }
 //    }
 
-    @GetMapping("/apps/bulk/download-excel")
-    public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token) throws IOException {
+    @PostMapping("/apps/bulk/download-excel")
+    public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
+        boolean hasAllPermission = permissions.contains("ALL");
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
         }
-        List<CRMAppliacationResponseDTO> leadsList = loanService.getAllLoanDataWithMergedStepData(brand);
+        String filterBrand = filterRequest.getBrand();
+        String accessibleBrand = hasAllPermission ? brand : filterBrand;
+        List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(accessibleBrand,
+                filterRequest.getLoanType(),
+                filterRequest.getFormDate(),
+                filterRequest.getToDate(),
+                filterRequest.getTodayDate(),
+                filterRequest.getLoanStatus());
 
-        Workbook workbook = reportService.generateLeadsDataExcel(leadsList);
+        Workbook workbook = reportService.generateLeadsDataExcel(leadsList,filterRequest.getLoanType());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
@@ -77,14 +86,23 @@ public class ReportController {
                 .body(inputStreamResource);
     }
 
-    @GetMapping("/leadForms/bulk/download-excel")
-    public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token) throws IOException {
+    @PostMapping("/leadForms/bulk/download-excel")
+    public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest ) throws IOException {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
+        boolean hasAllPermission = permissions.contains("ALL");
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
         }
-        List<Leads> leadsList = reportService.getLeadsByBrand(brand);
+        String filterBrand = filterRequest.getBrand();
+        String accessibleBrand = hasAllPermission ? brand : filterBrand;
+
+        List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
+                filterRequest.getLoanType(),
+                filterRequest.getName(),
+                filterRequest.getFormDate(),
+                filterRequest.getToDate(),
+                filterRequest.getTodayDate());
         Workbook workbook = reportService.generateLeadsFormExcel(leadsList);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
@@ -131,8 +149,8 @@ public class ReportController {
             throw new RuntimeException("Invalid permissions");
         }
         List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
-
-        Workbook workbook = reportService.generateSingleLeadDataExcel(leadData);
+        String loanType = !leadData.isEmpty() ? leadData.get(0).getLoanType() : "";
+        Workbook workbook = reportService.generateSingleLeadDataExcel(leadData,loanType);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();

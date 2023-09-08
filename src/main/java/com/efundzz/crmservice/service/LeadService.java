@@ -40,12 +40,12 @@ public class LeadService {
         return leadRepository.findById(id);
     }
 
-    public List<Leads> findLeadFormDataByFilter(String brand, String loanType, String name, String fromDate, String toDate) {
+    public List<Leads> findLeadFormDataByFilter(String brand, String loanType, String name, String fromDate, String toDate,String todayDate) {
         List<Leads> fetchedData;
         if (brand.equalsIgnoreCase("ALL")) {
-            fetchedData = leadRepository.findLeadFormDataByFilter(null, loanType, name, fromDate, toDate);
+            fetchedData = leadRepository.findLeadFormDataByFilter(null, loanType, name, fromDate, toDate,todayDate);
         } else {
-            fetchedData = leadRepository.findLeadFormDataByFilter(brand, loanType, name, fromDate, toDate);
+            fetchedData = leadRepository.findLeadFormDataByFilter(brand, loanType, name, fromDate, toDate,todayDate);
         }
         return fetchedData;
     }

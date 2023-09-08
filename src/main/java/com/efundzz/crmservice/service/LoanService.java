@@ -48,12 +48,12 @@ public class LoanService {
         return new ArrayList<>(resultMap.values());
     }
 
-    public List<CRMAppliacationResponseDTO> findApplicationsByFilter(String brand, String loanType, String fromDate, String toDate, String loanStatus) {
+    public List<CRMAppliacationResponseDTO> findApplicationsByFilter(String brand, String loanType, String fromDate, String toDate,String todayDate, String loanStatus) {
         List<CRMAppliacationResponseDTO> fetchedData;
         if (brand.equalsIgnoreCase("ALL")) {
-            fetchedData = loanRepository.findAllStepDataByCriteria(null, loanType, fromDate, toDate, loanStatus);
+            fetchedData = loanRepository.findAllStepDataByCriteria(null, loanType, fromDate, toDate,todayDate, loanStatus);
         } else {
-            fetchedData = loanRepository.findAllStepDataByCriteria(brand, loanType, fromDate, toDate, loanStatus);
+            fetchedData = loanRepository.findAllStepDataByCriteria(brand, loanType, fromDate, toDate,todayDate,loanStatus);
         }
 
         Map<String, CRMAppliacationResponseDTO> resultMap = fetchedData.stream()
