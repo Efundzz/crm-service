@@ -77,11 +77,20 @@ public class ReportService {
         return workbook;
     }
 
-    public Workbook generateLeadsDataExcel(List<CRMAppliacationResponseDTO> leadsList) {
+    public Workbook generateLeadsDataExcel(List<CRMAppliacationResponseDTO> leadsList, String loanType) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Leads");
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status"};
+        String[] headers;
+        if ("PersonalLoan".equals(loanType)) {
+            headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status", "takeHomeSalaryMonthly", "pan", "purposeOfLoan", "employmentType", "dob", "adhaar", "gender", "currentAddress", "addressAsPerAdhaar", "residentType",
+                    "referenceName", "referenceMobile", "referenceMobile"};
+        } else if ("BusinessLoan".equals(loanType)) {
+            headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status", "businessIndustry", "gstNumber", "sameAsGst", "businessName", "annualTurnover", "proprietorName", "addressAsPerGST", "grossTotalIncome"
+                    , "registrationDate", "currentBusinessAddress", "referenceMobile", "creditScore", "profitAfterTax", "yearsInBusiness"};
+        } else {
+            headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status"};
+        }
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -99,16 +108,56 @@ public class ReportService {
             dataRow.createCell(6).setCellValue(data.containsKey("loanAmount") ? String.valueOf(data.get("loanAmount")) : "");
             dataRow.createCell(7).setCellValue(data.containsKey("loanType") ? String.valueOf(data.get("loanType")) : "");
             dataRow.createCell(8).setCellValue(loan.getStatus());
+            if ("PersonalLoan".equals(loanType)) {
+                dataRow.createCell(9).setCellValue(data.containsKey("takeHomeSalaryMonthly") ? String.valueOf(data.get("takeHomeSalaryMonthly")) : "");
+                dataRow.createCell(10).setCellValue(data.containsKey("pan") ? String.valueOf(data.get("pan")) : "");
+                dataRow.createCell(11).setCellValue(data.containsKey("purposeOfLoan") ? String.valueOf(data.get("purposeOfLoan")) : "");
+                dataRow.createCell(12).setCellValue(data.containsKey("employmentType") ? String.valueOf(data.get("employmentType")) : "");
+                dataRow.createCell(13).setCellValue(data.containsKey("dob") ? String.valueOf(data.get("dob")) : "");
+                dataRow.createCell(14).setCellValue(data.containsKey("adhaar") ? String.valueOf(data.get("adhaar")) : "");
+                dataRow.createCell(15).setCellValue(data.containsKey("gender") ? String.valueOf(data.get("gender")) : "");
+                dataRow.createCell(16).setCellValue(data.containsKey("currentAddress") ? String.valueOf(data.get("currentAddress")) : "");
+                dataRow.createCell(17).setCellValue(data.containsKey("addressAsPerAdhaar") ? String.valueOf(data.get("addressAsPerAdhaar")) : "");
+                dataRow.createCell(18).setCellValue(data.containsKey("residentType") ? String.valueOf(data.get("residentType")) : "");
+                dataRow.createCell(19).setCellValue(data.containsKey("referenceName") ? String.valueOf(data.get("referenceName")) : "");
+                dataRow.createCell(20).setCellValue(data.containsKey("referenceMobile") ? String.valueOf(data.get("referenceMobile")) : "");
+            } else if ("BusinessLoan".equals(loanType)) {
+                dataRow.createCell(9).setCellValue(data.containsKey("businessIndustry") ? String.valueOf(data.get("businessIndustry")) : "");
+                dataRow.createCell(10).setCellValue(data.containsKey("gstNumber") ? String.valueOf(data.get("gstNumber")) : "");
+                dataRow.createCell(11).setCellValue(data.containsKey("sameAsGst") ? String.valueOf(data.get("sameAsGst")) : "");
+                dataRow.createCell(12).setCellValue(data.containsKey("businessName") ? String.valueOf(data.get("businessName")) : "");
+                dataRow.createCell(13).setCellValue(data.containsKey("annualTurnover") ? String.valueOf(data.get("annualTurnover")) : "");
+                dataRow.createCell(14).setCellValue(data.containsKey("proprietorName") ? String.valueOf(data.get("proprietorName")) : "");
+                dataRow.createCell(15).setCellValue(data.containsKey("addressAsPerGST") ? String.valueOf(data.get("addressAsPerGST")) : "");
+                dataRow.createCell(16).setCellValue(data.containsKey("grossTotalIncome") ? String.valueOf(data.get("grossTotalIncome")) : "");
+                dataRow.createCell(17).setCellValue(data.containsKey("registrationDate") ? String.valueOf(data.get("registrationDate")) : "");
+                dataRow.createCell(18).setCellValue(data.containsKey("currentBusinessAddress") ? String.valueOf(data.get("currentBusinessAddress")) : "");
+                dataRow.createCell(19).setCellValue(data.containsKey("referenceMobile") ? String.valueOf(data.get("referenceMobile")) : "");
+                dataRow.createCell(20).setCellValue(data.containsKey("creditScore") ? String.valueOf(data.get("creditScore")) : "");
+                dataRow.createCell(21).setCellValue(data.containsKey("profitAfterTax") ? String.valueOf(data.get("profitAfterTax")) : "");
+                dataRow.createCell(22).setCellValue(data.containsKey("yearsInBusiness") ? String.valueOf(data.get("yearsInBusiness")) : "");
+            } else {
+                dataRow.createCell(9).setCellValue(data.containsKey("currentAddress") ? String.valueOf(data.get("currentAddress")) : "");
+            }
 
         }
         return workbook;
     }
 
-    public Workbook generateSingleLeadDataExcel(List<CRMAppliacationResponseDTO> leadsList) {
+    public Workbook generateSingleLeadDataExcel(List<CRMAppliacationResponseDTO> leadsList, String loanType) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Leads");
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status"};
+        String[] headers;
+        if ("PersonalLoan".equals(loanType)) {
+            headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status", "takeHomeSalaryMonthly", "pan", "purposeOfLoan", "employmentType", "dob", "adhaar", "gender", "currentAddress", "addressAsPerAdhaar", "residentType",
+                    "referenceName", "referenceMobile", "referenceMobile"};
+        } else if ("BusinessLoan".equals(loanType)) {
+            headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status", "businessIndustry", "gstNumber", "sameAsGst", "businessName", "annualTurnover", "proprietorName", "addressAsPerGST", "grossTotalIncome"
+                    , "registrationDate", "currentBusinessAddress", "referenceMobile", "creditScore", "profitAfterTax", "yearsInBusiness"};
+        } else {
+            headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status"};
+        }
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -126,9 +175,38 @@ public class ReportService {
             dataRow.createCell(6).setCellValue(data.containsKey("loanAmount") ? String.valueOf(data.get("loanAmount")) : "");
             dataRow.createCell(7).setCellValue(data.containsKey("loanType") ? String.valueOf(data.get("loanType")) : "");
             dataRow.createCell(8).setCellValue(loan.getStatus());
-
+            if ("PersonalLoan".equals(loanType)) {
+                dataRow.createCell(9).setCellValue(data.containsKey("takeHomeSalaryMonthly") ? String.valueOf(data.get("takeHomeSalaryMonthly")) : "");
+                dataRow.createCell(10).setCellValue(data.containsKey("pan") ? String.valueOf(data.get("pan")) : "");
+                dataRow.createCell(11).setCellValue(data.containsKey("purposeOfLoan") ? String.valueOf(data.get("purposeOfLoan")) : "");
+                dataRow.createCell(12).setCellValue(data.containsKey("employmentType") ? String.valueOf(data.get("employmentType")) : "");
+                dataRow.createCell(13).setCellValue(data.containsKey("dob") ? String.valueOf(data.get("dob")) : "");
+                dataRow.createCell(14).setCellValue(data.containsKey("adhaar") ? String.valueOf(data.get("adhaar")) : "");
+                dataRow.createCell(15).setCellValue(data.containsKey("gender") ? String.valueOf(data.get("gender")) : "");
+                dataRow.createCell(16).setCellValue(data.containsKey("currentAddress") ? String.valueOf(data.get("currentAddress")) : "");
+                dataRow.createCell(17).setCellValue(data.containsKey("addressAsPerAdhaar") ? String.valueOf(data.get("addressAsPerAdhaar")) : "");
+                dataRow.createCell(18).setCellValue(data.containsKey("residentType") ? String.valueOf(data.get("residentType")) : "");
+                dataRow.createCell(19).setCellValue(data.containsKey("referenceName") ? String.valueOf(data.get("referenceName")) : "");
+                dataRow.createCell(20).setCellValue(data.containsKey("referenceMobile") ? String.valueOf(data.get("referenceMobile")) : "");
+            } else if ("BusinessLoan".equals(loanType)) {
+                dataRow.createCell(9).setCellValue(data.containsKey("businessIndustry") ? String.valueOf(data.get("businessIndustry")) : "");
+                dataRow.createCell(10).setCellValue(data.containsKey("gstNumber") ? String.valueOf(data.get("gstNumber")) : "");
+                dataRow.createCell(11).setCellValue(data.containsKey("sameAsGst") ? String.valueOf(data.get("sameAsGst")) : "");
+                dataRow.createCell(12).setCellValue(data.containsKey("businessName") ? String.valueOf(data.get("businessName")) : "");
+                dataRow.createCell(13).setCellValue(data.containsKey("annualTurnover") ? String.valueOf(data.get("annualTurnover")) : "");
+                dataRow.createCell(14).setCellValue(data.containsKey("proprietorName") ? String.valueOf(data.get("proprietorName")) : "");
+                dataRow.createCell(15).setCellValue(data.containsKey("addressAsPerGST") ? String.valueOf(data.get("addressAsPerGST")) : "");
+                dataRow.createCell(16).setCellValue(data.containsKey("grossTotalIncome") ? String.valueOf(data.get("grossTotalIncome")) : "");
+                dataRow.createCell(17).setCellValue(data.containsKey("registrationDate") ? String.valueOf(data.get("registrationDate")) : "");
+                dataRow.createCell(18).setCellValue(data.containsKey("currentBusinessAddress") ? String.valueOf(data.get("currentBusinessAddress")) : "");
+                dataRow.createCell(19).setCellValue(data.containsKey("referenceMobile") ? String.valueOf(data.get("referenceMobile")) : "");
+                dataRow.createCell(20).setCellValue(data.containsKey("creditScore") ? String.valueOf(data.get("creditScore")) : "");
+                dataRow.createCell(21).setCellValue(data.containsKey("profitAfterTax") ? String.valueOf(data.get("profitAfterTax")) : "");
+                dataRow.createCell(22).setCellValue(data.containsKey("yearsInBusiness") ? String.valueOf(data.get("yearsInBusiness")) : "");
+            } else {
+                dataRow.createCell(9).setCellValue(data.containsKey("currentAddress") ? String.valueOf(data.get("currentAddress")) : "");
+            }
         }
-
         return workbook;
     }
 

@@ -40,15 +40,19 @@ public class ApplicationsController {
         //  Get all applications from the database
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
+        boolean hasAllPermission = permissions.contains("ALL");
         if (brand == null) {
             throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
         System.out.println(permissions);
+        String filterBrand = filterRequest.getBrand();
+        String accessibleBrand = hasAllPermission ? brand : filterBrand;
         List<CRMAppliacationResponseDTO> filteredApplications = loanService.findApplicationsByFilter(
-                filterRequest.getBrand(),
+                accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getFormDate(),
                 filterRequest.getToDate(),
+                filterRequest.getTodayDate(),
                 filterRequest.getLoanStatus());
         return ResponseEntity.ok(filteredApplications);
     }
