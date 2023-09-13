@@ -36,5 +36,11 @@ public class DashBordChartService {
         }
         return crmLoanDashBordResponceMapper.mapToDTO(result);
     }
+
+    public List<CRMLoanDashBordResponceDTO> getLoanCountByBrand(LocalDateTime inputDate) {
+        List<Object[]> result;
+            result = dashBordChartRepository.getLoansCountByBrand(inputDate);
+        return crmLoanDashBordResponceMapper.mapToDTO(result);
+    }
 }
 
