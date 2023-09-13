@@ -43,9 +43,8 @@ public class LeadsDataController {
                 filterRequest.getBrand(),
                 filterRequest.getLoanType(),
                 filterRequest.getName(),
-                filterRequest.getFormDate(),
-                filterRequest.getToDate(),
-                filterRequest.getTodayDate());
+                filterRequest.getFromDate(),
+                filterRequest.getToDate());
         return ResponseEntity.ok(filteredLeads);
     }
 

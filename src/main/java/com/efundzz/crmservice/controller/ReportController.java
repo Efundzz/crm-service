@@ -63,13 +63,13 @@ public class ReportController {
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
         }
-        String filterBrand = filterRequest.getBrand();
-        String accessibleBrand = hasAllPermission ? brand : filterBrand;
+        String filterBrand = filterRequest != null ? filterRequest.getBrand() : null;
+        String accessibleBrand = (filterBrand == null) ? brand : filterBrand;
+        assert filterRequest != null;
         List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
-                filterRequest.getFormDate(),
+                filterRequest.getFromDate(),
                 filterRequest.getToDate(),
-                filterRequest.getTodayDate(),
                 filterRequest.getLoanStatus());
 
         Workbook workbook = reportService.generateLeadsDataExcel(leadsList,filterRequest.getLoanType());
@@ -94,15 +94,14 @@ public class ReportController {
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
         }
-        String filterBrand = filterRequest.getBrand();
-        String accessibleBrand = hasAllPermission ? brand : filterBrand;
+        String filterBrand = filterRequest != null ? filterRequest.getBrand() : null;
+        String accessibleBrand = (filterBrand == null) ? brand : filterBrand;
 
         List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getName(),
-                filterRequest.getFormDate(),
-                filterRequest.getToDate(),
-                filterRequest.getTodayDate());
+                filterRequest.getFromDate(),
+                filterRequest.getToDate());
         Workbook workbook = reportService.generateLeadsFormExcel(leadsList);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);

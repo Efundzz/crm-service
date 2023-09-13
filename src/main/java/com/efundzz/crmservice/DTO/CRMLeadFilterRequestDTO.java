@@ -10,13 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CRMLeadFilterRequestDTO {
-
     private String brand;
     private String loanType;
     private String loanStatus;
-    private String formDate;
+    private String fromDate;
     private String toDate;
     private String name;
     private String source;
-    private String todayDate;
 }
