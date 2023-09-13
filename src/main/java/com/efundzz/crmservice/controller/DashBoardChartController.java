@@ -49,6 +49,17 @@ public class DashBoardChartController {
         return dashBordChartService.getCountsByLoanStatus(inputDate, brand);
     }
 
+    @GetMapping("/dashBord/brandCount")
+    public List<CRMLoanDashBordResponceDTO> getLoanCountByBrand(JwtAuthenticationToken token) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        System.out.println(permissions);
+        return dashBordChartService.getLoanCountByBrand(inputDate);
+    }
+
     @PostConstruct
     public void initializeStartDate() {
         inputDate = LocalDateTime.now().minusDays(durationInDays);
