@@ -242,5 +242,4 @@ public class ReportService {
         dataRow.createCell(9).setCellValue(String.valueOf(lead.getAdditionalParams()));
         return workbook;
     }
-
 }
