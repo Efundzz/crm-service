@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
 
 @RestController
@@ -23,7 +24,7 @@ public class LeadsDataController {
 
     @GetMapping("/allLeadFormData")
     public ResponseEntity<List<CRMLeadDataResponseDTO>> getLeadDataByBrand(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
@@ -34,7 +35,7 @@ public class LeadsDataController {
 
     @PostMapping("/leadFormData/filter")
     public ResponseEntity<List<Leads>> getLeadFormDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
@@ -50,7 +51,7 @@ public class LeadsDataController {
 
     @GetMapping("/getLeadsFormData/{id}")
     public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable Long id) {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");

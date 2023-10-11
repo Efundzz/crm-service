@@ -21,7 +21,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
+import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
+import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
 
 @RestController
@@ -57,15 +60,19 @@ public class ReportController {
 
     @PostMapping("/apps/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
-        boolean hasAllPermission = permissions.contains("ALL");
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
-        String filterBrand = filterRequest != null ? filterRequest.getBrand() : null;
-        String accessibleBrand = (filterBrand == null) ? brand : filterBrand;
-        assert filterRequest != null;
+        String accessibleBrand;
+        if (permissions.contains(ALL_PERMISSION) && Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)) {
+            accessibleBrand = ALL_PERMISSION;
+        }else if (permissions.contains(ALL_PERMISSION) && !Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)){
+            accessibleBrand = filterRequest.getBrand();
+        }else{
+            accessibleBrand = brand;
+        }
         List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
@@ -88,15 +95,19 @@ public class ReportController {
 
     @PostMapping("/leadForms/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest ) throws IOException {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
-        boolean hasAllPermission = permissions.contains("ALL");
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
-        String filterBrand = filterRequest != null ? filterRequest.getBrand() : null;
-        String accessibleBrand = (filterBrand == null) ? brand : filterBrand;
-
+        String accessibleBrand;
+        if (permissions.contains(ALL_PERMISSION) && Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)) {
+            accessibleBrand = ALL_PERMISSION;
+        }else if (permissions.contains(ALL_PERMISSION) && !Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)){
+            accessibleBrand = filterRequest.getBrand();
+        }else{
+            accessibleBrand = brand;
+        }
         List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getName(),
@@ -119,7 +130,7 @@ public class ReportController {
     @GetMapping("/leadForms/single/download-excel/{id}")
     public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable Long id) throws IOException {
 
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
@@ -142,7 +153,7 @@ public class ReportController {
 
     @GetMapping("/apps/single/download-excel/{appId}")
     public ResponseEntity<Resource> exportSingleLeadToExcel(JwtAuthenticationToken token, @PathVariable String appId) throws IOException {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
