@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -40,23 +41,24 @@ public class ReportController {
     @Value("${excel.contentType}")
     private String excelContentType;
 
-//    @GetMapping("/leads/download-pdf")
-//    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token) {
-//        List<String> permissions = token.getToken().getClaim("permissions");
-//        String brand = determineBrand(permissions);
-//        if (brand == null) {
-//            throw new RuntimeException("Invalid permissions");
-//        }
-//        try {
-//            byte[] reportBytes = reportService.generateLoanReport(brand);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_PDF);
-//            headers.setContentDispositionFormData("attachment", "loan-report.pdf");
-//            return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @GetMapping("/lead/download-pdf/{id}")
+    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token,@PathVariable String id) {
+        List<String> permissions = token.getToken().getClaim("permissions");
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        try {
+            List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(id, brand);
+            byte[] reportBytes = reportService.generateLoanReport(leadData);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "loan-report.pdf");
+            return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/apps/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {

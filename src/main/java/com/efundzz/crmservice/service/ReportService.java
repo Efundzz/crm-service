@@ -1,6 +1,7 @@
 package com.efundzz.crmservice.service;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.DTO.PdfReportData;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.repository.LeadRepository;
 import com.efundzz.crmservice.repository.LoanRepository;
@@ -17,6 +18,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +31,13 @@ public class ReportService {
     @Autowired
     private LoanRepository loanRepository;
 
-    public byte[] generateLoanReport(String brand) throws IOException, JRException {
-        List<Leads> loans = leadRepository.findByBrand(brand);
-        File file = ResourceUtils.getFile("classpath:leadsReportTemplate.jrxml");
+    public byte[] generateLoanReport(List<CRMAppliacationResponseDTO> leadData) throws IOException, JRException {
+
+        List<PdfReportData> reportDataList = mapLeadInfoToPdfData(leadData);
+
+        File file = ResourceUtils.getFile("classpath:leadpdfdata.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(loans);
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(reportDataList);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ReportTitle", "Lead Report");
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
@@ -241,5 +245,68 @@ public class ReportService {
         dataRow.createCell(8).setCellValue(lead.getBrand());
         dataRow.createCell(9).setCellValue(String.valueOf(lead.getAdditionalParams()));
         return workbook;
+    }
+
+    public List<PdfReportData> mapLeadInfoToPdfData(List<CRMAppliacationResponseDTO> leadData) {
+        List<PdfReportData> reportDataList = new ArrayList<>();
+        for (CRMAppliacationResponseDTO lead : leadData) {
+            PdfReportData reportData = new PdfReportData();
+            reportData.setId(lead.getId());
+            reportData.setLoanType(lead.getLoanType());
+            reportData.setPurposeOfLoan(lead.getData().containsKey("purposeOfLoan") ? String.valueOf(lead.getData().get("purposeOfLoan")) : null);
+            reportData.setLoanAmount(lead.getData().containsKey("loanAmount") ? String.valueOf(lead.getData().get("loanAmount")) : null);
+            reportData.setLoanType(lead.getData().containsKey("loanType") ? String.valueOf(lead.getData().get("loanType")) : null);
+            reportData.setTotalEmiPaying(lead.getData().containsKey("totalEmi") ? String.valueOf(lead.getData().get("totalEmi")) : null);
+            reportData.setDateOfApplication(lead.getData().containsKey("date") ? String.valueOf(lead.getData().get("date")) : null);
+            reportData.setCreditScore(lead.getData().containsKey("creditScore") ? String.valueOf(lead.getData().get("creditScore")) : null);
+            reportData.setNameOnCard(lead.getData().containsKey("nameOfTheCard") ? String.valueOf(lead.getData().get("nameOfTheCard")) : null);
+            reportData.setPanCardNumber(lead.getData().containsKey("pan") ? String.valueOf(lead.getData().get("pan")) : null);
+            reportData.setLastUpdate(lead.getData().containsKey("lastUpdate") ? String.valueOf(lead.getData().get("lastUpdate")) : null);
+            reportData.setPinCodeAadhaar(lead.getData().containsKey("pincode") ? String.valueOf(lead.getData().get("pincode")) : null);
+            reportData.setStatus(lead.getData().containsKey("status") ? String.valueOf(lead.getData().get("status")) : null);
+            reportData.setDescription(lead.getData().containsKey("description") ? String.valueOf(lead.getData().get("description")) : null);
+            reportData.setDigitallySignedOn(lead.getData().containsKey("panVerified") ? String.valueOf(lead.getData().get("panVerified")) : null);
+            reportData.setName(lead.getData().containsKey("fullName") ? String.valueOf(lead.getData().get("fullName")) : null);
+            reportData.setDownloadDate(lead.getData().containsKey("downloadDate") ? String.valueOf(lead.getData().get("downloadDate")) : null);
+            reportData.setFatherName(lead.getData().containsKey("fatherName") ? String.valueOf(lead.getData().get("fatherName")) : null);
+            reportData.setAadhaarNumber(lead.getData().containsKey("adhaar") ? String.valueOf(lead.getData().get("adhaar")) : null);
+            reportData.setGeneratedDate(lead.getData().containsKey("generatedDate") ? String.valueOf(lead.getData().get("generatedDate")) : null);
+            reportData.setDateOfBirth(lead.getData().containsKey("dob") ? String.valueOf(lead.getData().get("dob")) : null);
+            reportData.setGender(lead.getData().containsKey("gender") ? String.valueOf(lead.getData().get("gender")) : null);
+            reportData.setHouseNumber(lead.getData().containsKey("addressLine") ? String.valueOf(lead.getData().get("houseNumber")) : null);
+            reportData.setStreet(lead.getData().containsKey("street") ? String.valueOf(lead.getData().get("street")) : null);
+            reportData.setLocality(lead.getData().containsKey("addressLine") ? String.valueOf(lead.getData().get("locality")) : null);
+            reportData.setLandmark(lead.getData().containsKey("landmark") ? String.valueOf(lead.getData().get("landmark")) : null);
+            reportData.setPostOffice(lead.getData().containsKey("pincode") ? String.valueOf(lead.getData().get("pincode")) : null);
+            reportData.setVillageAadhaar(lead.getData().containsKey("city") ? String.valueOf(lead.getData().get("city")) : null);
+            reportData.setStateAadhaar(lead.getData().containsKey("state") ? String.valueOf(lead.getData().get("stateAadhaar")) : null);
+            reportData.setDistrictAadhaar(lead.getData().containsKey("district") ? String.valueOf(lead.getData().get("districtAadhaar")) : null);
+            reportData.setSubDistrict(lead.getData().containsKey("district") ? String.valueOf(lead.getData().get("subDistrict")) : null);
+            reportData.setCountry(lead.getData().containsKey("country") ? String.valueOf(lead.getData().get("country")) : null);
+            reportData.setAddress(lead.getData().containsKey("address") ? String.valueOf(lead.getData().get("address")) : null);
+            reportData.setSignature(lead.getData().containsKey("signature") ? String.valueOf(lead.getData().get("signature")) : null);
+            reportData.setMobileNumber(lead.getData().containsKey("mobile") ? String.valueOf(lead.getData().get("mobile")) : null);
+            reportData.setAlternateMobileNumber(lead.getData().containsKey("alternateMobileNumber") ? String.valueOf(lead.getData().get("alternateMobileNumber")) : null);
+            reportData.setEmailId(lead.getData().containsKey("email") ? String.valueOf(lead.getData().get("email")) : null);
+            reportData.setResidentType(lead.getData().containsKey("residentType") ? String.valueOf(lead.getData().get("residentType")) : null);
+            reportData.setMonthlyRent(lead.getData().containsKey("rent") ? String.valueOf(lead.getData().get("rent")) : null);
+            reportData.setYearsOfCurrentResident(lead.getData().containsKey("yearsAtCurrentResident") ? String.valueOf(lead.getData().get("yearsAtCurrentResident")) : null);
+            reportData.setNoOfDependants(lead.getData().containsKey("numberOfDependents") ? String.valueOf(lead.getData().get("numberOfDependents")) : null);
+            reportData.setFlatNoStreetName(lead.getData().containsKey("addressLine") ? String.valueOf(lead.getData().get("flatNoStreetName")) : null);
+            reportData.setVillage(lead.getData().containsKey("village") ? String.valueOf(lead.getData().get("village")) : null);
+            reportData.setDistrict(lead.getData().containsKey("district") ? String.valueOf(lead.getData().get("district")) : null);
+            reportData.setState(lead.getData().containsKey("state") ? String.valueOf(lead.getData().get("state")) : null);
+            reportData.setPinCode(lead.getData().containsKey("pinCode") ? String.valueOf(lead.getData().get("pinCode")) : null);
+            reportData.setEmployeeType(lead.getData().containsKey("employmentType") ? String.valueOf(lead.getData().get("employmentType")) : null);
+            reportData.setCurrentOrganization(lead.getData().containsKey("currentOrganization") ? String.valueOf(lead.getData().get("currentOrganization")) : null);
+            reportData.setTotalWorkExperience(lead.getData().containsKey("totalExperience") ? String.valueOf(lead.getData().get("totalExperience")) : null);
+            reportData.setCurrentJobStability(lead.getData().containsKey("currentDesignation") ? String.valueOf(lead.getData().get("currentDesignation")) :null);
+            reportData.setSalary(lead.getData().containsKey("takeHomeSalaryMonthly") ? String.valueOf(lead.getData().get("takeHomeSalaryMonthly")) : null);
+            reportData.setPersonName(lead.getData().containsKey("referenceName") ? String.valueOf(lead.getData().get("referenceName")) : null);
+            reportData.setReferenceMobileNumber(lead.getData().containsKey("referenceMobile") ? String.valueOf(lead.getData().get("referenceMobile")) : null);
+
+            reportDataList.add(reportData);
+        }
+        return reportDataList;
     }
 }
