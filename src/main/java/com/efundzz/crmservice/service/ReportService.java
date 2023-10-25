@@ -34,7 +34,6 @@ public class ReportService {
     public byte[] generateLoanReport(List<CRMAppliacationResponseDTO> leadData) throws IOException, JRException {
 
         List<PdfReportData> reportDataList = mapLeadInfoToPdfData(leadData);
-
         File file = ResourceUtils.getFile("classpath:leadpdfdata.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(reportDataList);

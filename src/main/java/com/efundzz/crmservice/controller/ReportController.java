@@ -41,7 +41,7 @@ public class ReportController {
     @Value("${excel.contentType}")
     private String excelContentType;
 
-    @GetMapping("/lead/download-pdf/{id}")
+    @GetMapping("/apps/download-pdf/{id}")
     public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token,@PathVariable String id) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
