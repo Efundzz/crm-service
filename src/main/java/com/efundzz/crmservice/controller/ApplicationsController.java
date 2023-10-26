@@ -72,7 +72,7 @@ public class ApplicationsController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         System.out.println(permissions);
         return ResponseEntity.ok(loanService.getLoanDetailsByLoanID(loanId));
