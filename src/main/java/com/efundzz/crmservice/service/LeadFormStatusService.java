@@ -13,6 +13,7 @@ import java.util.Optional;
 public class LeadFormStatusService {
     @Autowired
     LeadRepository leadRepository;
+
     @Transactional
     public Leads updateLeadStatus(CRMLeadFormUpdateDTO crmLeadFormUpdateDTO) {
 
@@ -21,8 +22,7 @@ public class LeadFormStatusService {
             Leads leads = optionalLead.get();
             leads.setStatus(crmLeadFormUpdateDTO.getStatus());
             return leadRepository.save(leads);
-        } else {
-            return null;
         }
+        return null;
     }
 }

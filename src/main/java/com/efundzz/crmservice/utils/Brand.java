@@ -28,4 +28,25 @@ public class Brand {
 
         return null;
     }
+
+    public static String determineWriteBrand(List<String> permissions) {
+        Map<String, String> permissionsToBrands = new HashMap<>();
+        permissionsToBrands.put("write:efundzz_applications", "EF");
+        permissionsToBrands.put("write:roboloanz_applications", "RL");
+        permissionsToBrands.put("write:vahak_leads", "VH");
+        permissionsToBrands.put("write:invoyz_leads", "IV");
+        permissionsToBrands.put("write:raahi_leads", "RB");
+        permissionsToBrands.put("write:knowledge_leads", "KH");
+        permissionsToBrands.put("write:wedezine_leads", "WD");
+        permissionsToBrands.put("write:yoho_leads", "YH");
+        permissionsToBrands.put("write:homelane_leads", "HL");
+        permissionsToBrands.put("write:bymore_leads", "BM");
+        permissionsToBrands.put("write:all_applications", "ALL");
+        for (String permission : permissions) {
+            if (permissionsToBrands.containsKey(permission)) {
+                return permissionsToBrands.get(permission);
+            }
+        }
+        return null;
+    }
 }

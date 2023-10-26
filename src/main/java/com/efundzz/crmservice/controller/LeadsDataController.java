@@ -5,6 +5,7 @@ import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -27,7 +28,7 @@ public class LeadsDataController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         System.out.println(permissions);
         return ResponseEntity.ok(leadService.getAllLeadDataByBrand(brand));
@@ -38,7 +39,7 @@ public class LeadsDataController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         List<Leads> filteredLeads = leadService.findLeadFormDataByFilter(
                 filterRequest.getBrand(),
@@ -54,7 +55,7 @@ public class LeadsDataController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         Leads lead = leadService.getLeadFormDataById(id);
         if (lead != null) {

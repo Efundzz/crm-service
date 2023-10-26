@@ -42,11 +42,11 @@ public class ReportController {
     private String excelContentType;
 
     @GetMapping("/apps/download-pdf/{id}")
-    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token,@PathVariable String id) {
+    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token, @PathVariable String id) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         try {
             List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(id, brand);
@@ -61,27 +61,20 @@ public class ReportController {
     }
 
     @PostMapping("/apps/bulk/download-excel")
-    public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
+    public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        String accessibleBrand;
-        if (permissions.contains(ALL_PERMISSION) && Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)) {
-            accessibleBrand = ALL_PERMISSION;
-        }else if (permissions.contains(ALL_PERMISSION) && !Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)){
-            accessibleBrand = filterRequest.getBrand();
-        }else{
-            accessibleBrand = brand;
-        }
+        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
                 filterRequest.getLoanStatus());
 
-        Workbook workbook = reportService.generateLeadsDataExcel(leadsList,filterRequest.getLoanType());
+        Workbook workbook = reportService.generateLeadsDataExcel(leadsList, filterRequest.getLoanType());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
@@ -96,20 +89,13 @@ public class ReportController {
     }
 
     @PostMapping("/leadForms/bulk/download-excel")
-    public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest ) throws IOException {
+    public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        String accessibleBrand;
-        if (permissions.contains(ALL_PERMISSION) && Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)) {
-            accessibleBrand = ALL_PERMISSION;
-        }else if (permissions.contains(ALL_PERMISSION) && !Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)){
-            accessibleBrand = filterRequest.getBrand();
-        }else{
-            accessibleBrand = brand;
-        }
+        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getName(),
@@ -135,7 +121,7 @@ public class ReportController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         Leads leaddata = leadService.getLeadFormDataById(id);
 
@@ -158,11 +144,11 @@ public class ReportController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
         String loanType = !leadData.isEmpty() ? leadData.get(0).getLoanType() : "";
-        Workbook workbook = reportService.generateSingleLeadDataExcel(leadData,loanType);
+        Workbook workbook = reportService.generateSingleLeadDataExcel(leadData, loanType);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
@@ -174,5 +160,13 @@ public class ReportController {
                 .headers(headers)
                 .contentType(MediaType.parseMediaType(excelContentType))
                 .body(inputStreamResource);
+    }
+
+    private String determineAccessibleBrand(String brand, String filterBrand) {
+        return (brand.equals(ALL_PERMISSION) && Objects.equals(filterBrand, ALL_PERMISSION))
+                ? ALL_PERMISSION
+                : (brand.equals(ALL_PERMISSION) && !Objects.equals(filterBrand, ALL_PERMISSION))
+                ? filterBrand
+                : brand;
     }
 }
