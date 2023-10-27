@@ -20,7 +20,7 @@ import static com.efundzz.crmservice.utils.Brand.determineWriteBrand;
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
-public class LeadFormStatuController {
+public class LeadFormStatusController {
 
     @Autowired
     private LeadFormStatusService leadFormStatusService;
