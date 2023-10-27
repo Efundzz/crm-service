@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
+import static com.efundzz.crmservice.utils.Brand.determineBrand;
 import static com.efundzz.crmservice.utils.Brand.determineWriteBrand;
 
 @RestController
@@ -36,7 +37,12 @@ public class LeadFormStatuController {
     }
 
     @GetMapping("/leadFormData/statusLogs/{leadId}")
-    public List<LeadsLog> getLeadsLogsByLeadId(JwtAuthenticationToken token,@PathVariable Long leadId) {
+    public List<LeadsLog> getLeadsLogsByLeadId(JwtAuthenticationToken token, @PathVariable Long leadId) {
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
         return leadFormStatusService.getLeadsLogsByLeadId(leadId);
     }
 
