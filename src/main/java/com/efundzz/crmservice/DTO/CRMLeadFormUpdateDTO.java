@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,4 +14,7 @@ import lombok.NoArgsConstructor;
 public class CRMLeadFormUpdateDTO {
     private Long leadId;
     private String status;
+    private String agentId;
+    private LocalDateTime updatedAt;
+    private String comments;
 }

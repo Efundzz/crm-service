@@ -2,6 +2,7 @@ package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMLeadFormUpdateDTO;
 import com.efundzz.crmservice.entity.Leads;
+import com.efundzz.crmservice.entity.LeadsLog;
 import com.efundzz.crmservice.service.LeadFormStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,4 +34,10 @@ public class LeadFormStatuController {
         Leads updatedLeadStatus = leadFormStatusService.updateLeadStatus(updateDto);
         return ResponseEntity.ok(updatedLeadStatus);
     }
+
+    @GetMapping("/leadFormData/statusLogs/{leadId}")
+    public List<LeadsLog> getLeadsLogsByLeadId(JwtAuthenticationToken token,@PathVariable Long leadId) {
+        return leadFormStatusService.getLeadsLogsByLeadId(leadId);
+    }
+
 }
