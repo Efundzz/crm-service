@@ -56,4 +56,7 @@ public class Leads {
     @Type(type = "jsonb")
     private Map<String, Object> additionalParams;
 
+    @Column(name = "status", columnDefinition = "varchar(255) default 'Pending'")
+    private String status;
+
 }

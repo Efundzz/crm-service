@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.efundzz</groupId>
     <artifactId>crm-service</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.9</version>
     <name>crm-service</name>
     <description>crm-service</description>
     <properties>

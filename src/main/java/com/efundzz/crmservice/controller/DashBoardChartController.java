@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
 
 @RestController
@@ -29,7 +30,7 @@ public class DashBoardChartController {
 
     @GetMapping("/dashBord/loanTypeCounts")
     public List<CRMLoanDashBordResponceDTO> getLeadCountByLoanType(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
@@ -40,7 +41,7 @@ public class DashBoardChartController {
 
     @GetMapping("/dashBord/statusCounts")
     public List<CRMLoanDashBordResponceDTO> getLeadsCountByStatus(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
@@ -51,7 +52,7 @@ public class DashBoardChartController {
 
     @GetMapping("/dashBord/brandCount")
     public List<CRMLoanDashBordResponceDTO> getLoanCountByBrand(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim("permissions");
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
             throw new RuntimeException("Invalid permissions");
