@@ -17,7 +17,7 @@ public interface DashBordChartRepository extends JpaRepository<Leads, Serializab
     @Query("SELECT l.status, COUNT(*) FROM Loan l WHERE l.createdAt >= :startDate AND (:brand is null or l.brand = :brand) GROUP BY l.status")
     List<Object[]> getCountsByLoanStatus(LocalDateTime startDate, String brand);
 
-    @Query("SELECT l.brand, COUNT(*) FROM Loan l WHERE l.createdAt >= :startDate GROUP BY l.brand")
-    List<Object[]> getLoansCountByBrand(LocalDateTime startDate);
+    @Query("SELECT l.brand, COUNT(*) FROM Loan l WHERE l.createdAt >= :startDate AND (:brandFilter IS NULL OR l.brand = :brandFilter) GROUP BY l.brand")
+    List<Object[]> getLoansCountByBrand( LocalDateTime startDate,String brandFilter);
 
 }

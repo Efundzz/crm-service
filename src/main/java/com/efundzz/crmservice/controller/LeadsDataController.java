@@ -12,7 +12,9 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
+import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
 import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
 
@@ -41,8 +43,9 @@ public class LeadsDataController {
         if (brand == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
+        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<Leads> filteredLeads = leadService.findLeadFormDataByFilter(
-                filterRequest.getBrand(),
+                accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getName(),
                 filterRequest.getFromDate(),
@@ -63,5 +66,13 @@ public class LeadsDataController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private String determineAccessibleBrand(String brand, String filterBrand) {
+        return (brand.equals(ALL_PERMISSION) && Objects.equals(filterBrand, ALL_PERMISSION))
+                ? ALL_PERMISSION
+                : (brand.equals(ALL_PERMISSION) && !Objects.equals(filterBrand, ALL_PERMISSION))
+                ? filterBrand
+                : brand;
     }
 }

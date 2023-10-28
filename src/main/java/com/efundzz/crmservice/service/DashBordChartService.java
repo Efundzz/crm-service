@@ -37,9 +37,13 @@ public class DashBordChartService {
         return crmLoanDashBordResponceMapper.mapToDTO(result);
     }
 
-    public List<CRMLoanDashBordResponceDTO> getLoanCountByBrand(LocalDateTime inputDate) {
+    public List<CRMLoanDashBordResponceDTO> getLoanCountByBrand(LocalDateTime inputDate,String brand) {
         List<Object[]> result;
-            result = dashBordChartRepository.getLoansCountByBrand(inputDate);
+        if (brand != null && brand.equalsIgnoreCase("ALL")) {
+            result = dashBordChartRepository.getLoansCountByBrand(inputDate,null);
+        } else {
+            result = dashBordChartRepository.getLoansCountByBrand(inputDate,brand);
+        }
         return crmLoanDashBordResponceMapper.mapToDTO(result);
     }
 }

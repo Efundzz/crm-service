@@ -58,7 +58,7 @@ public class DashBoardChartController {
             throw new RuntimeException("Invalid permissions");
         }
         System.out.println(permissions);
-        return dashBordChartService.getLoanCountByBrand(inputDate);
+        return dashBordChartService.getLoanCountByBrand(inputDate,brand);
     }
 
     @PostConstruct
