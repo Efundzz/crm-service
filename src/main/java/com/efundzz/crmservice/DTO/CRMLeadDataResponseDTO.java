@@ -24,4 +24,5 @@ public class CRMLeadDataResponseDTO {
     private Map<String, Object> utmParams;
     private String brand;
     private Map<String, Object> additionalParams;
+    private String status;
 }

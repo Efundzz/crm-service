@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface LeadsLogRepository extends JpaRepository<LeadsLog, Serializable> {
-    @Query("SELECT l FROM LeadsLog l WHERE (:leadId is null or l.leadId = :leadId)")
+    @Query("SELECT l FROM LeadsLog l WHERE (:leadId is null or l.leadId = :leadId) ORDER BY l.id DESC")
     List<LeadsLog> findByLeadId(Long leadId);
+
 }
