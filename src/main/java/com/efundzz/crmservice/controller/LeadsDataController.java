@@ -18,6 +18,7 @@ import java.util.Objects;
 import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
 import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
+import static com.efundzz.crmservice.utils.Brand.determineWriteBrand;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,11 +74,10 @@ public class LeadsDataController {
     @PostMapping("/leadFormData/createLead")
     public Leads createLead(JwtAuthenticationToken token,@RequestBody CRMLeadFormRequestDTO leadFormRequestDTO) {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        String brand = determineBrand(permissions);
-        if (brand == null) {
+        String writeBrand = determineWriteBrand(permissions);
+        if (writeBrand == null || writeBrand.isEmpty()) {
             throw new RuntimeException("Invalid permissions");
         }
-        String accessibleBrand = determineAccessibleBrand(brand, leadFormRequestDTO.getBrand());
         return leadService.createLead(leadFormRequestDTO);
     }
 
