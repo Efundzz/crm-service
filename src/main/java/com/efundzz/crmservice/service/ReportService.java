@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.service;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
-import com.efundzz.crmservice.DTO.PdfReportData;
+import com.efundzz.crmservice.DTO.PdfReportDataDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.repository.LeadRepository;
 import com.efundzz.crmservice.repository.LoanRepository;
@@ -33,7 +33,7 @@ public class ReportService {
 
     public byte[] generateLoanReport(List<CRMAppliacationResponseDTO> leadData) throws IOException, JRException {
 
-        List<PdfReportData> reportDataList = mapLeadInfoToPdfData(leadData);
+        List<PdfReportDataDTO> reportDataList = mapLeadInfoToPdfData(leadData);
         File file = ResourceUtils.getFile("classpath:leadpdfdata.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(reportDataList);
@@ -246,10 +246,10 @@ public class ReportService {
         return workbook;
     }
 
-    public List<PdfReportData> mapLeadInfoToPdfData(List<CRMAppliacationResponseDTO> leadData) {
-        List<PdfReportData> reportDataList = new ArrayList<>();
+    public List<PdfReportDataDTO> mapLeadInfoToPdfData(List<CRMAppliacationResponseDTO> leadData) {
+        List<PdfReportDataDTO> reportDataList = new ArrayList<>();
         for (CRMAppliacationResponseDTO lead : leadData) {
-            PdfReportData reportData = new PdfReportData();
+            PdfReportDataDTO reportData = new PdfReportDataDTO();
             reportData.setId(lead.getId());
             reportData.setLoanType(lead.getLoanType());
             reportData.setPurposeOfLoan(lead.getData().containsKey("purposeOfLoan") ? String.valueOf(lead.getData().get("purposeOfLoan")) : null);

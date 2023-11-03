@@ -2,6 +2,7 @@ package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
+import com.efundzz.crmservice.DTO.CRMLeadFormRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,8 @@ public class LeadsDataController {
                 filterRequest.getLoanType(),
                 filterRequest.getName(),
                 filterRequest.getFromDate(),
-                filterRequest.getToDate());
+                filterRequest.getToDate(),
+                filterRequest.getStatus());
         return ResponseEntity.ok(filteredLeads);
     }
 
@@ -66,6 +68,17 @@ public class LeadsDataController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/leadFormData/createLead")
+    public Leads createLead(JwtAuthenticationToken token,@RequestBody CRMLeadFormRequestDTO leadFormRequestDTO) {
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
+        String brand = determineBrand(permissions);
+        if (brand == null) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        String accessibleBrand = determineAccessibleBrand(brand, leadFormRequestDTO.getBrand());
+        return leadService.createLead(leadFormRequestDTO);
     }
 
     private String determineAccessibleBrand(String brand, String filterBrand) {

@@ -100,7 +100,8 @@ public class ReportController {
                 filterRequest.getLoanType(),
                 filterRequest.getName(),
                 filterRequest.getFromDate(),
-                filterRequest.getToDate());
+                filterRequest.getToDate(),
+                filterRequest.getStatus());
         Workbook workbook = reportService.generateLeadsFormExcel(leadsList);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
