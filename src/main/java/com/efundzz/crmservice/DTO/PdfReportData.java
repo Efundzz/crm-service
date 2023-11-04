@@ -1,10 +1,10 @@
 package com.efundzz.crmservice.DTO;
 
+import jdk.jfr.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -63,8 +63,5 @@ public class PdfReportData {
     private String personName;
     private String referenceMobileNumber;
     private String document1;
-    private String document2;
-    private String document3;
-    private String document4;
-
+    private String date;
 }

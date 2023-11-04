@@ -1,6 +1,4 @@
 package com.efundzz.crmservice.service;
-
-
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.entity.LeadStatus;
 import com.efundzz.crmservice.entity.Loan;
@@ -10,24 +8,18 @@ import com.efundzz.crmservice.repository.StepDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
-
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 @Service
 public class LoanService {
-
     @Autowired
     private LoanRepository loanRepository;
-
     @Autowired
     private LeadStatusRepository leadStatusRepository;
-
     @Autowired
     private StepDataRepository stepDataRepository;
-
     public List<CRMAppliacationResponseDTO> getAllLoanDataWithMergedStepData(String brand) {
         List<CRMAppliacationResponseDTO> fetchedData;
         if (brand.equalsIgnoreCase("ALL")) {
@@ -47,7 +39,6 @@ public class LoanService {
                 ));
         return new ArrayList<>(resultMap.values());
     }
-
     public List<CRMAppliacationResponseDTO> findApplicationsByFilter(String brand, String loanType, String fromDate, String toDate, String loanStatus) {
         List<CRMAppliacationResponseDTO> fetchedData;
         if (brand.equalsIgnoreCase("ALL")) {
@@ -55,7 +46,6 @@ public class LoanService {
         } else {
             fetchedData = loanRepository.findAllStepDataByCriteria(brand, loanType, fromDate, toDate,loanStatus);
         }
-
         Map<String, CRMAppliacationResponseDTO> resultMap = fetchedData.stream()
                 .filter(item -> item != null && item.getData() != null)
                 .collect(Collectors.toMap(
@@ -68,7 +58,6 @@ public class LoanService {
                 ));
         return new ArrayList<>(resultMap.values());
     }
-
     public List<CRMAppliacationResponseDTO> getAllLeadDataByAppId(String appId, String brand) {
 
         List<CRMAppliacationResponseDTO> fetchedData;
@@ -89,10 +78,8 @@ public class LoanService {
                 ));
         return new ArrayList<>(resultMap.values());
     }
-
     public Loan getLoanDetailsByLoanID(String loanID) {
         Optional<LeadStatus> optionalLeadStatus = Optional.ofNullable(leadStatusRepository.findByLoanId(loanID));
-
         if (optionalLeadStatus.isPresent()) {
             Loan loanWithStatus = new Loan();
             loanWithStatus.setBrand(optionalLeadStatus.get().getBrand());

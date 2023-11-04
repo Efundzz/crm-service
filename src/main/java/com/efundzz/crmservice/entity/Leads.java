@@ -42,7 +42,7 @@ public class Leads {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "loantype")
+    @Column(name = "loan_type")
     private String loanType;
 
     @Column(name = "utm_params")

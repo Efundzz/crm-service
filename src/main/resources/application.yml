@@ -1,20 +1,20 @@
 debug: true
 server:
-  port: 8081
+  port: 8082
 
 auth0:
   audience: https://api.crm-dev.efundzz.com
 
 custom:
   duration:
-      days: 180
-
+    days: 180
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/crm-partner
-    username: postgres
-    password: Demo
+    url: jdbc:postgresql://terraform-20230416163607232400000001.chlnsunhgm7o.eu-west-1.rds.amazonaws.com:5432/efundzz
+    username: efundzz_admin
+    password: efundzz123!
   jpa:
+    show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:
       ddl-auto: update

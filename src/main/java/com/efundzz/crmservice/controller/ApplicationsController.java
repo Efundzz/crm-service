@@ -5,7 +5,6 @@ import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Loan;
 import com.efundzz.crmservice.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -32,9 +31,14 @@ public class ApplicationsController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
-        String accessibleBrand = permissions.contains(ALL_PERMISSION) ? ALL_PERMISSION : brand;
+        String accessibleBrand;
+        if (permissions.contains(ALL_PERMISSION)) {
+            accessibleBrand = ALL_PERMISSION;
+        }else{
+            accessibleBrand = brand;
+        }
         return ResponseEntity.ok(loanService.getAllLoanDataWithMergedStepData(accessibleBrand));
     }
 
@@ -44,9 +48,16 @@ public class ApplicationsController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
-        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
+        String accessibleBrand;
+        if (permissions.contains(ALL_PERMISSION) && Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)) {
+            accessibleBrand = ALL_PERMISSION;
+        }else if (permissions.contains(ALL_PERMISSION) && !Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)){
+            accessibleBrand = filterRequest.getBrand();
+        }else{
+            accessibleBrand = brand;
+        }
         List<CRMAppliacationResponseDTO> filteredApplications = loanService.findApplicationsByFilter(
                 accessibleBrand,
                 filterRequest.getLoanType(),
@@ -61,8 +72,9 @@ public class ApplicationsController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            throw new RuntimeException("Invalid permissions");
         }
+        System.out.println(permissions);
         List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
         return ResponseEntity.ok(leadData);
     }
@@ -72,19 +84,12 @@ public class ApplicationsController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
         }
         System.out.println(permissions);
         return ResponseEntity.ok(loanService.getLoanDetailsByLoanID(loanId));
     }
 
-    private String determineAccessibleBrand(String brand, String filterBrand) {
-        return (brand.equals(ALL_PERMISSION) && Objects.equals(filterBrand, ALL_PERMISSION))
-                ? ALL_PERMISSION
-                : (brand.equals(ALL_PERMISSION) && !Objects.equals(filterBrand, ALL_PERMISSION))
-                ? filterBrand
-                : brand;
-    }
 }
 
 
