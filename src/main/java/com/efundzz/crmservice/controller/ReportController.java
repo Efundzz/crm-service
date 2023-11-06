@@ -78,12 +78,14 @@ public class ReportController {
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
                 filterRequest.getLoanStatus());
-
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String  date = currentDate.format(formatter);
         Workbook workbook = reportService.generateLeadsDataExcel(leadsList,filterRequest.getLoanType());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllApplicationsData.xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllApplicationsData"+date+".xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
