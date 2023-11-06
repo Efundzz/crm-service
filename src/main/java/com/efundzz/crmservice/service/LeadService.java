@@ -42,19 +42,20 @@ public class LeadService {
         return leadRepository.findById(id);
     }
 
-    public List<Leads> findLeadFormDataByFilter(String brand, String loanType, String name, String fromDate, String toDate,String status) {
+    public List<Leads> findLeadFormDataByFilter(String brand, String fromDate, String toDate,String status,String loanType) {
         List<Leads> fetchedData;
         if (brand.equalsIgnoreCase("ALL")) {
-            fetchedData = leadRepository.findLeadFormDataByFilter(null, loanType, name, fromDate, toDate,status);
+            fetchedData = leadRepository.findLeadFormDataByFilter(null,loanType, fromDate, toDate, status);
         } else {
-            fetchedData = leadRepository.findLeadFormDataByFilter(brand, loanType, name, fromDate, toDate, status);
+            fetchedData = leadRepository.findLeadFormDataByFilter(brand,loanType , fromDate, toDate, status);
         }
         return fetchedData;
     }
 
     public Leads createLead(CRMLeadFormRequestDTO leadFormRequestDTO) {
+        Long refNum = (long) (Math.random() * 100000);
         Leads lead = new Leads();
-        lead.setId(leadFormRequestDTO.getId());
+        lead.setId(refNum);
         lead.setCity(leadFormRequestDTO.getCity());
         lead.setCreatedAt(LocalDateTime.now());
         lead.setPincode(leadFormRequestDTO.getPincode());
@@ -67,5 +68,6 @@ public class LeadService {
         lead.setStatus(leadFormRequestDTO.getStatus());
         return leadRepository.save(lead);
     }
+
 }
 
