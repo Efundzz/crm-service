@@ -337,6 +337,9 @@
             </staticText>
             <textField>
                 <reportElement x="100" y="49" width="119" height="20" uuid="973a5759-de91-44c9-9260-68a517acf6d5"/>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true"/>
+                </textElement>
                 <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
             </textField>
             <staticText>
