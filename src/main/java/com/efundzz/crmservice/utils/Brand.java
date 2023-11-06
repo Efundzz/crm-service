@@ -1,11 +1,8 @@
 package com.efundzz.crmservice.utils;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public class Brand {
-
     public static String determineBrand(List<String> permissions) {
         Map<String, String> permissionsToBrands = new HashMap<>();
         permissionsToBrands.put("read:efundzz_applications", "EF");
@@ -25,10 +22,8 @@ public class Brand {
                 return permissionsToBrands.get(permission);
             }
         }
-
         return null;
     }
-
     public static String determineWriteBrand(List<String> permissions) {
         Map<String, String> permissionsToBrands = new HashMap<>();
         permissionsToBrands.put("write:efundzz_applications", "EF");

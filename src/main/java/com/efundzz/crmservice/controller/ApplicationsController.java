@@ -1,5 +1,4 @@
 package com.efundzz.crmservice.controller;
-
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Loan;
@@ -9,22 +8,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Objects;
-
 import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
 import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
-
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class ApplicationsController {
-
     @Autowired
     private LoanService loanService;
-
     @GetMapping("/applications")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getApplications(JwtAuthenticationToken token) {
         // Get all applications from the database
@@ -41,7 +35,6 @@ public class ApplicationsController {
         }
         return ResponseEntity.ok(loanService.getAllLoanDataWithMergedStepData(accessibleBrand));
     }
-
 
     @PostMapping("/applications/filter")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getApplicationsDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {

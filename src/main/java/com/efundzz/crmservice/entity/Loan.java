@@ -18,7 +18,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Loan implements Serializable {
-
     @Id
     @Column(name = "loan_id")
     private String id;

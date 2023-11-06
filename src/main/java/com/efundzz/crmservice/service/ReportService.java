@@ -85,11 +85,11 @@ public class ReportService {
             if (data != null) {
                 dataRow.createCell(6).setCellValue(data.containsKey("loanAmount") ? String.valueOf(data.get("loanAmount")) : "");
             } else {
-                dataRow.createCell(7).setCellValue("");
+                dataRow.createCell(6).setCellValue("");
             }
-            dataRow.createCell(8).setCellValue(lead.getLoanType());
-            dataRow.createCell(9).setCellValue(lead.getBrand());
-            dataRow.createCell(10).setCellValue(String.valueOf(lead.getAdditionalParams()));
+            dataRow.createCell(7).setCellValue(lead.getLoanType());
+            dataRow.createCell(8).setCellValue(lead.getBrand());
+            dataRow.createCell(9).setCellValue(String.valueOf(lead.getAdditionalParams()));
         }
         return workbook;
     }
