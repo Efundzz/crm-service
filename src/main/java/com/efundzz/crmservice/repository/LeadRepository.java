@@ -19,15 +19,16 @@ public interface LeadRepository extends JpaRepository<Leads, Serializable> {
     @Query("SELECT l FROM Leads l " +
             "WHERE (:brand is null or l.brand = :brand) " +
             "AND (:loanType is null or l.loanType = :loanType) " +
-            "AND (:name is null or l.name LIKE CONCAT('%', :name, '%')) " +
             "AND (:fromDate is null or DATE(l.createdAt) >= DATE(CAST(:fromDate AS date)))" +
             "AND (:toDate is null or DATE(l.createdAt)<= DATE(CAST(:toDate AS date)))" +
+            "AND (:status is null or l.status = :status) " +
             "ORDER BY l.createdAt ASC")
     List<Leads> findLeadFormDataByFilter(
             @Param("brand") String brand,
             @Param("loanType") String loanType,
-            @Param("name") String name,
             @Param("fromDate") String fromDate,
-            @Param("toDate") String toDate);
+            @Param("toDate") String toDate,
+            @Param("status") String status);
+
 }
 

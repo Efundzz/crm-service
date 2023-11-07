@@ -97,10 +97,10 @@ public class ReportController {
         }
         String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
-                filterRequest.getLoanType(),
-                filterRequest.getName(),
                 filterRequest.getFromDate(),
-                filterRequest.getToDate());
+                filterRequest.getToDate(),
+                filterRequest.getLoanType(),
+                filterRequest.getStatus());
         Workbook workbook = reportService.generateLeadsFormExcel(leadsList);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);

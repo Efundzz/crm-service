@@ -17,4 +17,5 @@ public class CRMLeadFilterRequestDTO {
     private String toDate;
     private String name;
     private String source;
+    private String status;
 }

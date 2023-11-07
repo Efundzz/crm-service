@@ -2,6 +2,7 @@ package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
+import com.efundzz.crmservice.DTO.CRMLeadFormRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.Objects;
 import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
 import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
+import static com.efundzz.crmservice.utils.Brand.determineWriteBrand;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,10 +48,10 @@ public class LeadsDataController {
         String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<Leads> filteredLeads = leadService.findLeadFormDataByFilter(
                 accessibleBrand,
-                filterRequest.getLoanType(),
-                filterRequest.getName(),
                 filterRequest.getFromDate(),
-                filterRequest.getToDate());
+                filterRequest.getToDate(),
+                filterRequest.getStatus(),
+                filterRequest.getLoanType());
         return ResponseEntity.ok(filteredLeads);
     }
 
@@ -66,6 +68,16 @@ public class LeadsDataController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/leadFormData/createLead")
+    public Leads createLead(JwtAuthenticationToken token,@RequestBody CRMLeadFormRequestDTO leadFormRequestDTO) {
+        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
+        String writeBrand = determineWriteBrand(permissions);
+        if (writeBrand == null || writeBrand.isEmpty()) {
+            throw new RuntimeException("Invalid permissions");
+        }
+        return leadService.createLead(leadFormRequestDTO);
     }
 
     private String determineAccessibleBrand(String brand, String filterBrand) {
