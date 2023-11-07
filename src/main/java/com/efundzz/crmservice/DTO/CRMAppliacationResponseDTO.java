@@ -18,14 +18,16 @@ public class CRMAppliacationResponseDTO {
     private String status;
     private String loanType;
     private String loanSubType;
+    private String brand;
     private Map<String, Object> data;
 
-    public CRMAppliacationResponseDTO(String id, String userId, String status, String loanType,String loanSubType, Object data) {
+    public CRMAppliacationResponseDTO(String id, String userId, String status, String loanType,String loanSubType, String brand ,Object data) {
         this.id = id;
         this.userId = userId;
         this.status = status;
         this.loanType = loanType;
         this.loanSubType = loanSubType;
+        this.brand = brand;
         this.data = (Map<String, Object>) data; // Cast Object to Map<String, Object>
     }
 }

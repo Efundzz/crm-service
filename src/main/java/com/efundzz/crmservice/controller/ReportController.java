@@ -1,4 +1,5 @@
 package com.efundzz.crmservice.controller;
+
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
@@ -16,16 +17,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+
 import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
 import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
 import static com.efundzz.crmservice.utils.Brand.determineBrand;
+
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
@@ -39,19 +41,19 @@ public class ReportController {
     @Value("${excel.contentType}")
     private String excelContentType;
 
-    @GetMapping("/lead/download-pdf/{id}")
-    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token,@PathVariable String id) {
+    @GetMapping("/apps/download-pdf/{id}")
+    public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token, @PathVariable String id) {
         List<String> permissions = token.getToken().getClaim("permissions");
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         try {
             List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(id, brand);
             byte[] reportBytes = reportService.generateLoanReport(leadData);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment1", "loan-report.pdfBL");
+            headers.setContentDispositionFormData("attachment", "loan-report.pdf");
             return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,33 +61,24 @@ public class ReportController {
     }
 
     @PostMapping("/apps/bulk/download-excel")
-    public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
+    public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        String accessibleBrand;
-        if (permissions.contains(ALL_PERMISSION) && Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)) {
-            accessibleBrand = ALL_PERMISSION;
-        }else if (permissions.contains(ALL_PERMISSION) && !Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)){
-            accessibleBrand = filterRequest.getBrand();
-        }else{
-            accessibleBrand = brand;
-        }
+        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
                 filterRequest.getLoanStatus());
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String  date = currentDate.format(formatter);
-        Workbook workbook = reportService.generateLeadsDataExcel(leadsList,filterRequest.getLoanType());
+
+        Workbook workbook = reportService.generateLeadsDataExcel(leadsList, filterRequest.getLoanType());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllApplicationsData"+date+".xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllApplicationsData.xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
@@ -96,33 +89,23 @@ public class ReportController {
     }
 
     @PostMapping("/leadForms/bulk/download-excel")
-    public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token,@RequestBody CRMLeadFilterRequestDTO filterRequest ) throws IOException {
+    public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions"); // Adjust error handling as needed.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        String accessibleBrand;
-        if (permissions.contains(ALL_PERMISSION) && Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)) {
-            accessibleBrand = ALL_PERMISSION;
-        }else if (permissions.contains(ALL_PERMISSION) && !Objects.equals(filterRequest.getBrand(), ALL_PERMISSION)){
-            accessibleBrand = filterRequest.getBrand();
-        }else{
-            accessibleBrand = brand;
-        }
+        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
-                filterRequest.getLoanType(),
-                filterRequest.getName(),
                 filterRequest.getFromDate(),
-                filterRequest.getToDate());
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String  date = currentDate.format(formatter);
+                filterRequest.getToDate(),
+                filterRequest.getLoanType(),
+                filterRequest.getStatus());
         Workbook workbook = reportService.generateLeadsFormExcel(leadsList);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllLeadsFormData"+date+".xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllLeadsFormData.xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
@@ -138,7 +121,7 @@ public class ReportController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         Leads leaddata = leadService.getLeadFormDataById(id);
 
@@ -161,11 +144,11 @@ public class ReportController {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrand(permissions);
         if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
         String loanType = !leadData.isEmpty() ? leadData.get(0).getLoanType() : "";
-        Workbook workbook = reportService.generateSingleLeadDataExcel(leadData,loanType);
+        Workbook workbook = reportService.generateSingleLeadDataExcel(leadData, loanType);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
@@ -177,5 +160,13 @@ public class ReportController {
                 .headers(headers)
                 .contentType(MediaType.parseMediaType(excelContentType))
                 .body(inputStreamResource);
+    }
+
+    private String determineAccessibleBrand(String brand, String filterBrand) {
+        return (brand.equals(ALL_PERMISSION) && Objects.equals(filterBrand, ALL_PERMISSION))
+                ? ALL_PERMISSION
+                : (brand.equals(ALL_PERMISSION) && !Objects.equals(filterBrand, ALL_PERMISSION))
+                ? filterBrand
+                : brand;
     }
 }
