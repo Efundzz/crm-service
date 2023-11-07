@@ -48,10 +48,11 @@ public class LeadsDataController {
         String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
         List<Leads> filteredLeads = leadService.findLeadFormDataByFilter(
                 accessibleBrand,
+                filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
-                filterRequest.getStatus(),
-                filterRequest.getLoanType());
+                filterRequest.getStatus());
+
         return ResponseEntity.ok(filteredLeads);
     }
 
