@@ -4,16 +4,19 @@ server:
 
 auth0:
   audience: https://api.crm-dev.efundzz.com
-
+  domain: crm-efundzz.eu.auth0.com
+  apiClientId: 3X7R1XdqDevXqVyXbt63lsoNm1ZZOjkF
+  apiClientSecret: Y_KoJET9aauugxjZFDOTC5Ga7kbtKH8b2U4SapAZr4IzS0ciNQjUMf5j75G8PMfw
+  connectionId: con_QKk7fMS7duEPvY4W
 custom:
   duration:
       days: 180
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/crm-partner
-    username: postgres
-    password: Demo
+    url: ${DATABASE_URI}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:
@@ -25,3 +28,4 @@ spring:
           issuer-uri: https://crm-efundzz.eu.auth0.com/
 excel:
   contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+

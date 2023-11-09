@@ -1,0 +1,24 @@
+### Create Franchise / Org
+POST http://localhost:8081/api/franchises
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "name": "test-2",
+  "displayName": "Test",
+  "franchisePrefix": "TE"
+}
+
+### List All Franchises For Efundzz
+GET http://localhost:8081/api/franchises
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+
+
+### Add User To Franchise
+POST http://localhost:8081/api/franchises
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{}
