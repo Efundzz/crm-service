@@ -56,7 +56,7 @@ public class ApplicationsController {
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
-                filterRequest.getStatus());
+                filterRequest.getLoanStatus());
         return ResponseEntity.ok(filteredApplications);
     }
 

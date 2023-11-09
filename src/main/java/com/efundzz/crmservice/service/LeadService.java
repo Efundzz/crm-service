@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.efundzz.crmservice.constants.AppConstants.PENDING;
 
 @Service
 public class LeadService {
@@ -42,12 +46,25 @@ public class LeadService {
         return leadRepository.findById(id);
     }
 
-    public List<Leads> findLeadFormDataByFilter(String brand, String fromDate, String toDate,String status,String loanType) {
-        List<Leads> fetchedData;
-        if (brand.equalsIgnoreCase("ALL")) {
-            fetchedData = leadRepository.findLeadFormDataByFilter(null,loanType, fromDate, toDate, status);
-        } else {
-            fetchedData = leadRepository.findLeadFormDataByFilter(brand,loanType , fromDate, toDate, status);
+    public List<Leads> findLeadFormDataByFilter(String brand, String loanType, String fromDate, String toDate, String status) {
+        List<Leads> fetchedData = (brand.equalsIgnoreCase("ALL"))
+                ? leadRepository.findLeadFormDataByFilter(null, fromDate, toDate, status)
+                : leadRepository.findLeadFormDataByFilter(brand, fromDate, toDate, status);
+        if (loanType != null) {
+            List<Leads> filteredData = new ArrayList<>();
+            for (Leads lead : fetchedData) {
+                Map<String, Object> additionalParams = lead.getAdditionalParams();
+                if (additionalParams != null) {
+                    Object typeOfLoanValue = additionalParams.get("typeOfLoan");
+                    if (typeOfLoanValue != null) {
+                        String typeOfLoan = typeOfLoanValue.toString();
+                        if (typeOfLoan.startsWith(loanType) && typeOfLoan.substring(0, loanType.length()).equalsIgnoreCase(loanType)) {
+                            filteredData.add(lead);
+                        }
+                    }
+                }
+            }
+            return filteredData;
         }
         return fetchedData;
     }
@@ -64,8 +81,9 @@ public class LeadService {
         lead.setName(leadFormRequestDTO.getName());
         lead.setLoanType(leadFormRequestDTO.getLoanType());
         lead.setUtmParams(leadFormRequestDTO.getUtmParams());
+        lead.setAdditionalParams(leadFormRequestDTO.getAdditionalParams());
         lead.setBrand(leadFormRequestDTO.getBrand());
-        lead.setStatus(leadFormRequestDTO.getStatus());
+        lead.setStatus(PENDING);
         return leadRepository.save(lead);
     }
 
