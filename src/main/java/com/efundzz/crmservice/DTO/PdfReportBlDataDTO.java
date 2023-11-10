@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PdfReportDataBl {
+public class PdfReportBlDataDTO {
  private  String id;
   private  String loanType;
  private  String loanAmount;

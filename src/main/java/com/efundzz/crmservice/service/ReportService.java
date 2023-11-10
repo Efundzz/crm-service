@@ -1,6 +1,6 @@
 package com.efundzz.crmservice.service;
-
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.DTO.PdfReportBlDataDTO;
 import com.efundzz.crmservice.DTO.PdfReportDataDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.repository.LeadRepository;
@@ -15,14 +15,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
-
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 @Service
 public class ReportService {
     @Autowired
@@ -33,16 +33,29 @@ public class ReportService {
 
     public byte[] generateLoanReport(List<CRMAppliacationResponseDTO> leadData) throws IOException, JRException {
 
-        List<PdfReportDataDTO> reportDataList = mapLeadInfoToPdfData(leadData);
-        File file = ResourceUtils.getFile("classpath:leadpdfdata.jrxml");
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(reportDataList);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ReportTitle", "Lead Report");
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-        return JasperExportManager.exportReportToPdf(jasperPrint);
-    }
+        if (leadData.get(0).getLoanType().equalsIgnoreCase("PersonalLoan")) {
+            List<PdfReportDataDTO> reportDataList = mapLeadInfoToPdfData(leadData);
+            File file = ResourceUtils.getFile("classpath:leadpdfdata.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(reportDataList);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("ReportTitle", "Lead Report");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+        } else if (leadData.get(0).getLoanType().equalsIgnoreCase("BusinessLoan")) {
 
+
+            List<PdfReportBlDataDTO> reportDataList = mapLeadInfoToPdfDataBl(leadData);
+            File file = ResourceUtils.getFile("classpath:leadpdfdataBl.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(reportDataList);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("ReportTitleBL", "Lead ReportBL");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+        }
+        return null;
+    }
     public List<Leads> getLeadsByBrand(String brand) {
         if ("ALL".equalsIgnoreCase(brand)) {
             return leadRepository.findByBrand(null);
@@ -55,7 +68,7 @@ public class ReportService {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Leads");
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans","Brand","Additional Data"};
+        String[] headers = {"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type Of Loan","Brand","Additional Data"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -69,15 +82,16 @@ public class ReportService {
             dataRow.createCell(3).setCellValue(lead.getName());
             dataRow.createCell(4).setCellValue(lead.getMobileNumber());
             dataRow.createCell(5).setCellValue(lead.getEmailId());
+
             Map<String, Object> data = lead.getAdditionalParams();
             if (data != null) {
                 dataRow.createCell(6).setCellValue(data.containsKey("loanAmount") ? String.valueOf(data.get("loanAmount")) : "");
             } else {
-                dataRow.createCell(6).setCellValue("");
+                dataRow.createCell(7).setCellValue("");
             }
-            dataRow.createCell(7).setCellValue(lead.getLoanType());
-            dataRow.createCell(8).setCellValue(lead.getBrand());
-            dataRow.createCell(9).setCellValue(String.valueOf(lead.getAdditionalParams()));
+            dataRow.createCell(8).setCellValue(lead.getLoanType());
+            dataRow.createCell(9).setCellValue(lead.getBrand());
+            dataRow.createCell(10).setCellValue(String.valueOf(lead.getAdditionalParams()));
         }
         return workbook;
     }
@@ -89,10 +103,10 @@ public class ReportService {
         String[] headers;
         if ("PersonalLoan".equals(loanType)) {
             headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status", "Pan","takeHomeSalaryMonthly", "purposeOfLoan", "employmentType", "dob", "adhaar", "gender", "currentAddress", "addressAsPerAdhaar", "residentType",
-                    "referenceName", "referenceMobile", "referenceMobile"};
+                    "referenceName", "referenceMobile","CreditScore","TotalEmiPaying","NumberOfDependents","OtherFamilyEarnings","AlterNateMobileNumber","CurrentOrganization","JobStability"};
         } else if ("BusinessLoan".equals(loanType) || "StartupLoan".equals(loanType)) {
             headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status","Pan","businessIndustry", "gstNumber", "sameAsGst", "businessName", "annualTurnover", "proprietorName", "addressAsPerGST", "grossTotalIncome"
-                    , "registrationDate", "currentBusinessAddress", "referenceMobile", "creditScore", "profitAfterTax", "yearsInBusiness","Pancard number","Purpose of loan"};
+                    , "registrationDate", "currentBusinessAddress", "referenceMobile", "creditScore", "profitAfterTax", "yearsInBusiness","nameOfTheCard","panHolderStatus","BusinessName","gstinUINStatus","businessConstitution","annualTurnover","yearsInBusiness","profitAfterTax","partners"};
         } else {
             headers = new String[]{"RefNumber", "Application Date", "PIN Code", "Name", "Phone number", "Email id", "Loan Amount", "Type of Loans", "Loan Status","Pan","Address"};
         }
@@ -113,7 +127,7 @@ public class ReportService {
             dataRow.createCell(6).setCellValue(data.containsKey("loanAmount") ? String.valueOf(data.get("loanAmount")) : "");
             dataRow.createCell(7).setCellValue(data.containsKey("loanType") ? String.valueOf(data.get("loanType")) : "");
             dataRow.createCell(8).setCellValue(loan.getStatus());
-            dataRow.createCell(9).setCellValue(data.containsKey("pan") ? String.valueOf(data.get("pan")) : "");
+            dataRow.createCell(9).setCellValue(data.containsKey("pan") ? String.valueOf(data.get("pan")).toUpperCase() : "");
             if ("PersonalLoan".equals(loanType)) {
                 dataRow.createCell(10).setCellValue(data.containsKey("takeHomeSalaryMonthly") ? String.valueOf(data.get("takeHomeSalaryMonthly")) : "");
                 dataRow.createCell(11).setCellValue(data.containsKey("purposeOfLoan") ? String.valueOf(data.get("purposeOfLoan")) : "");
@@ -126,6 +140,13 @@ public class ReportService {
                 dataRow.createCell(18).setCellValue(data.containsKey("residentType") ? String.valueOf(data.get("residentType")) : "");
                 dataRow.createCell(19).setCellValue(data.containsKey("referenceName") ? String.valueOf(data.get("referenceName")) : "");
                 dataRow.createCell(20).setCellValue(data.containsKey("referenceMobile") ? String.valueOf(data.get("referenceMobile")) : "");
+                dataRow.createCell(21).setCellValue(data.containsKey("creditScore") ? String.valueOf(data.get("creditScore")) : "");
+                dataRow.createCell(22).setCellValue(data.containsKey("totalEmi") ? String.valueOf(data.get("totalEmi")) : "");
+                dataRow.createCell(23).setCellValue(data.containsKey("numberOfDependents") ? String.valueOf(data.get("numberOfDependents")) : "");
+                dataRow.createCell(24).setCellValue(data.containsKey("otherFamilyEarning") ? String.valueOf(data.get("otherFamilyEarning")) : "");
+                dataRow.createCell(25).setCellValue(data.containsKey("alternateMobile") ? String.valueOf(data.get("alternateMobile")) : "");
+                dataRow.createCell(26).setCellValue(data.containsKey("currentOrganization") ? String.valueOf(data.get("currentOrganization")) : "");
+                dataRow.createCell(27).setCellValue(data.containsKey("jobStability") ? String.valueOf(data.get("jobStability")) : "");
             } else if ("BusinessLoan".equals(loanType) || "StartupLoan".equals(loanType)) {
                 dataRow.createCell(10).setCellValue(data.containsKey("businessIndustry") ? String.valueOf(data.get("businessIndustry")) : "");
                 dataRow.createCell(11).setCellValue(data.containsKey("gstNumber") ? String.valueOf(data.get("gstNumber")) : "");
@@ -141,9 +162,16 @@ public class ReportService {
                 dataRow.createCell(21).setCellValue(data.containsKey("creditScore") ? String.valueOf(data.get("creditScore")) : "");
                 dataRow.createCell(22).setCellValue(data.containsKey("profitAfterTax") ? String.valueOf(data.get("profitAfterTax")) : "");
                 dataRow.createCell(23).setCellValue(data.containsKey("yearsInBusiness") ? String.valueOf(data.get("yearsInBusiness")) : "");
-                dataRow.createCell(24).setCellValue(data.containsKey("purposeOfLoan") ? String.valueOf(data.get("purposeOfLoan")) : "");
+                dataRow.createCell(24).setCellValue(data.containsKey("nameOfTheCard") ? String.valueOf(data.get("nameOfTheCard")) : "");
+                dataRow.createCell(25).setCellValue(data.containsKey("panHolderStatus") ? String.valueOf(data.get("panHolderStatus")) : "");
+                dataRow.createCell(26).setCellValue(data.containsKey("businessName") ? String.valueOf(data.get("businessName")) : "");
+                dataRow.createCell(27).setCellValue(data.containsKey("gstinUINStatus") ? String.valueOf(data.get("gstinUINStatus")) : "");
+                dataRow.createCell(28).setCellValue(data.containsKey("businessConstitution") ? String.valueOf(data.get("businessConstitution")) : "");
+                dataRow.createCell(29).setCellValue(data.containsKey("annualTurnover") ? String.valueOf(data.get("annualTurnover")) : "");
+                dataRow.createCell(30).setCellValue(data.containsKey("yearsInBusiness") ? String.valueOf(data.get("yearsInBusiness")) : "");
+                dataRow.createCell(31).setCellValue(data.containsKey("profitAfterTax") ? String.valueOf(data.get("profitAfterTax")) : "");
+                dataRow.createCell(32).setCellValue(data.containsKey("partners") ? String.valueOf(data.get("partners")) : "");
 
-            } else {
                 dataRow.createCell(10).setCellValue(data.containsKey("currentAddress") ? String.valueOf(data.get("currentAddress")) : "");
             }
         }
@@ -181,7 +209,7 @@ public class ReportService {
             dataRow.createCell(6).setCellValue(data.containsKey("loanAmount") ? String.valueOf(data.get("loanAmount")) : "");
             dataRow.createCell(7).setCellValue(data.containsKey("loanType") ? String.valueOf(data.get("loanType")) : "");
             dataRow.createCell(8).setCellValue(loan.getStatus());
-            dataRow.createCell(9).setCellValue(data.containsKey("pan") ? String.valueOf(data.get("pan")) : "");
+            dataRow.createCell(9).setCellValue(data.containsKey("pan") ? String.valueOf(data.get("pan")).toUpperCase() : "");
             if ("PersonalLoan".equals(loanType)) {
                 dataRow.createCell(10).setCellValue(data.containsKey("takeHomeSalaryMonthly") ? String.valueOf(data.get("takeHomeSalaryMonthly")) : "");
                 dataRow.createCell(11).setCellValue(data.containsKey("purposeOfLoan") ? String.valueOf(data.get("purposeOfLoan")) : "");
@@ -217,7 +245,6 @@ public class ReportService {
         }
         return workbook;
     }
-
     public Workbook generateSingleLeadFormExcel(Leads lead) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Lead");
@@ -245,13 +272,28 @@ public class ReportService {
         dataRow.createCell(9).setCellValue(String.valueOf(lead.getAdditionalParams()));
         return workbook;
     }
-
     public List<PdfReportDataDTO> mapLeadInfoToPdfData(List<CRMAppliacationResponseDTO> leadData) {
         List<PdfReportDataDTO> reportDataList = new ArrayList<>();
         for (CRMAppliacationResponseDTO lead : leadData) {
+
             PdfReportDataDTO reportData = new PdfReportDataDTO();
             reportData.setId(lead.getId());
             reportData.setLoanType(lead.getLoanType());
+            String address=(lead.getData().containsKey("addressAsPerAdhaar")?String.valueOf(lead.getData().get("addressAsPerAdhaar")):null);
+            Map<String, Object> leadDataMap = lead.getData();
+            String docType ="";
+            if (leadDataMap.containsKey("documents")) {
+                List<Map<String, Object>> documents = (List<Map<String, Object>>)leadDataMap.get("documents");
+                for (Map<String, Object> document : documents) {
+                    docType=docType+"\n"+(String) document.get("docType")+":"+document.get("docTitle");
+                }
+            }
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String  date = currentDate.format(formatter);
+            reportData.setDate(date);// setting date of application
+            reportData.setDocument1(docType);
+            // reportData.setDocument1((lead.getData().containsKey("documents")?(Map<String,String>)list.get(0):null));
             reportData.setPurposeOfLoan(lead.getData().containsKey("purposeOfLoan") ? String.valueOf(lead.getData().get("purposeOfLoan")) : null);
             reportData.setLoanAmount(lead.getData().containsKey("loanAmount") ? String.valueOf(lead.getData().get("loanAmount")) : null);
             reportData.setLoanType(lead.getData().containsKey("loanType") ? String.valueOf(lead.getData().get("loanType")) : null);
@@ -259,9 +301,9 @@ public class ReportService {
             reportData.setDateOfApplication(lead.getData().containsKey("date") ? String.valueOf(lead.getData().get("date")) : null);
             reportData.setCreditScore(lead.getData().containsKey("creditScore") ? String.valueOf(lead.getData().get("creditScore")) : null);
             reportData.setNameOnCard(lead.getData().containsKey("nameOfTheCard") ? String.valueOf(lead.getData().get("nameOfTheCard")) : null);
-            reportData.setPanCardNumber(lead.getData().containsKey("pan") ? String.valueOf(lead.getData().get("pan")) : null);
+            reportData.setPanCardNumber(lead.getData().containsKey("pan") ? String.valueOf(lead.getData().get("pan")).toUpperCase().toUpperCase() : null);
             reportData.setLastUpdate(lead.getData().containsKey("lastUpdate") ? String.valueOf(lead.getData().get("lastUpdate")) : null);
-            reportData.setPinCodeAadhaar(lead.getData().containsKey("pincode") ? String.valueOf(lead.getData().get("pincode")) : null);
+            reportData.setPinCodeAadhaar(lead.getData().containsKey("addressAsPerAdhaar") ? String.valueOf(lead.getData().get("addressAsPerAdhaar")).replace("{","").replace("}","").replace("=",":"): null);
             reportData.setStatus(lead.getData().containsKey("status") ? String.valueOf(lead.getData().get("status")) : null);
             reportData.setDescription(lead.getData().containsKey("description") ? String.valueOf(lead.getData().get("description")) : null);
             reportData.setDigitallySignedOn(lead.getData().containsKey("panVerified") ? String.valueOf(lead.getData().get("panVerified")) : null);
@@ -285,7 +327,7 @@ public class ReportService {
             reportData.setAddress(lead.getData().containsKey("address") ? String.valueOf(lead.getData().get("address")) : null);
             reportData.setSignature(lead.getData().containsKey("signature") ? String.valueOf(lead.getData().get("signature")) : null);
             reportData.setMobileNumber(lead.getData().containsKey("mobile") ? String.valueOf(lead.getData().get("mobile")) : null);
-            reportData.setAlternateMobileNumber(lead.getData().containsKey("alternateMobileNumber") ? String.valueOf(lead.getData().get("alternateMobileNumber")) : null);
+            reportData.setAlternateMobileNumber(lead.getData().containsKey("alternateMobileNumber") ? String.valueOf(lead.getData().get("alternateMobileNumber")) : "NA");
             reportData.setEmailId(lead.getData().containsKey("email") ? String.valueOf(lead.getData().get("email")) : null);
             reportData.setResidentType(lead.getData().containsKey("residentType") ? String.valueOf(lead.getData().get("residentType")) : null);
             reportData.setMonthlyRent(lead.getData().containsKey("rent") ? String.valueOf(lead.getData().get("rent")) : null);
@@ -295,7 +337,7 @@ public class ReportService {
             reportData.setVillage(lead.getData().containsKey("village") ? String.valueOf(lead.getData().get("village")) : null);
             reportData.setDistrict(lead.getData().containsKey("district") ? String.valueOf(lead.getData().get("district")) : null);
             reportData.setState(lead.getData().containsKey("state") ? String.valueOf(lead.getData().get("state")) : null);
-            reportData.setPinCode(lead.getData().containsKey("pinCode") ? String.valueOf(lead.getData().get("pinCode")) : null);
+            reportData.setPinCode(lead.getData().containsKey("currentAddress") ? String.valueOf(lead.getData().get("currentAddress")).replace("{","").replace("}","").replace("=",":") : null);
             reportData.setEmployeeType(lead.getData().containsKey("employmentType") ? String.valueOf(lead.getData().get("employmentType")) : null);
             reportData.setCurrentOrganization(lead.getData().containsKey("currentOrganization") ? String.valueOf(lead.getData().get("currentOrganization")) : null);
             reportData.setTotalWorkExperience(lead.getData().containsKey("totalExperience") ? String.valueOf(lead.getData().get("totalExperience")) : null);
@@ -303,8 +345,54 @@ public class ReportService {
             reportData.setSalary(lead.getData().containsKey("takeHomeSalaryMonthly") ? String.valueOf(lead.getData().get("takeHomeSalaryMonthly")) : null);
             reportData.setPersonName(lead.getData().containsKey("referenceName") ? String.valueOf(lead.getData().get("referenceName")) : null);
             reportData.setReferenceMobileNumber(lead.getData().containsKey("referenceMobile") ? String.valueOf(lead.getData().get("referenceMobile")) : null);
-
+            // reportData.setCurrentJobStability(lead.getData().get("a"));
             reportDataList.add(reportData);
+        }
+        return reportDataList;
+    }
+
+    public List<PdfReportBlDataDTO> mapLeadInfoToPdfDataBl(List<CRMAppliacationResponseDTO> leadData) {
+        List<PdfReportBlDataDTO> reportDataList = new ArrayList<>();
+        for (CRMAppliacationResponseDTO lead : leadData) {
+            PdfReportBlDataDTO pdfReportDataBl=new PdfReportBlDataDTO();
+            Map<String, Object> leadDataMap = lead.getData();
+            String docType ="";
+            if (leadDataMap.containsKey("documents")) {
+                List<Map<String, Object>> documents = (List<Map<String, Object>>)leadDataMap.get("documents");
+                for (Map<String, Object> document : documents) {
+                    docType=docType+"\n"+(String) document.get("docType")+":"+document.get("docTitle");
+                }
+            }
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String  date = currentDate.format(formatter);
+            pdfReportDataBl.setDateOfApplication(date);
+            pdfReportDataBl.setId(lead.getId());
+            pdfReportDataBl.setDocuments(docType.equalsIgnoreCase("")?"Not Uploaded Any Documents":docType);
+            pdfReportDataBl.setLoanType(String.valueOf(lead.getLoanType()));
+            pdfReportDataBl.setLoanAmount(lead.getData().containsKey("loanAmount") ? String.valueOf(lead.getData().get("loanAmount")) : null);
+            pdfReportDataBl.setPurposeOfLoan(lead.getData().containsKey("purposeOfLoan") ? String.valueOf(lead.getData().get("purposeOfLoan")) : null);
+            pdfReportDataBl.setLoanTenure(lead.getData().containsKey("loanTenure") ? String.valueOf(lead.getData().get("loanTenure")) : null);
+            pdfReportDataBl.setDate(lead.getData().containsKey("date") ? String.valueOf(lead.getData().get("date")) : null);
+            pdfReportDataBl.setLoanSubType(lead.getLoanSubType());
+            pdfReportDataBl.setNameOfTheCard(lead.getData().containsKey("nameOfTheCard") ? String.valueOf(lead.getData().get("nameOfTheCard")) : null);
+            pdfReportDataBl.setPan(lead.getData().containsKey("pan") ? String.valueOf(lead.getData().get("pan")).toUpperCase() : null);
+            pdfReportDataBl.setPanHolderStatus(lead.getData().containsKey("panHolderStatus") ? String.valueOf(lead.getData().get("panHolderStatus")) : null);
+            pdfReportDataBl.setMobile(lead.getData().containsKey("mobile") ? String.valueOf(lead.getData().get("mobile")) : null);
+            pdfReportDataBl.setEmail(lead.getData().containsKey("email") ? String.valueOf(lead.getData().get("email")) : null);
+            pdfReportDataBl.setBusinessName(lead.getData().containsKey("businessName") ? String.valueOf(lead.getData().get("businessName")) : null);
+            pdfReportDataBl.setProprietorName(lead.getData().containsKey("proprietorName") ? String.valueOf(lead.getData().get("proprietorName")) : null);
+            pdfReportDataBl.setGstNumber(lead.getData().containsKey("gstNumber") ? String.valueOf(lead.getData().get("gstNumber")) : null);
+            pdfReportDataBl.setBusinessConstitution(lead.getData().containsKey("businessConstitution") ? String.valueOf(lead.getData().get("businessConstitution")) : null);
+            pdfReportDataBl.setBusinessIndustry(lead.getData().containsKey("businessIndustry") ? String.valueOf(lead.getData().get("businessIndustry")) : null);
+            pdfReportDataBl.setAnnualTurnover(lead.getData().containsKey("annualTurnover") ? String.valueOf(lead.getData().get("annualTurnover")) : null);
+            pdfReportDataBl.setGstinUINStatus(lead.getData().containsKey("gstinUINStatus") ? String.valueOf(lead.getData().get("gstinUINStatus")) : null);
+            pdfReportDataBl.setRegistrationDate(lead.getData().containsKey("registrationDate") ? String.valueOf(lead.getData().get("registrationDate")) : null);
+            pdfReportDataBl.setPartners(lead.getData().containsKey("partners") ? (String.valueOf(lead.getData().get("partners"))) .equalsIgnoreCase("null")?"NA":String.valueOf(lead.getData().get("partners")).replace("{","Partner : ").replace("}","\n\n") .replace("=",":").replace("[","").replace("]",""): "NA");
+            pdfReportDataBl.setAddressAsPerGST(lead.getData().containsKey("addressAsPerGST") ? String.valueOf(lead.getData().get("addressAsPerGST")) : null);
+            pdfReportDataBl.setCurrentBusinessAddress(lead.getData().containsKey("currentBusinessAddress") ? String.valueOf(lead.getData().get("currentBusinessAddress")) : null);
+            pdfReportDataBl.setCinNumber(lead.getData().containsKey("CinNumber")?(String.valueOf(lead.getData().get("CinNumber"))).equalsIgnoreCase("null")?"NA":(String.valueOf(lead.getData().get("CinNumber"))):"NA");
+            reportDataList.add(pdfReportDataBl);
         }
         return reportDataList;
     }
