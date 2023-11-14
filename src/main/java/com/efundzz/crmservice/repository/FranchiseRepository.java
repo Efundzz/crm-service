@@ -9,5 +9,6 @@ public interface FranchiseRepository extends JpaRepository<Franchise, Long> {
     boolean existsByName(String name);
 
     Franchise findFranchisePrefixByOrgId(String orgId);
+
 }
 

@@ -68,4 +68,5 @@ public class FranchiseService {
     public Franchise getFranchisePrefixByOrgId(String orgId) {
         return franchiseRepository.findFranchisePrefixByOrgId(orgId);
     }
+
 }
