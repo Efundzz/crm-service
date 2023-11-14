@@ -39,7 +39,6 @@ public class LeadFormStatusController {
         Leads updatedLeadStatus = leadFormStatusService.updateLeadStatus(updateDto);
         return ResponseEntity.ok(updatedLeadStatus);
     }
-
     @GetMapping("/leadFormData/statusLogs/{leadId}")
     public List<LeadsLog> getLeadsLogsByLeadId(JwtAuthenticationToken token, @PathVariable Long leadId) {
         String orgId = token.getToken().getClaim(ORG_ID);

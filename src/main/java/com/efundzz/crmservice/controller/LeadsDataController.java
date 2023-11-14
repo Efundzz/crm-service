@@ -59,7 +59,6 @@ public class LeadsDataController {
         }
         return ResponseEntity.ok(filteredLeads);
     }
-
     @GetMapping("/getLeadsFormData/{id}")
     public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable Long id) {
         Leads lead = leadService.getLeadFormDataById(id);
@@ -69,7 +68,6 @@ public class LeadsDataController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @PostMapping("/leadFormData/createLead")
     public Leads createLead(JwtAuthenticationToken token,@RequestBody CRMLeadFormRequestDTO leadFormRequestDTO) {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
