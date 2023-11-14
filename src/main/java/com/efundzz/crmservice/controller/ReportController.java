@@ -2,10 +2,9 @@ package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
+import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.entity.Leads;
-import com.efundzz.crmservice.service.LeadService;
-import com.efundzz.crmservice.service.LoanService;
-import com.efundzz.crmservice.service.ReportService;
+import com.efundzz.crmservice.service.*;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +23,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
-import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
-import static com.efundzz.crmservice.utils.Brand.determineBrand;
+import static com.efundzz.crmservice.constants.AppConstants.*;
+import static com.efundzz.crmservice.utils.Brand.determineReadAccess;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,16 +36,19 @@ public class ReportController {
     LoanService loanService;
     @Autowired
     LeadService leadService;
+
+    @Autowired
+    FranchiseService franchiseService;
+
+    @Autowired
+    BrandAccessService brandAccessService;
+
     @Value("${excel.contentType}")
     private String excelContentType;
 
     @GetMapping("/apps/download-pdf/{id}")
     public ResponseEntity<byte[]> generateLoanReport(JwtAuthenticationToken token, @PathVariable String id) {
-        List<String> permissions = token.getToken().getClaim("permissions");
-        String brand = determineBrand(permissions);
-        if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
+        String brand = determineBrandByToken(token);
         try {
             List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(id, brand);
             byte[] reportBytes = reportService.generateLoanReport(leadData);
@@ -63,12 +64,10 @@ public class ReportController {
     @PostMapping("/apps/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        String brand = determineBrand(permissions);
-        if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
-        List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(accessibleBrand,
+        String brand = determineBrandByToken(token);
+        List<String> readBrands = determineReadAccess(permissions);
+        brand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
+        List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(brand,
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
@@ -91,12 +90,10 @@ public class ReportController {
     @PostMapping("/leadForms/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        String brand = determineBrand(permissions);
-        if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        String accessibleBrand = determineAccessibleBrand(brand, filterRequest.getBrand());
-        List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
+        String brand = determineBrandByToken(token);
+        List<String> readBrands = determineReadAccess(permissions);
+        brand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
+        List<Leads> leadsList = leadService.findLeadFormDataByFilter(brand,
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
@@ -117,14 +114,7 @@ public class ReportController {
 
     @GetMapping("/leadForms/single/download-excel/{id}")
     public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable Long id) throws IOException {
-
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        String brand = determineBrand(permissions);
-        if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
         Leads leaddata = leadService.getLeadFormDataById(id);
-
         Workbook workbook = reportService.generateSingleLeadFormExcel(leaddata);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
@@ -141,11 +131,7 @@ public class ReportController {
 
     @GetMapping("/apps/single/download-excel/{appId}")
     public ResponseEntity<Resource> exportSingleLeadToExcel(JwtAuthenticationToken token, @PathVariable String appId) throws IOException {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        String brand = determineBrand(permissions);
-        if (brand == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
+        String brand = determineBrandByToken(token);
         List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
         String loanType = !leadData.isEmpty() ? leadData.get(0).getLoanType() : "";
         Workbook workbook = reportService.generateSingleLeadDataExcel(leadData, loanType);
@@ -168,5 +154,19 @@ public class ReportController {
                 : (brand.equals(ALL_PERMISSION) && !Objects.equals(filterBrand, ALL_PERMISSION))
                 ? filterBrand
                 : brand;
+    }
+
+    private String determineBrandByToken(JwtAuthenticationToken token) {
+        String orgId = token.getToken().getClaim(ORG_ID);
+        String brand = determineBrandByOrgId(orgId);
+        if (brand == null) {
+            throw new RuntimeException("Unauthorized access");
+        }
+        return brand;
+    }
+
+    private String determineBrandByOrgId(String orgId) {
+        Franchise franchise = franchiseService.getFranchisePrefixByOrgId(orgId);
+        return (franchise != null) ? franchise.getFranchisePrefix() : null;
     }
 }
