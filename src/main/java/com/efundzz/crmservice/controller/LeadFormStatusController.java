@@ -1,9 +1,9 @@
 package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMLeadFormUpdateDTO;
-import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.entity.LeadsLog;
+import com.efundzz.crmservice.service.BrandService;
 import com.efundzz.crmservice.service.FranchiseService;
 import com.efundzz.crmservice.service.LeadFormStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.efundzz.crmservice.constants.AppConstants.ORG_ID;
-
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
@@ -27,6 +25,9 @@ public class LeadFormStatusController {
     @Autowired
     private FranchiseService franchiseService;
 
+    @Autowired
+    private BrandService brandService;
+
     @PutMapping("/leadFormData/statusUpdate")
     @PreAuthorize("hasAuthority('write:leads')")
     public ResponseEntity<Leads> updateLeadStatus(JwtAuthenticationToken token, @RequestBody CRMLeadFormUpdateDTO updateDto) {
@@ -36,17 +37,6 @@ public class LeadFormStatusController {
     @GetMapping("/leadFormData/statusLogs/{leadId}")
     @PreAuthorize("hasAuthority('read:leads')")
     public List<LeadsLog> getLeadsLogsByLeadId(JwtAuthenticationToken token, @PathVariable Long leadId) {
-        String orgId = token.getToken().getClaim(ORG_ID);
-        String brand = determineBrandByOrgId(orgId);
-        if (brand == null) {
-            throw new RuntimeException("Invalid permissions");
-        }
         return leadFormStatusService.getLeadsLogsByLeadId(leadId);
     }
-
-    private String determineBrandByOrgId(String orgId) {
-        Franchise franchise = franchiseService.getFranchisePrefixByOrgId(orgId);
-        return (franchise != null) ? franchise.getFranchisePrefix() : null;
-    }
-
 }

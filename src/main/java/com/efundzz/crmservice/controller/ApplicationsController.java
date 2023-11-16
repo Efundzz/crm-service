@@ -2,9 +2,9 @@ package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
-import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.entity.Loan;
 import com.efundzz.crmservice.service.BrandAccessService;
+import com.efundzz.crmservice.service.BrandService;
 import com.efundzz.crmservice.service.FranchiseService;
 import com.efundzz.crmservice.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.efundzz.crmservice.constants.AppConstants.*;
+import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
+import static com.efundzz.crmservice.constants.AppConstants.EFUNDZZ_ORG;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,11 +34,14 @@ public class ApplicationsController {
     @Autowired
     private BrandAccessService brandAccessService;
 
+    @Autowired
+    BrandService brandService;
+
     @GetMapping("/applications")
     @PreAuthorize("hasAuthority('read:applications')")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getApplications(JwtAuthenticationToken token) {
-        String brand = determineBrandByToken(token);
-        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION :brand;
+        String brand = brandService.determineBrandByToken(token);
+        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
         return ResponseEntity.ok(loanService.getAllLoanDataWithMergedStepData(brand));
     }
 
@@ -45,10 +49,10 @@ public class ApplicationsController {
     @PreAuthorize("hasAuthority('read:applications')")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getApplicationsDataByFilter(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) {
         try {
-            String brand = determineBrandByToken(token);
+            String brand = brandService.determineBrandByToken(token);
             String permitBrand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
             String accessibleBrand = null;
-            accessibleBrand = determineAccessibleBrand(brand, permitBrand, filterRequest.getBrand());
+            accessibleBrand = brandService.determineAccessibleBrand(brand, permitBrand, filterRequest.getBrand());
             List<CRMAppliacationResponseDTO> filteredApplications = null;
             if (accessibleBrand != null) {
                 filteredApplications = loanService.findApplicationsByFilter(
@@ -67,7 +71,7 @@ public class ApplicationsController {
     @GetMapping("/getApplicationsData/{appId}")
     @PreAuthorize("hasAuthority('read:applications')")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getLeadDataByAppId(JwtAuthenticationToken token, @PathVariable String appId) {
-        String brand = determineBrandByToken(token);
+        String brand = brandService.determineBrandByToken(token);
         List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
         return ResponseEntity.ok(leadData);
     }
@@ -75,30 +79,8 @@ public class ApplicationsController {
     @GetMapping("/getApplicationsStatus/{loanId}")
     @PreAuthorize("hasAuthority('read:applications')")
     public ResponseEntity<Loan> getStatusByLoanID(JwtAuthenticationToken token, @PathVariable String loanId) {
-        String brand = determineBrandByToken(token);
+        String brand = brandService.determineBrandByToken(token);
         return ResponseEntity.ok(loanService.getLoanDetailsByLoanID(loanId));
-    }
-
-    private String determineBrandByToken(JwtAuthenticationToken token) {
-        String orgId = token.getToken().getClaim(ORG_ID);
-        String brand = determineBrandByOrgId(orgId);
-        if (brand == null) {
-            throw new RuntimeException("Unauthorized access");
-        }
-        return brand;
-    }
-
-    private String determineAccessibleBrand(String brand, String permit, String filterBrand) {
-        return permit.equals(ALL_PERMISSION) && filterBrand.equals(ALL_PERMISSION)
-                ? ALL_PERMISSION
-                : permit.equals(ALL_PERMISSION)
-                ? filterBrand
-                : brand;
-    }
-
-    private String determineBrandByOrgId(String orgId) {
-        Franchise franchise = franchiseService.getFranchisePrefixByOrgId("org_7ve249G78zoYMLKs");
-        return (franchise != null) ? franchise.getFranchisePrefix() : null;
     }
 
 }

@@ -1,8 +1,8 @@
 package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMLoanDashBordResponceDTO;
-import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.service.BrandAccessService;
+import com.efundzz.crmservice.service.BrandService;
 import com.efundzz.crmservice.service.DashBordChartService;
 import com.efundzz.crmservice.service.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,43 +34,34 @@ public class DashBoardChartController {
     
     @Autowired
     private BrandAccessService brandAccessService;
+
+    @Autowired
+    private BrandService brandService;
+
     private LocalDateTime inputDate;
+
 
     @GetMapping("/dashBord/loanTypeCounts")
     @PreAuthorize("hasAuthority('read:applications')")
     public List<CRMLoanDashBordResponceDTO> getLeadCountByLoanType(JwtAuthenticationToken token) {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        String brand = determineBrandByToken(token);
+        String brand = brandService.determineBrandByToken(token);
         brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION :brand;
         return dashBordChartService.getCountsByLoanType(inputDate, brand);
     }
 
     @GetMapping("/dashBord/statusCounts")
     public List<CRMLoanDashBordResponceDTO> getLeadsCountByStatus(JwtAuthenticationToken token) {
-        String brand = determineBrandByToken(token);
+        String brand = brandService.determineBrandByToken(token);
         brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION :brand;
         return dashBordChartService.getCountsByLoanStatus(inputDate, brand);
     }
 
     @GetMapping("/dashBord/brandCount")
     public List<CRMLoanDashBordResponceDTO> getLoanCountByBrand(JwtAuthenticationToken token) {
-        String brand = determineBrandByToken(token);
+        String brand = brandService.determineBrandByToken(token);
         brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION :brand;
         return dashBordChartService.getLoanCountByBrand(inputDate,brand);
-    }
-
-    private String determineBrandByToken(JwtAuthenticationToken token) {
-        String orgId = token.getToken().getClaim(ORG_ID);
-        String brand = determineBrandByOrgId(orgId);
-        if (brand == null) {
-            throw new RuntimeException("Unauthorized access");
-        }
-        return brand;
-    }
-
-    private String determineBrandByOrgId(String orgId) {
-        Franchise franchise = franchiseService.getFranchisePrefixByOrgId(orgId);
-        return (franchise != null) ? franchise.getFranchisePrefix() : null;
     }
 
     @PostConstruct

@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.service.BrandAccessService;
+import com.efundzz.crmservice.service.BrandService;
 import com.efundzz.crmservice.service.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.List;
 
-import static com.efundzz.crmservice.constants.AppConstants.*;
+import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
+import static com.efundzz.crmservice.constants.AppConstants.EFUNDZZ_ORG;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,9 +30,12 @@ public class BrandAccessController {
     @Autowired
     FranchiseService franchiseService;
 
-    @GetMapping("/accessBrands")
-    public ResponseEntity<List<String>> getReadBrands(JwtAuthenticationToken token) {
-        String brand = determineBrandByToken(token);
+    @Autowired
+    BrandService brandService;
+
+    @GetMapping("/writeBrands")
+    public ResponseEntity<List<String>> getWriteBrands(JwtAuthenticationToken token) {
+        String brand = brandService.determineBrandByToken(token);
         brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
         if (brand.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
@@ -39,18 +43,13 @@ public class BrandAccessController {
         return ResponseEntity.ok(Collections.singletonList(brand));
     }
 
-    private String determineBrandByToken(JwtAuthenticationToken token) {
-        String orgId = token.getToken().getClaim(ORG_ID);
-        String brand = determineBrandByOrgId(orgId);
-        if (brand == null) {
-            throw new RuntimeException("Unauthorized access");
+    @GetMapping("/readBrands")
+    public ResponseEntity<List<String>> getReadBrands(JwtAuthenticationToken token) {
+        String brand = brandService.determineBrandByToken(token);
+        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
+        if (brand.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
         }
-        return brand;
+        return ResponseEntity.ok(Collections.singletonList(brand));
     }
-
-    private String determineBrandByOrgId(String orgId) {
-        Franchise franchise = franchiseService.getFranchisePrefixByOrgId(orgId);
-        return (franchise != null) ? franchise.getFranchisePrefix() : null;
-    }
-
 }
