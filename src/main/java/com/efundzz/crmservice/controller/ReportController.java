@@ -21,10 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import static com.efundzz.crmservice.constants.AppConstants.*;
-import static com.efundzz.crmservice.utils.Brand.determineReadAccess;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,11 +61,11 @@ public class ReportController {
 
     @PostMapping("/apps/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrandByToken(token);
-        List<String> readBrands = determineReadAccess(permissions);
-        brand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
-        List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(brand,
+        String permitBrand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
+        String accessibleBrand = null;
+        accessibleBrand = determineAccessibleBrand(brand, permitBrand, filterRequest.getBrand());
+        List<CRMAppliacationResponseDTO> leadsList = loanService.findApplicationsByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
@@ -89,11 +87,11 @@ public class ReportController {
 
     @PostMapping("/leadForms/bulk/download-excel")
     public ResponseEntity<Resource> exportLeadsFormToExcel(JwtAuthenticationToken token, @RequestBody CRMLeadFilterRequestDTO filterRequest) throws IOException {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrandByToken(token);
-        List<String> readBrands = determineReadAccess(permissions);
-        brand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
-        List<Leads> leadsList = leadService.findLeadFormDataByFilter(brand,
+        String permitBrand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
+        String accessibleBrand = null;
+        accessibleBrand = determineAccessibleBrand(brand, permitBrand, filterRequest.getBrand());
+        List<Leads> leadsList = leadService.findLeadFormDataByFilter(accessibleBrand,
                 filterRequest.getLoanType(),
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
@@ -148,10 +146,10 @@ public class ReportController {
                 .body(inputStreamResource);
     }
 
-    private String determineAccessibleBrand(String brand, String filterBrand) {
-        return (brand.equals(ALL_PERMISSION) && Objects.equals(filterBrand, ALL_PERMISSION))
+    private String determineAccessibleBrand(String brand, String permit, String filterBrand) {
+        return permit.equals(ALL_PERMISSION) && filterBrand.equals(ALL_PERMISSION)
                 ? ALL_PERMISSION
-                : (brand.equals(ALL_PERMISSION) && !Objects.equals(filterBrand, ALL_PERMISSION))
+                : permit.equals(ALL_PERMISSION)
                 ? filterBrand
                 : brand;
     }

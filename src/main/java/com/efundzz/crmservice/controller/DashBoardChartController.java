@@ -8,6 +8,7 @@ import com.efundzz.crmservice.service.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.efundzz.crmservice.constants.AppConstants.*;
-import static com.efundzz.crmservice.utils.Brand.determineReadAccess;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,29 +37,25 @@ public class DashBoardChartController {
     private LocalDateTime inputDate;
 
     @GetMapping("/dashBord/loanTypeCounts")
+    @PreAuthorize("hasAuthority('read:applications')")
     public List<CRMLoanDashBordResponceDTO> getLeadCountByLoanType(JwtAuthenticationToken token) {
         List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrandByToken(token);
-        List<String> readBrands = determineReadAccess(permissions);
-        brand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
+        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION :brand;
         return dashBordChartService.getCountsByLoanType(inputDate, brand);
     }
 
     @GetMapping("/dashBord/statusCounts")
     public List<CRMLoanDashBordResponceDTO> getLeadsCountByStatus(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrandByToken(token);
-        List<String> readBrands = determineReadAccess(permissions);
-        brand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
+        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION :brand;
         return dashBordChartService.getCountsByLoanStatus(inputDate, brand);
     }
 
     @GetMapping("/dashBord/brandCount")
     public List<CRMLoanDashBordResponceDTO> getLoanCountByBrand(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
         String brand = determineBrandByToken(token);
-        List<String> readBrands = determineReadAccess(permissions);
-        brand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
+        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION :brand;
         return dashBordChartService.getLoanCountByBrand(inputDate,brand);
     }
 

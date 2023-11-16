@@ -29,29 +29,14 @@ public class BrandAccessController {
     @Autowired
     FranchiseService franchiseService;
 
-    @GetMapping("/readBrands")
-    public ResponseEntity<List<String>>getReadBrands(JwtAuthenticationToken token) {
-      List<String> permissions = token.getToken().getClaim(PERMISSIONS);
+    @GetMapping("/accessBrands")
+    public ResponseEntity<List<String>> getReadBrands(JwtAuthenticationToken token) {
         String brand = determineBrandByToken(token);
-        List<String> readBrands = brandAccessService.determineReadBrands(permissions);
-        String permitBrand = readBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
-
-        if (permitBrand.isEmpty()) {
+        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
+        if (brand.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
         }
-        return ResponseEntity.ok(Collections.singletonList(permitBrand));
-    }
-
-    @GetMapping("/writeBrands")
-    public ResponseEntity<List<String>> getWriteBrands(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        String brand = determineBrandByToken(token);
-        List<String> writeBrands = brandAccessService.determineWriteBrands(permissions);
-        String permitBrand = writeBrands.contains(ALL_PERMISSION) ? ALL_PERMISSION: brand;
-        if (permitBrand.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
-        }
-        return ResponseEntity.ok(Collections.singletonList(permitBrand));
+        return ResponseEntity.ok(Collections.singletonList(brand));
     }
 
     private String determineBrandByToken(JwtAuthenticationToken token) {
@@ -67,4 +52,5 @@ public class BrandAccessController {
         Franchise franchise = franchiseService.getFranchisePrefixByOrgId(orgId);
         return (franchise != null) ? franchise.getFranchisePrefix() : null;
     }
+
 }
