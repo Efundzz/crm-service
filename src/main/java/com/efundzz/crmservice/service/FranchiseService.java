@@ -64,4 +64,9 @@ public class FranchiseService {
     public List<Franchise> listFranchises(){
         return franchiseRepository.findAll();
     }
+
+    public Franchise getFranchisePrefixByOrgId(String orgId) {
+        return franchiseRepository.findFranchisePrefixByOrgId(orgId);
+    }
+
 }

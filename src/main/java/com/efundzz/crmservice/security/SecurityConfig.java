@@ -2,13 +2,18 @@ package com.efundzz.crmservice.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,10 +33,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/api/applications").authenticated()
-                .mvcMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
+                .mvcMatchers("/api/applications").hasAuthority("read:applications")
+                .mvcMatchers("/api/applications/filter").hasAuthority("read:applications")
+                .mvcMatchers("/api/leadFormData/statusUpdate").hasAuthority("read:applications")
+                .mvcMatchers("/api/allLeadFormData").hasAuthority("read:leads")
+                .mvcMatchers("/api/leadFormData/filter").hasAuthority("read:leads")
+                .mvcMatchers("/api/leadFormData/createLead").hasAuthority("write:leads")
+                .mvcMatchers("/api/updateLeadStatus").hasAuthority("write:applications")
                 .and().cors()
-                .and().oauth2ResourceServer().jwt();
+                .and().oauth2ResourceServer(oauth2ResourceServer ->
+                        oauth2ResourceServer
+                                .jwt(jwt ->
+                                        jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
+                                )
+                );
         return http.build();
         /*
                 http
@@ -50,6 +65,18 @@ public class SecurityConfig {
          */
     }
 
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+        jwtConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter());
+        return jwtConverter;
+    }
+
+    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter() {
+        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+        converter.setAuthorityPrefix(""); // Remove any prefix from authorities (if needed)
+        converter.setAuthoritiesClaimName("permissions"); // Adjust based on your JWT structure
+        return converter;
+    }
     @Bean
     JwtDecoder jwtDecoder() {
         /*

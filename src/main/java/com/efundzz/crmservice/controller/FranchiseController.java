@@ -32,7 +32,6 @@ public class FranchiseController {
         }
     }
 
-
     @GetMapping()
     public ResponseEntity<?> listFranchises() {
         return ResponseEntity.ok(franchiseService.listFranchises());

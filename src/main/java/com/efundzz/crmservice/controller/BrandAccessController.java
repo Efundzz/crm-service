@@ -1,6 +1,8 @@
 package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.service.BrandAccessService;
+import com.efundzz.crmservice.service.BrandService;
+import com.efundzz.crmservice.service.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.List;
 
-import static com.efundzz.crmservice.constants.AppConstants.PERMISSIONS;
+import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
+import static com.efundzz.crmservice.constants.AppConstants.EFUNDZZ_ORG;
 
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,25 +26,20 @@ public class BrandAccessController {
 
     @Autowired
     private BrandAccessService brandAccessService;
-    @GetMapping("/readBrands")
-    public ResponseEntity<List<String>> getReadBrands(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        List<String> brands = brandAccessService.determineReadBrands(permissions);
 
-        if (brands.isEmpty()) {
+    @Autowired
+    FranchiseService franchiseService;
+
+    @Autowired
+    BrandService brandService;
+
+    @GetMapping("/accessBrands")
+    public ResponseEntity<List<String>> getAccessBrands(JwtAuthenticationToken token) {
+        String brand = brandService.determineBrandByToken(token);
+        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
+        if (brand.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
         }
-
-        return ResponseEntity.ok(brands);
-    }
-    @GetMapping("/writeBrands")
-    public ResponseEntity<List<String>> getWriteBrands(JwtAuthenticationToken token) {
-        List<String> permissions = token.getToken().getClaim(PERMISSIONS);
-        List<String> brands = brandAccessService.determineWriteBrands(permissions);
-
-        if (brands.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
-        }
-        return ResponseEntity.ok(brands);
+        return ResponseEntity.ok(Collections.singletonList(brand));
     }
 }
