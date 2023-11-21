@@ -35,7 +35,7 @@ public class BrandService {
     }
 
     private String determineBrandByOrgId(String orgId) {
-        Franchise franchise = franchiseService.getFranchisePrefixByOrgId("org_7ve249G78zoYMLKs");
+        Franchise franchise = franchiseService.getFranchisePrefixByOrgId(orgId);
         return (franchise != null) ? franchise.getFranchisePrefix() : null;
     }
 

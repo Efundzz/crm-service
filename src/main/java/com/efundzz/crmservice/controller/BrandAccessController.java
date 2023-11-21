@@ -33,18 +33,8 @@ public class BrandAccessController {
     @Autowired
     BrandService brandService;
 
-    @GetMapping("/writeBrands")
-    public ResponseEntity<List<String>> getWriteBrands(JwtAuthenticationToken token) {
-        String brand = brandService.determineBrandByToken(token);
-        brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
-        if (brand.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
-        }
-        return ResponseEntity.ok(Collections.singletonList(brand));
-    }
-
-    @GetMapping("/readBrands")
-    public ResponseEntity<List<String>> getReadBrands(JwtAuthenticationToken token) {
+    @GetMapping("/accessBrands")
+    public ResponseEntity<List<String>> getAccessBrands(JwtAuthenticationToken token) {
         String brand = brandService.determineBrandByToken(token);
         brand = EFUNDZZ_ORG.equals(brand) ? ALL_PERMISSION : brand;
         if (brand.isEmpty()) {

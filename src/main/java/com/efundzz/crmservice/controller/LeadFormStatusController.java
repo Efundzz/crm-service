@@ -35,7 +35,6 @@ public class LeadFormStatusController {
         return ResponseEntity.ok(updatedLeadStatus);
     }
     @GetMapping("/leadFormData/statusLogs/{leadId}")
-    @PreAuthorize("hasAuthority('read:leads')")
     public List<LeadsLog> getLeadsLogsByLeadId(JwtAuthenticationToken token, @PathVariable Long leadId) {
         return leadFormStatusService.getLeadsLogsByLeadId(leadId);
     }

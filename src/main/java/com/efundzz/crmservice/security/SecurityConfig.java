@@ -33,8 +33,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/api/applications").authenticated()
-                .mvcMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
+                .mvcMatchers("/api/applications").hasAuthority("read:applications")
+                .mvcMatchers("/api/applications/filter").hasAuthority("read:applications")
+                .mvcMatchers("/api/leadFormData/statusUpdate").hasAuthority("read:applications")
+                .mvcMatchers("/api/allLeadFormData").hasAuthority("read:leads")
+                .mvcMatchers("/api/leadFormData/filter").hasAuthority("read:leads")
+                .mvcMatchers("/api/leadFormData/createLead").hasAuthority("write:leads")
+                .mvcMatchers("/api/updateLeadStatus").hasAuthority("write:applications")
                 .and().cors()
                 .and().oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer

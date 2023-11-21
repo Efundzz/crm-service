@@ -69,7 +69,6 @@ public class ApplicationsController {
     }
 
     @GetMapping("/getApplicationsData/{appId}")
-    @PreAuthorize("hasAuthority('read:applications')")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getLeadDataByAppId(JwtAuthenticationToken token, @PathVariable String appId) {
         String brand = brandService.determineBrandByToken(token);
         List<CRMAppliacationResponseDTO> leadData = loanService.getAllLeadDataByAppId(appId, brand);
@@ -77,12 +76,10 @@ public class ApplicationsController {
     }
 
     @GetMapping("/getApplicationsStatus/{loanId}")
-    @PreAuthorize("hasAuthority('read:applications')")
     public ResponseEntity<Loan> getStatusByLoanID(JwtAuthenticationToken token, @PathVariable String loanId) {
         String brand = brandService.determineBrandByToken(token);
         return ResponseEntity.ok(loanService.getLoanDetailsByLoanID(loanId));
     }
-
 }
 
 
