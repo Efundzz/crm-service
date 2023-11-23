@@ -77,7 +77,6 @@ public class ApplicationsController {
 
     @GetMapping("/getApplicationsStatus/{loanId}")
     public ResponseEntity<Loan> getStatusByLoanID(JwtAuthenticationToken token, @PathVariable String loanId) {
-        String brand = brandService.determineBrandByToken(token);
         return ResponseEntity.ok(loanService.getLoanDetailsByLoanID(loanId));
     }
 }

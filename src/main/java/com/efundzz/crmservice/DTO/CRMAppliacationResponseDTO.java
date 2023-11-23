@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Data
@@ -19,9 +20,10 @@ public class CRMAppliacationResponseDTO {
     private String loanType;
     private String loanSubType;
     private String brand;
+    private LocalDateTime createdAt;
     private Map<String, Object> data;
 
-    public CRMAppliacationResponseDTO(String id, String userId, String status, String loanType,String loanSubType, String brand ,Object data) {
+    public CRMAppliacationResponseDTO(String id, String userId, String status, String loanType,String loanSubType, String brand ,LocalDateTime createdAt,Object data) {
         this.id = id;
         this.userId = userId;
         this.status = status;
@@ -29,5 +31,6 @@ public class CRMAppliacationResponseDTO {
         this.loanSubType = loanSubType;
         this.brand = brand;
         this.data = (Map<String, Object>) data; // Cast Object to Map<String, Object>
+        this.createdAt = createdAt;
     }
 }

@@ -16,9 +16,9 @@ public interface LoanRepository extends JpaRepository<Loan, Serializable> {
     Loan findById(String id);
 
 @Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
-        "l.id, l.userId," +
+        "l.id, l.userId, " +
         "COALESCE(ls.status, l.status) AS status, " +
-        "l.loanType, l.loanSubType, l.brand ,s.data) " +
+        "l.loanType, l.loanSubType, l.brand ,l.createdAt ,s.data) " +
         "FROM Loan l " +
         "LEFT JOIN LeadStatus ls ON l.id = ls.loanId " +
         "LEFT JOIN StepData s ON l.id = s.applicationId " +
@@ -28,7 +28,7 @@ public interface LoanRepository extends JpaRepository<Loan, Serializable> {
     @Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
             "l.id, l.userId, " +
             "COALESCE(ls.status, l.status) AS status," +
-            "l.loanType,l.loanSubType,l.brand ,s.data) " +
+            "l.loanType,l.loanSubType,l.brand,l.createdAt , s.data) " +
             "FROM Loan l " +
             "LEFT JOIN LeadStatus ls ON l.id = ls.loanId " +
             "LEFT JOIN StepData s ON l.id = s.applicationId " +

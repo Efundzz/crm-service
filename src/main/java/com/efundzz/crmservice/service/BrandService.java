@@ -1,6 +1,7 @@
 package com.efundzz.crmservice.service;
 
 import com.efundzz.crmservice.entity.Franchise;
+import com.efundzz.crmservice.exceptions.BrandNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class BrandService {
         String orgId = token.getToken().getClaim(ORG_ID);
         String brand = determineBrandByOrgId(orgId);
         if (brand == null) {
-            throw new RuntimeException("Unauthorized access");
+            throw new BrandNotFoundException("Brand not found for organization ID: " + orgId);
         }
         return brand;
     }
