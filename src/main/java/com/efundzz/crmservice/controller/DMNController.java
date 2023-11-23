@@ -27,10 +27,7 @@ public class DMNController {
     @PreAuthorize("hasAuthority('write:bre')")
     public ResponseEntity<?> evaluateDecision(JwtAuthenticationToken token ,@RequestBody CRMBreFormRequestDTO requestDTO) {
         try {
-            System.out.println("Input Variables: " + requestDTO);
-            // Assuming the third parameter DMNEvaluationDTO is not required
             List<Map<String,Object>> decisionResult = dmnService.evaluateDecision( requestDTO);
-            System.out.println("Decision Result: " + decisionResult);
             if (decisionResult != null && decisionResult.isEmpty()) {
                 return ResponseEntity.noContent().build();
             } else if (decisionResult != null) {

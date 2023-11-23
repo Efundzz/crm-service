@@ -36,9 +36,7 @@ public class DMNEvaluator {
 
     @SuppressWarnings("unchecked")
 	public List<Map<String, Object>> evaluateDecision(String decisionKey, CRMBreFormRequestDTO inputVariables) {
-        logger.debug("Start evaluateDecision method");
         DMNInputDTO dmnInputDTO = createDMNEvaluationDTO(inputVariables);
-        logger.debug("inputVariables before evaluation: {}", dmnInputDTO);
         Map<String, Object> inputVariablesMap = objectMapper.convertValue(dmnInputDTO, Map.class);
         DmnDecisionTableResult result = decisionService.evaluateDecisionTableByKey(decisionKey, (Map<String, Object>) inputVariablesMap);
         List<Map<String, Object>> outputList = new ArrayList<>();
@@ -52,13 +50,8 @@ public class DMNEvaluator {
             decisionDTO.setTenure(tenure);
             double proposedEmi = calculateEmi(inputVariables.getLoanAmount(), roi, tenure);
             decisionDTO.setProposedEmi(proposedEmi);
-            System.out.println("proposed emi:" + proposedEmi);
-            if (decisionDTO != null) {
-                outputList.add(decisionDTO.toMap());
-            }
+            outputList.add(decisionDTO.toMap());
         }
-        logger.debug("Decision evaluation result: {}", outputList);
-        logger.debug("End evaluateDecision method");
         return outputList;
     }
     private DecisionResultDTO convertToDecisionResultDTO(DmnDecisionRuleResult ruleResult) {
