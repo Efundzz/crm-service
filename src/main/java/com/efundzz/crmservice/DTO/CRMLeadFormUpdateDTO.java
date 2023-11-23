@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class CRMLeadFormUpdateDTO {
-    private Long leadId;
+    private String leadId;
     private String status;
     private String agentId;
     private LocalDateTime updatedAt;

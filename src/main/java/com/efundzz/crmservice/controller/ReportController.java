@@ -111,7 +111,7 @@ public class ReportController {
     }
 
     @GetMapping("/leadForms/single/download-excel/{id}")
-    public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable String id) throws IOException {
         Leads leaddata = leadService.getLeadFormDataById(id);
         Workbook workbook = reportService.generateSingleLeadFormExcel(leaddata);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

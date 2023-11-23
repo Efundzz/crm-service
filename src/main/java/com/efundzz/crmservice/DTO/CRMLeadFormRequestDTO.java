@@ -14,7 +14,7 @@ import java.util.Map;
 @Builder
 public class CRMLeadFormRequestDTO {
 
-    private Long id;
+    private String id;
     private String city;
     private LocalDateTime createdAt;
     private String pincode;

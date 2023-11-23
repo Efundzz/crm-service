@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LeadFormStatusService {
@@ -22,10 +23,10 @@ public class LeadFormStatusService {
 
     @Transactional
     public Leads updateLeadStatus(CRMLeadFormUpdateDTO crmLeadFormUpdateDTO) {
-        Long leadId = crmLeadFormUpdateDTO.getLeadId();
-        Leads leads = leadRepository.findById(leadId);
-
-        if (leads != null) {
+        String leadId = crmLeadFormUpdateDTO.getLeadId();
+        Optional<Leads> leadsOptional = Optional.ofNullable(leadRepository.findById(leadId));
+        if (leadsOptional.isPresent()) {
+            Leads leads = leadsOptional.get();
             String newStatus = crmLeadFormUpdateDTO.getStatus();
             if (newStatus != null) {
                 leads.setStatus(newStatus);

@@ -54,7 +54,7 @@ public class DMNService {
 		evaluationData.setJobStability(inputVariables.getJobStability());
 		evaluationData.setOwnHouse(inputVariables.getOwnHouse());
 		evaluationData.setSalaryCreditType(inputVariables.getSalaryCreditType());
-        evaluationData.setResponse(decisionResult);
+        evaluationData.setResponse((Map<String, Object>) decisionResult);
 		dmnDataRepository.save(evaluationData);
 	}
 	// Creating a method validateInputVariables for calling each variable validating

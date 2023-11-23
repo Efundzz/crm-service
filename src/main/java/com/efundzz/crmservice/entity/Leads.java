@@ -21,8 +21,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class Leads {
     @Id
-    @Column(name = "lead_id")
-    private Long id;
+    @Column(name = "lead_id", columnDefinition = "VARCHAR(255)")
+    private String id;
 
     @Column(name = "city")
     private String city;

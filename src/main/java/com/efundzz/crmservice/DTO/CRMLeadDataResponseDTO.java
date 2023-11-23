@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 public class CRMLeadDataResponseDTO {
-    private Long id;
+    private String id;
     private String city;
     private LocalDateTime createdAt;
     private String pincode;
