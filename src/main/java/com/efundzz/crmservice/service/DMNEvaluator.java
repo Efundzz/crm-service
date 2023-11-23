@@ -53,9 +53,9 @@ public class DMNEvaluator {
             double proposedEmi = calculateEmi(inputVariables.getLoanAmount(), roi, tenure);
             decisionDTO.setProposedEmi(proposedEmi);
             System.out.println("proposed emi:" + proposedEmi);
-            if (decisionDTO != null) {
-                outputList.add(decisionDTO.toMap());
-            }
+//            if (decisionDTO != null) {
+//                outputList.add(decisionDTO.toMap());
+//            }
         }
         logger.debug("Decision evaluation result: {}", outputList);
         logger.debug("End evaluateDecision method");
