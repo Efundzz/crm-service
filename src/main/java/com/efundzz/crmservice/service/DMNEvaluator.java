@@ -48,7 +48,7 @@ public class DMNEvaluator {
             double tenure = getTenureFromDatabase(bankName, companyCategory);
             decisionDTO.setRoi(roi);
             decisionDTO.setTenure(tenure);
-            double proposedEmi = calculateEmi(inputVariables.getLoanAmount(), roi, tenure);
+            int proposedEmi = (int) calculateEmi(inputVariables.getLoanAmount(), roi, tenure);
             decisionDTO.setProposedEmi(proposedEmi);
             outputList.add(decisionDTO.toMap());
         }
