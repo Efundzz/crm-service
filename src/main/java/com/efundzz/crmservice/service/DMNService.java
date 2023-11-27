@@ -44,6 +44,8 @@ public class DMNService {
 	private void saveEvaluationData(CRMBreFormRequestDTO inputVariables, List<Map<String,Object>> decisionResult) {
 		DMNEvaluationData evaluationData = new DMNEvaluationData();
 		evaluationData.setCreditScore(inputVariables.getCreditScore());
+        evaluationData.setBrand(inputVariables.getBrand());
+        evaluationData.setAgentId(inputVariables.getAgentId());
 		evaluationData.setTakeHomeSalaryMonthly(inputVariables.getTakeHomeSalaryMonthly());
 		evaluationData.setAge(inputVariables.getAge());
 		evaluationData.setExperience(inputVariables.getExperience());
@@ -54,7 +56,7 @@ public class DMNService {
 		evaluationData.setJobStability(inputVariables.getJobStability());
 		evaluationData.setOwnHouse(inputVariables.getOwnHouse());
 		evaluationData.setSalaryCreditType(inputVariables.getSalaryCreditType());
-        evaluationData.setResponse((Map<String, Object>) decisionResult);
+        evaluationData.setResponse(decisionResult);
 		dmnDataRepository.save(evaluationData);
 	}
 	// Creating a method validateInputVariables for calling each variable validating
@@ -361,6 +363,4 @@ public class DMNService {
             throw new IllegalArgumentException("current job stability must be a number");
         }
     }
-    // Adding the following method to calculate probability for each eligible bank
-
 }

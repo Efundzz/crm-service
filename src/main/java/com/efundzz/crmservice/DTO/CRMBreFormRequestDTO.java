@@ -10,6 +10,8 @@ import lombok.*;
 @Setter
 @Getter
 public class CRMBreFormRequestDTO {
+	private String agentId;
+	private String brand;
 	private String takeHomeSalary;
 	private long takeHomeSalaryMonthly;
 	private String dateOfBirth;
