@@ -57,7 +57,7 @@ public class LeadsDataController {
         return ResponseEntity.ok(filteredLeads);
     }
     @GetMapping("/getLeadsFormData/{id}")
-    public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable Long id) {
+    public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable String id) {
         Leads lead = leadService.getLeadFormDataById(id);
         if (lead != null) {
             return ResponseEntity.ok(lead);

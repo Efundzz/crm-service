@@ -22,7 +22,7 @@ import java.util.Map;
 public class Leads {
     @Id
     @Column(name = "lead_id")
-    private Long id;
+    private String id;
 
     @Column(name = "city")
     private String city;
@@ -42,7 +42,7 @@ public class Leads {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "loantype")
+    @Column(name = "loan_type")
     private String loanType;
 
     @Column(name = "utm_params")

@@ -9,12 +9,8 @@
     <field name="totalEmiPaying" class="java.lang.String"/>
     <field name="dateOfApplication" class="java.lang.String"/>
     <field name="creditScore" class="java.lang.String"/>
-    <field name="nameOnCard" class="java.lang.String"/>
     <field name="panCardNumber" class="java.lang.String"/>
-    <field name="lastUpdate" class="java.lang.String"/>
     <field name="pinCodeAadhaar" class="java.lang.String"/>
-    <field name="status" class="java.lang.String"/>
-    <field name="description" class="java.lang.String"/>
     <field name="digitallySignedOn" class="java.lang.String"/>
     <field name="name" class="java.lang.String"/>
     <field name="downloadDate" class="java.lang.String"/>
@@ -55,16 +51,14 @@
     <field name="personName" class="java.lang.String"/>
     <field name="referenceMobileNumber" class="java.lang.String"/>
     <field name="document1" class="java.lang.String"/>
-    <field name="document2" class="java.lang.String"/>
-    <field name="document3" class="java.lang.String"/>
-    <field name="document4" class="java.lang.String"/>
+    <field name="date" class="java.lang.String"/>
     <background>
         <band splitType="Stretch"/>
     </background>
     <detail>
         <band height="789" splitType="Stretch">
             <rectangle>
-                <reportElement mode="Opaque" x="8" y="-10" width="551" height="799" uuid="a63c36ac-7920-4fda-9eab-0c405699cf47"/>
+                <reportElement mode="Opaque" x="8" y="-10" width="551" height="700" uuid="a63c36ac-7920-4fda-9eab-0c405699cf47"/>
             </rectangle>
             <staticText>
                 <reportElement mode="Opaque" x="29" y="0" width="370" height="21" backcolor="#FFFFFF" uuid="ac9fbb06-afcb-4b00-bc7d-d76ed3862dcf"/>
@@ -74,7 +68,7 @@
                 <text><![CDATA[APPLICATION FORM FOR A PERSONAL LOAN]]></text>
             </staticText>
             <staticText>
-                <reportElement x="31" y="22" width="44" height="21" uuid="8e7eb899-5239-473d-a1ec-8c44809cb094">
+                <reportElement x="29" y="22" width="46" height="21" uuid="8e7eb899-5239-473d-a1ec-8c44809cb094">
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 </reportElement>
                 <box topPadding="3" leftPadding="2"/>
@@ -94,7 +88,7 @@
                 <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement mode="Opaque" x="31" y="150" width="148" height="35" backcolor="#E0E0E0" uuid="4c202996-f12e-4582-ba18-d3f701fb1cd3">
+                <reportElement mode="Opaque" x="29" y="150" width="150" height="35" backcolor="#E0E0E0" uuid="4c202996-f12e-4582-ba18-d3f701fb1cd3">
                     <property name="net.sf.jasperreports.style.backcolor" value="#E0E0E0"/>
                 </reportElement>
                 <box topPadding="3" leftPadding="5" bottomPadding="0" rightPadding="0"/>
@@ -114,7 +108,7 @@
                 <text><![CDATA[Purpose of Loan]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="358" y="150" width="184" height="35" backcolor="#E0E0E0" uuid="434876e8-9334-4dfe-a462-ca8b1cffe57c">
+                <reportElement mode="Opaque" x="358" y="150" width="169" height="35" backcolor="#E0E0E0" uuid="434876e8-9334-4dfe-a462-ca8b1cffe57c">
                     <property name="net.sf.jasperreports.style.backcolor" value="#DEDEDE"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 </reportElement>
@@ -125,7 +119,7 @@
                 <text><![CDATA[Loan Amount]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="30" y="192" width="148" height="40" backcolor="#E0E0E0" uuid="f18e0b74-e695-4406-8f48-35ac15bc4ef9"/>
+                <reportElement mode="Opaque" x="29" y="192" width="149" height="40" backcolor="#E0E0E0" uuid="f18e0b74-e695-4406-8f48-35ac15bc4ef9"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="10" isBold="false"/>
@@ -143,7 +137,7 @@
                 <text><![CDATA[Date of Application]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="358" y="190" width="183" height="39" backcolor="#E0E0E0" uuid="ad0bb337-84d1-4b90-a7d5-c0747bf02c3e">
+                <reportElement mode="Opaque" x="358" y="190" width="169" height="39" backcolor="#E0E0E0" uuid="ad0bb337-84d1-4b90-a7d5-c0747bf02c3e">
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -153,7 +147,7 @@
                 <text><![CDATA[Credit Score]]></text>
             </staticText>
             <textField>
-                <reportElement mode="Opaque" x="32" y="165" width="147" height="20" backcolor="#E0E0E0" uuid="175d24b1-98b6-4136-bda9-dd49a6b39703">
+                <reportElement mode="Opaque" x="29" y="165" width="150" height="20" backcolor="#E0E0E0" uuid="175d24b1-98b6-4136-bda9-dd49a6b39703">
                     <property name="net.sf.jasperreports.style.backcolor" value="#DEDEDE"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="4" bottomPadding="0" rightPadding="0">
@@ -179,7 +173,7 @@
                 <textFieldExpression><![CDATA[$F{purposeOfLoan}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="358" y="165" width="182" height="20" uuid="63974ea0-580a-40c1-8a82-a507689c12a6"/>
+                <reportElement x="358" y="165" width="170" height="20" uuid="63974ea0-580a-40c1-8a82-a507689c12a6"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -187,7 +181,7 @@
                 <textFieldExpression><![CDATA[$F{loanAmount}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="32" y="214" width="146" height="18" uuid="5f0cd96a-18b2-43ec-a868-dd900c053fdb"/>
+                <reportElement x="29" y="214" width="149" height="18" uuid="5f0cd96a-18b2-43ec-a868-dd900c053fdb"/>
                 <box topPadding="2" leftPadding="5">
                     <pen lineColor="#E0E0E0"/>
                 </box>
@@ -205,7 +199,7 @@
                 <textFieldExpression><![CDATA[$F{dateOfApplication}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="360" y="210" width="180" height="18" uuid="cf1a5ccf-7ace-4315-a6d6-c9c34ac54725"/>
+                <reportElement x="360" y="210" width="167" height="18" uuid="cf1a5ccf-7ace-4315-a6d6-c9c34ac54725"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -213,27 +207,7 @@
                 <textFieldExpression><![CDATA[$F{creditScore}]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement mode="Opaque" x="30" y="280" width="148" height="39" backcolor="#E0E0E0" uuid="d404e783-17d5-4cdc-bea8-4046cc803788">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="10" isBold="false"/>
-                </textElement>
-                <text><![CDATA[Name on The Card]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="30" y="299" width="146" height="20" uuid="c0a391b8-745f-4cef-848d-e692565b9ca1">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{nameOnCard}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement mode="Opaque" x="187" y="281" width="162" height="38" backcolor="#E0E0E0" uuid="63d80a2a-2488-49ea-940f-9c245fa91306"/>
+                <reportElement mode="Opaque" x="29" y="282" width="163" height="38" backcolor="#E0E0E0" uuid="63d80a2a-2488-49ea-940f-9c245fa91306"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="10" isBold="false"/>
@@ -241,7 +215,7 @@
                 <text><![CDATA[PAN Card Number]]></text>
             </staticText>
             <textField>
-                <reportElement x="187" y="300" width="162" height="20" uuid="05f66974-3dad-4efc-9df5-46300c8e8c7c"/>
+                <reportElement x="29" y="300" width="163" height="20" uuid="05f66974-3dad-4efc-9df5-46300c8e8c7c"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -249,63 +223,7 @@
                 <textFieldExpression><![CDATA[$F{panCardNumber}]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement mode="Opaque" x="358" y="280" width="184" height="36" backcolor="#E0E0E0" uuid="c103ff0b-2486-4ed0-8fed-710dcc8634dd">
-                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="10"/>
-                </textElement>
-                <text><![CDATA[Last UpDate]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="358" y="296" width="184" height="20" uuid="a7980de3-1019-4a60-be80-7b1251356d73"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{lastUpdate}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement mode="Opaque" x="30" y="330" width="147" height="39" backcolor="#E0E0E0" uuid="26186585-063e-45fd-be6a-be5401bf9ee0">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="10"/>
-                </textElement>
-                <text><![CDATA[status]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="30" y="350" width="147" height="20" uuid="b18c61c0-c4f3-4acd-bea1-eb1a1a75fc56">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement mode="Opaque" x="187" y="330" width="163" height="40" backcolor="#E0E0E0" uuid="6a9dfc72-d62b-4b90-8b65-c793682963c9"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="10" isBold="false"/>
-                </textElement>
-                <text><![CDATA[Descreption]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="187" y="350" width="162" height="20" uuid="a6b7e143-a620-4f04-9fde-a0bbdd6b332b"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement mode="Opaque" x="358" y="330" width="183" height="40" backcolor="#E0E0E0" uuid="02dbc0ae-27e9-4b1b-9a3a-af2488c0bd45">
+                <reportElement mode="Opaque" x="200" y="281" width="183" height="40" backcolor="#E0E0E0" uuid="02dbc0ae-27e9-4b1b-9a3a-af2488c0bd45">
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -315,7 +233,7 @@
                 <text><![CDATA[Digitally Signed on]]></text>
             </staticText>
             <textField>
-                <reportElement x="360" y="350" width="182" height="20" uuid="5f4d3552-02e0-450c-9a0f-3cd3f031ce63"/>
+                <reportElement x="200" y="300" width="182" height="20" uuid="5f4d3552-02e0-450c-9a0f-3cd3f031ce63"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -323,8 +241,8 @@
                 <textFieldExpression><![CDATA[$F{digitallySignedOn}]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement mode="Opaque" x="31" y="110" width="511" height="30" backcolor="#E0E0E0" uuid="6b7395fe-b342-4cdb-9114-d415674747c0"/>
-                <box topPadding="7" leftPadding="19">
+                <reportElement mode="Opaque" x="29" y="110" width="498" height="30" backcolor="#E0E0E0" uuid="6b7395fe-b342-4cdb-9114-d415674747c0"/>
+                <box topPadding="7" leftPadding="9">
                     <pen lineColor="#E0E0E0"/>
                 </box>
                 <textElement textAlignment="Left">
@@ -333,8 +251,8 @@
                 <text><![CDATA[LOAN DETAILS]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="31" y="240" width="511" height="30" backcolor="#E0E0E0" uuid="7762a28d-79e5-40ef-90e3-6dd6b0a360bc"/>
-                <box topPadding="6" leftPadding="11">
+                <reportElement mode="Opaque" x="29" y="240" width="498" height="30" backcolor="#E0E0E0" uuid="7762a28d-79e5-40ef-90e3-6dd6b0a360bc"/>
+                <box topPadding="6" leftPadding="10">
                     <pen lineWidth="224.0" lineColor="#E0E0E0"/>
                     <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                     <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -347,17 +265,17 @@
                 <text><![CDATA[PAN CARD DETAILS]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="30" y="430" width="512" height="30" backcolor="#E0E0E0" uuid="b5867ca1-a490-4552-b980-bd59045b8d5e">
+                <reportElement mode="Opaque" x="29" y="380" width="498" height="30" backcolor="#E0E0E0" uuid="b5867ca1-a490-4552-b980-bd59045b8d5e">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
-                <box topPadding="6" leftPadding="13"/>
+                <box topPadding="6" leftPadding="9"/>
                 <textElement>
                     <font fontName="Arial" size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[AADHAAR CARD DETAILS]]></text>
             </staticText>
             <staticText>
-                <reportElement x="29" y="380" width="513" height="40" uuid="151a855a-f5cd-466d-93af-65a96d46be70">
+                <reportElement x="29" y="330" width="498" height="40" uuid="151a855a-f5cd-466d-93af-65a96d46be70">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -368,7 +286,7 @@
 ﻿﻿﻿2.This digitally signed verification document is valid as per the IT Act 2000 when used electronically]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="26" y="510" width="150" height="40" backcolor="#E0E0E0" uuid="1e580d41-3776-4377-8e44-7dd7027dd08b">
+                <reportElement mode="Opaque" x="29" y="460" width="150" height="40" backcolor="#E0E0E0" uuid="1e580d41-3776-4377-8e44-7dd7027dd08b">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -378,17 +296,7 @@
                 <text><![CDATA[Name]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="187" y="510" width="162" height="40" backcolor="#E0E0E0" uuid="d6a442d8-3f0c-45ae-9355-073c968cf6ed">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="10"/>
-                </textElement>
-                <text><![CDATA[Download Date]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="358" y="510" width="184" height="40" backcolor="#E0E0E0" uuid="8b540bba-5a95-4820-8d45-5d772695f234">
+                <reportElement mode="Opaque" x="339" y="460" width="188" height="40" backcolor="#E0E0E0" uuid="8b540bba-5a95-4820-8d45-5d772695f234">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -398,7 +306,7 @@
                 <text><![CDATA[Father Name]]></text>
             </staticText>
             <staticText>
-                <reportElement x="26" y="470" width="516" height="30" uuid="83bcb42b-1c7c-42ef-9ff3-0b0907292177">
+                <reportElement x="29" y="420" width="498" height="30" uuid="83bcb42b-1c7c-42ef-9ff3-0b0907292177">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="5" leftPadding="5"/>
@@ -408,7 +316,7 @@
                 <text><![CDATA[This document is generated from verified Aadhaar XML obtained from Authbridge with due user consent and authentication]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="26" y="560" width="151" height="40" backcolor="#E0E0E0" uuid="4f561be0-1862-42b5-a364-60f00419e87d">
+                <reportElement mode="Opaque" x="27" y="510" width="152" height="40" backcolor="#E0E0E0" uuid="4f561be0-1862-42b5-a364-60f00419e87d">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -418,17 +326,7 @@
                 <text><![CDATA[Aadhaar Card Number]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="187" y="560" width="163" height="40" backcolor="#E0E0E0" uuid="26dfe5dc-7e12-4258-84a9-2d4c525360d2">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="10"/>
-                </textElement>
-                <text><![CDATA[Generation Date]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="358" y="560" width="184" height="40" backcolor="#E0E0E0" uuid="acbd9ccc-37c1-4aa3-862e-0480331deb5c">
+                <reportElement mode="Opaque" x="182" y="510" width="194" height="40" backcolor="#E0E0E0" uuid="acbd9ccc-37c1-4aa3-862e-0480331deb5c">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -437,12 +335,8 @@
                 </textElement>
                 <text><![CDATA[Dafeof Birth]]></text>
             </staticText>
-<!--            <image>-->
-<!--                <reportElement x="460" y="21" width="70" height="80" backcolor="#FFFFFF" uuid="3f5962e6-5a5a-4621-bbc9-3582d8554075"/>-->
-<!--                <imageExpression><![CDATA["C:/Users/Efundzz-003/Downloads/IMG_20190314_074916.jpg"]]></imageExpression>-->
-<!--            </image>-->
             <textField>
-                <reportElement x="27" y="530" width="150" height="20" uuid="f6a11d42-1b77-4b5f-bb27-c79b87d88870">
+                <reportElement x="29" y="480" width="151" height="20" uuid="f6a11d42-1b77-4b5f-bb27-c79b87d88870">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -452,17 +346,7 @@
                 <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="187" y="530" width="162" height="20" uuid="d216aa3b-7833-4de1-a468-fb8bfa93e387">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{downloadDate}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="358" y="530" width="184" height="20" uuid="7fe885b8-caee-42ed-897c-56ca6b40400b">
+                <reportElement x="338" y="480" width="190" height="20" uuid="7fe885b8-caee-42ed-897c-56ca6b40400b">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -472,7 +356,7 @@
                 <textFieldExpression><![CDATA[$F{fatherName}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="26" y="580" width="150" height="20" uuid="f774c253-2a59-4933-8640-2aec04ab28e8">
+                <reportElement x="27" y="530" width="152" height="20" uuid="f774c253-2a59-4933-8640-2aec04ab28e8">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -482,17 +366,7 @@
                 <textFieldExpression><![CDATA[$F{aadhaarNumber}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="188" y="580" width="162" height="20" uuid="e6fad5ab-b095-4f0b-a81a-02dc5b7314d6">
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                </reportElement>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{generatedDate}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="358" y="580" width="184" height="20" uuid="affb4465-8f19-4ae2-9748-a250cf6093fb">
+                <reportElement x="182" y="530" width="193" height="20" uuid="affb4465-8f19-4ae2-9748-a250cf6093fb">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 </reportElement>
                 <box topPadding="2" leftPadding="5"/>
@@ -501,191 +375,64 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{dateOfBirth}]]></textFieldExpression>
             </textField>
-<!--            <image>-->
-<!--                <reportElement x="30" y="50" width="145" height="48" uuid="2045f3dd-a775-407d-a639-c9457f1031ec"/>-->
-<!--                <imageExpression><![CDATA["C:/Users/Efundzz-003/Downloads/image001.jpg"]]></imageExpression>-->
-<!--            </image>-->
             <line>
                 <reportElement x="32" y="21" width="348" height="1" uuid="b6c9ac90-3ae0-429e-89a3-1fe5963c0cad">
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 </reportElement>
             </line>
             <staticText>
-                <reportElement mode="Opaque" x="26" y="610" width="150" height="40" backcolor="#E0E0E0" uuid="52253060-0494-4a1c-a5c9-0d215026c366"/>
+                <reportElement mode="Opaque" x="182" y="460" width="150" height="40" backcolor="#E0E0E0" uuid="52253060-0494-4a1c-a5c9-0d215026c366"/>
                 <box topPadding="3" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial"/>
                 </textElement>
                 <text><![CDATA[Gender]]></text>
             </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="187" y="610" width="162" height="40" backcolor="#E0E0E0" uuid="d737bc49-26e6-451e-9686-1d5c6882f1b9"/>
-                <box topPadding="3" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[House Number]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="358" y="610" width="184" height="40" backcolor="#E0E0E0" uuid="f55837d5-288a-4de7-a38d-71f5dadbe04f"/>
-                <box topPadding="3" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Street]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="26" y="660" width="151" height="40" backcolor="#E0E0E0" uuid="806a07c7-f9d9-47b1-9e36-e72931f7fb7e"/>
-                <box topPadding="3" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Locality]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="188" y="660" width="160" height="39" backcolor="#E0E0E0" uuid="4c12b45b-adca-46fd-8be7-dba3d34f241c"/>
-                <box topPadding="3" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Landmark]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="358" y="658" width="184" height="40" backcolor="#E0E0E0" uuid="fd1da831-578c-43f0-ad4f-62c72ccf2123"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Post Office]]></text>
-            </staticText>
             <textField>
-                <reportElement x="26" y="630" width="150" height="20" uuid="ff470278-e86e-48e4-a577-4f85d521d160"/>
+                <reportElement x="182" y="480" width="150" height="20" uuid="ff470278-e86e-48e4-a577-4f85d521d160"/>
                 <box topPadding="3" leftPadding="5"/>
                 <textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
             </textField>
-            <textField>
-                <reportElement x="187" y="629" width="162" height="21" uuid="95061168-d126-4d2c-a62f-17ffdcc032d9"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{houseNumber}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="358" y="629" width="184" height="21" uuid="24bf702e-9c9c-4903-b841-c58e11712654"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{street}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="27" y="680" width="150" height="20" uuid="90f45fd1-ef57-4267-96b1-7ae41176a2a1"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{locality}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="188" y="680" width="160" height="19" uuid="24b90435-0b36-4e17-a6fe-67f7f9c25c21"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{landmark}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="358" y="680" width="184" height="18" uuid="ee185432-99c9-4c6e-92d0-06e633144959"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{postOffice}]]></textFieldExpression>
-            </textField>
             <staticText>
-                <reportElement mode="Opaque" x="26" y="710" width="150" height="40" backcolor="#E0E0E0" uuid="3725447a-ba23-4282-b70f-fa2dfb0fbc87"/>
-                <box topPadding="3" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Village/Town/City]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="187" y="710" width="162" height="40" backcolor="#E0E0E0" uuid="7a99e326-919e-4d29-9a04-730cb915b1b1"/>
-                <box topPadding="2" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[State]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="358" y="710" width="184" height="40" backcolor="#E0E0E0" uuid="4b7f96af-baef-4044-8f0b-e2176698994b"/>
-                <box topPadding="2" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Distract]]></text>
+                <reportElement mode="Opaque" x="26" y="560" width="501" height="70" backcolor="#E0E0E0" uuid="5af6ad11-eca9-4833-a329-df29cbd23995"/>
+                <box topPadding="3" leftPadding="6"/>
+                <text><![CDATA[Address]]></text>
             </staticText>
             <textField>
-                <reportElement x="26" y="730" width="150" height="20" uuid="4d7c1c3f-08b2-4126-b0a9-fe7de816e8bd"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{villageAadhaar}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="188" y="730" width="160" height="20" uuid="c2636bce-5fba-40cd-a749-5b2e97c0fd87"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{stateAadhaar}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="358" y="730" width="184" height="20" uuid="5383f4af-f8de-4cab-a148-692fe76beb6a"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{districtAadhaar}]]></textFieldExpression>
+                <reportElement x="26" y="580" width="501" height="50" uuid="68525c78-5b64-44b6-bdde-ff0baa08616b"/>
+                <box topPadding="3" leftPadding="6"/>
+                <textFieldExpression><![CDATA[$F{pinCodeAadhaar}]]></textFieldExpression>
             </textField>
         </band>
         <band height="743" splitType="Stretch">
             <rectangle>
-                <reportElement x="8" y="20" width="556" height="688" uuid="ce0654fb-51f7-4165-b52a-160345072209"/>
+                <reportElement x="9" y="30" width="556" height="688" uuid="ce0654fb-51f7-4165-b52a-160345072209"/>
             </rectangle>
             <staticText>
-                <reportElement mode="Opaque" x="186" y="40" width="162" height="40" backcolor="#E0E0E0" uuid="d4da397c-722f-465a-a39b-93390a11b857"/>
-                <box topPadding="5" leftPadding="9"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Country]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="356" y="40" width="186" height="40" backcolor="#E0E0E0" uuid="5af6ad11-eca9-4833-a329-df29cbd23995"/>
-                <box topPadding="3" leftPadding="6"/>
-                <text><![CDATA[PinCode]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="25" y="90" width="517" height="50" backcolor="#E0E0E0" uuid="24e3b14a-a4de-4059-87c7-d0bc1b642f9f"/>
-                <box topPadding="7" leftPadding="7"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Address]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="25" y="150" width="150" height="38" backcolor="#E0E0E0" uuid="5a005060-87f8-4cb3-8332-fa143c363dc2"/>
-                <box topPadding="6" leftPadding="8"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Signature]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="25" y="200" width="517" height="40" backcolor="#E0E0E0" uuid="3db327ac-35e7-428d-8c89-9e4794ba2d53"/>
-                <box topPadding="11" leftPadding="7"/>
+                <reportElement mode="Opaque" x="27" y="40" width="509" height="40" backcolor="#E0E0E0" uuid="3db327ac-35e7-428d-8c89-9e4794ba2d53"/>
+                <box topPadding="11" leftPadding="9"/>
                 <textElement>
                     <font fontName="Arial" size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[CONTACT,RESIDENTIAL, AND CURRENT ADDRESS DETAILS]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="25" y="250" width="145" height="40" backcolor="#E0E0E0" uuid="eb3106f0-0476-4f67-8115-a623231b0fd7"/>
+                <reportElement mode="Opaque" x="27" y="100" width="141" height="40" backcolor="#E0E0E0" uuid="eb3106f0-0476-4f67-8115-a623231b0fd7"/>
                 <box topPadding="3" leftPadding="6"/>
                 <text><![CDATA[Mobile Number]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="179" y="250" width="166" height="40" backcolor="#E0E0E0" uuid="e437150d-4638-4857-b5af-7830e19df46e"/>
+                <reportElement mode="Opaque" x="178" y="100" width="166" height="40" backcolor="#E0E0E0" uuid="e437150d-4638-4857-b5af-7830e19df46e"/>
                 <box topPadding="3" leftPadding="5"/>
                 <text><![CDATA[Alternative Mobile Number]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="356" y="250" width="186" height="40" backcolor="#E0E0E0" uuid="642b8ed8-42f8-46bb-b173-640112ae44f0"/>
+                <reportElement mode="Opaque" x="350" y="100" width="186" height="40" backcolor="#E0E0E0" uuid="642b8ed8-42f8-46bb-b173-640112ae44f0"/>
                 <box topPadding="3" leftPadding="6"/>
                 <text><![CDATA[Email Id]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="25" y="300" width="146" height="40" backcolor="#E0E0E0" uuid="ee62d6f8-1579-4039-8e8b-cd4159f5e200"/>
+                <reportElement mode="Opaque" x="27" y="150" width="141" height="40" backcolor="#E0E0E0" uuid="ee62d6f8-1579-4039-8e8b-cd4159f5e200"/>
                 <box topPadding="4" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -693,7 +440,7 @@
                 <text><![CDATA[Resident Type]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="179" y="300" width="168" height="40" backcolor="#E0E0E0" uuid="7424d815-0477-4be0-afe3-7915bb41f055"/>
+                <reportElement mode="Opaque" x="178" y="150" width="165" height="40" backcolor="#E0E0E0" uuid="7424d815-0477-4be0-afe3-7915bb41f055"/>
                 <box topPadding="2" leftPadding="7"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -701,7 +448,7 @@
                 <text><![CDATA[Monthly Rent]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="358" y="300" width="184" height="40" backcolor="#E0E0E0" uuid="23d334fd-9930-4ebc-a861-f0e48850964f"/>
+                <reportElement mode="Opaque" x="355" y="150" width="181" height="40" backcolor="#E0E0E0" uuid="23d334fd-9930-4ebc-a861-f0e48850964f"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -709,7 +456,7 @@
                 <text><![CDATA[Years at Current Address]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="25" y="350" width="146" height="40" backcolor="#E0E0E0" uuid="6b23a1e6-f627-4666-bbfc-e6697c1b9b50"/>
+                <reportElement mode="Opaque" x="24" y="200" width="144" height="40" backcolor="#E0E0E0" uuid="6b23a1e6-f627-4666-bbfc-e6697c1b9b50"/>
                 <box topPadding="4" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -717,55 +464,23 @@
                 <text><![CDATA[No of Dependants]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="178" y="350" width="168" height="41" backcolor="#E0E0E0" uuid="83c14d86-907e-4f90-b098-49b9b3b6d902"/>
-                <box topPadding="5" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Flat no,Street Name]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="357" y="350" width="183" height="40" backcolor="#E0E0E0" uuid="106e1658-ccb8-42a3-adf0-f0fb294fe927"/>
-                <box topPadding="4" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[Village/Town/City]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="25" y="400" width="146" height="40" backcolor="#E0E0E0" uuid="428af40e-d383-419d-879a-6cbb33db8ffb"/>
-                <box topPadding="4" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[District]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="179" y="400" width="168" height="40" backcolor="#E0E0E0" uuid="d86a59fb-c784-406e-baab-0e2d9b97cb35"/>
-                <box topPadding="3" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <text><![CDATA[State]]></text>
-            </staticText>
-            <staticText>
-                <reportElement mode="Opaque" x="357" y="400" width="185" height="40" backcolor="#E0E0E0" uuid="4ef04dea-1048-46ab-9910-2b1738fcb9c1"/>
+                <reportElement mode="Opaque" x="25" y="250" width="512" height="70" backcolor="#E0E0E0" uuid="4ef04dea-1048-46ab-9910-2b1738fcb9c1"/>
                 <box topPadding="2" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial"/>
                 </textElement>
-                <text><![CDATA[PinCode]]></text>
+                <text><![CDATA[Current Address]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="24" y="450" width="517" height="30" backcolor="#E0E0E0" uuid="d05fc2a0-61ac-47db-ac47-0853723e9ab2"/>
-                <box topPadding="10" leftPadding="7"/>
+                <reportElement mode="Opaque" x="25" y="330" width="511" height="30" backcolor="#E0E0E0" uuid="d05fc2a0-61ac-47db-ac47-0853723e9ab2"/>
+                <box topPadding="10" leftPadding="9"/>
                 <textElement>
                     <font fontName="Arial" size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[PROFESSIONAL DETAILS]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="24" y="490" width="145" height="40" backcolor="#E0E0E0" uuid="a88bff33-8134-4d3b-9e3c-7c0fa006391a"/>
+                <reportElement mode="Opaque" x="24" y="370" width="141" height="40" backcolor="#E0E0E0" uuid="a88bff33-8134-4d3b-9e3c-7c0fa006391a"/>
                 <box topPadding="4" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -773,7 +488,7 @@
                 <text><![CDATA[Employee Type]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="180" y="490" width="163" height="40" backcolor="#E0E0E0" uuid="e0469998-54ce-4c7a-ae93-82d23739a743"/>
+                <reportElement mode="Opaque" x="168" y="370" width="171" height="40" backcolor="#E0E0E0" uuid="e0469998-54ce-4c7a-ae93-82d23739a743"/>
                 <box topPadding="3" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -781,7 +496,7 @@
                 <text><![CDATA[Current Organization]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="353" y="490" width="189" height="40" backcolor="#E0E0E0" uuid="fdf92dd2-f6c4-4eda-bc98-f066591917f4"/>
+                <reportElement mode="Opaque" x="344" y="370" width="193" height="40" backcolor="#E0E0E0" uuid="fdf92dd2-f6c4-4eda-bc98-f066591917f4"/>
                 <box topPadding="3" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -789,43 +504,7 @@
                 <text><![CDATA[Total Work Experience]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="26" y="40" width="150" height="40" backcolor="#E0E0E0" uuid="0f63cd38-ed7f-4ac9-a304-9f87b33244a3">
-                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                </reportElement>
-                <box topPadding="5" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial" size="10"/>
-                </textElement>
-                <text><![CDATA[Sub District]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="26" y="59" width="149" height="21" uuid="322b34d0-92f9-4c63-af11-7aa57ecea6ce"/>
-                <box topPadding="3" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{subDistrict}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="186" y="59" width="162" height="21" uuid="ca087720-1f3a-4b62-b389-77e37e4d5f5f"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textFieldExpression><![CDATA[$F{country}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="356" y="60" width="185" height="21" uuid="68525c78-5b64-44b6-bdde-ff0baa08616b"/>
-                <box topPadding="3" leftPadding="6"/>
-                <textFieldExpression><![CDATA[$F{pinCodeAadhaar}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="25" y="110" width="517" height="31" uuid="18a18198-4bc3-4d73-bc9e-4edf50f477f3"/>
-                <box topPadding="3" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement mode="Opaque" x="24" y="538" width="145" height="41" backcolor="#E0E0E0" uuid="9f4fbd78-6f3d-42ab-a049-29ea27538cf3"/>
+                <reportElement mode="Opaque" x="25" y="420" width="141" height="41" backcolor="#E0E0E0" uuid="9f4fbd78-6f3d-42ab-a049-29ea27538cf3"/>
                 <box topPadding="3" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -833,7 +512,7 @@
                 <text><![CDATA[Current Job Stability]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="180" y="540" width="162" height="41" backcolor="#E0E0E0" uuid="74182f61-a81c-437f-be9f-2a116278e2a4"/>
+                <reportElement mode="Opaque" x="168" y="420" width="165" height="41" backcolor="#E0E0E0" uuid="74182f61-a81c-437f-be9f-2a116278e2a4"/>
                 <box topPadding="3" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -841,15 +520,7 @@
                 <text><![CDATA[Take Home Salary(Monthly)(Rs)]]></text>
             </staticText>
             <textField>
-                <reportElement x="25" y="168" width="150" height="20" uuid="5bc57154-62cb-4f74-90b2-35c7185ffa66"/>
-                <box topPadding="2" leftPadding="5"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{signature}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="25" y="270" width="145" height="20" uuid="c3234121-c6a6-4541-9974-91e5ec1ca871"/>
+                <reportElement x="27" y="120" width="140" height="20" uuid="c3234121-c6a6-4541-9974-91e5ec1ca871"/>
                 <box topPadding="2" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -857,7 +528,7 @@
                 <textFieldExpression><![CDATA[$F{mobileNumber}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="179" y="270" width="164" height="20" uuid="76adad7c-316d-4e57-a82e-2a74a549e1e5"/>
+                <reportElement x="179" y="120" width="164" height="20" uuid="76adad7c-316d-4e57-a82e-2a74a549e1e5"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -865,7 +536,7 @@
                 <textFieldExpression><![CDATA[$F{alternateMobileNumber}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="357" y="270" width="182" height="20" uuid="d756794f-47c9-4d5a-991c-47c598a13cd6"/>
+                <reportElement x="352" y="120" width="182" height="20" uuid="d756794f-47c9-4d5a-991c-47c598a13cd6"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -873,7 +544,7 @@
                 <textFieldExpression><![CDATA[$F{emailId}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="25" y="320" width="146" height="20" uuid="a77702d1-24a9-4c12-9cf8-d7b6028deae2"/>
+                <reportElement x="27" y="170" width="140" height="20" uuid="a77702d1-24a9-4c12-9cf8-d7b6028deae2"/>
                 <box topPadding="3" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -881,7 +552,7 @@
                 <textFieldExpression><![CDATA[$F{residentType}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="178" y="320" width="168" height="20" uuid="4d5e82fb-1ec7-42ee-86d9-b4ea7a556fe5"/>
+                <reportElement x="178" y="170" width="163" height="20" uuid="4d5e82fb-1ec7-42ee-86d9-b4ea7a556fe5"/>
                 <box topPadding="2" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -889,7 +560,7 @@
                 <textFieldExpression><![CDATA[$F{monthlyRent}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="358" y="320" width="181" height="20" uuid="c584c2fe-a2ee-42b6-bff8-c1dec7568db5"/>
+                <reportElement x="357" y="170" width="179" height="20" uuid="c584c2fe-a2ee-42b6-bff8-c1dec7568db5"/>
                 <box topPadding="3" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -897,7 +568,7 @@
                 <textFieldExpression><![CDATA[$F{yearsOfCurrentResident}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="24" y="370" width="146" height="20" uuid="0ab0c009-2d09-4971-810c-8362eef6417f"/>
+                <reportElement x="24" y="220" width="144" height="20" uuid="0ab0c009-2d09-4971-810c-8362eef6417f"/>
                 <box topPadding="2" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -905,39 +576,7 @@
                 <textFieldExpression><![CDATA[$F{noOfDependants}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="178" y="370" width="168" height="21" uuid="5c99b597-f79d-42bf-86c5-4e40c11e026d"/>
-                <box topPadding="4" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{flatNoStreetName}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="357" y="370" width="183" height="19" uuid="0ee258e1-3add-4a38-ba16-d397fb10a3da"/>
-                <box topPadding="3" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{village}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="25" y="420" width="144" height="20" uuid="8ccb35cb-9cc1-4098-9a12-19ee1dca5476"/>
-                <box topPadding="4" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{district}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="180" y="419" width="166" height="22" uuid="ce032cc5-375f-463e-89ba-2b8ac619dd87"/>
-                <box topPadding="4" leftPadding="6"/>
-                <textElement>
-                    <font fontName="Arial" size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{state}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="357" y="416" width="185" height="24" uuid="599b605a-d917-4f1e-8f61-eb4173061b7f"/>
+                <reportElement x="26" y="270" width="511" height="50" uuid="599b605a-d917-4f1e-8f61-eb4173061b7f"/>
                 <box topPadding="3" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -945,7 +584,7 @@
                 <textFieldExpression><![CDATA[$F{pinCode}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="24" y="510" width="145" height="18" uuid="d9a5c304-609b-46b1-9139-3534212ef3e8"/>
+                <reportElement x="25" y="390" width="141" height="18" uuid="d9a5c304-609b-46b1-9139-3534212ef3e8"/>
                 <box topPadding="2" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -953,7 +592,7 @@
                 <textFieldExpression><![CDATA[$F{employeeType}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="180" y="509" width="162" height="20" uuid="3e7ce77c-442d-44d1-bc52-3c91ea5f64c7"/>
+                <reportElement x="168" y="389" width="169" height="20" uuid="3e7ce77c-442d-44d1-bc52-3c91ea5f64c7"/>
                 <box topPadding="2" leftPadding="7"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -961,7 +600,7 @@
                 <textFieldExpression><![CDATA[$F{currentOrganization}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="353" y="510" width="189" height="20" uuid="39a245e3-2976-4a2a-9d05-09f474c2689c"/>
+                <reportElement x="344" y="390" width="193" height="20" uuid="39a245e3-2976-4a2a-9d05-09f474c2689c"/>
                 <box topPadding="4" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -969,15 +608,15 @@
                 <textFieldExpression><![CDATA[$F{totalWorkExperience}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="24" y="558" width="145" height="21" uuid="ee22c696-77f0-4083-b626-aa482aeb159c"/>
-                <box topPadding="2" leftPadding="5"/>
+                <reportElement x="24" y="440" width="142" height="21" uuid="ee22c696-77f0-4083-b626-aa482aeb159c"/>
+                <box topPadding="0" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{currentJobStability}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="180" y="560" width="162" height="21" uuid="a03046b5-5fde-4502-84de-7f14481a4e6d"/>
+                <reportElement x="168" y="440" width="166" height="21" uuid="a03046b5-5fde-4502-84de-7f14481a4e6d"/>
                 <box topPadding="3" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -985,7 +624,7 @@
                 <textFieldExpression><![CDATA[$F{salary}]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement mode="Opaque" x="24" y="590" width="518" height="30" backcolor="#E0E0E0" uuid="fd177527-f41f-494d-b451-0bf955c6b998"/>
+                <reportElement mode="Opaque" x="24" y="470" width="510" height="30" backcolor="#E0E0E0" uuid="fd177527-f41f-494d-b451-0bf955c6b998"/>
                 <box topPadding="5" leftPadding="19"/>
                 <textElement>
                     <font fontName="Arial" size="12" isBold="true"/>
@@ -993,7 +632,7 @@
                 <text><![CDATA[REFERENCE DETAILS]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="25" y="630" width="236" height="40" backcolor="#E0E0E0" uuid="0efa0745-836f-48b3-a1cf-e3caa8391bae"/>
+                <reportElement mode="Opaque" x="24" y="510" width="232" height="40" backcolor="#E0E0E0" uuid="0efa0745-836f-48b3-a1cf-e3caa8391bae"/>
                 <box topPadding="5" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -1001,7 +640,7 @@
                 <text><![CDATA[Reference Person Name ]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="280" y="630" width="261" height="39" backcolor="#E0E0E0" uuid="dca05945-3526-438d-a9b8-cc56bb81e625"/>
+                <reportElement mode="Opaque" x="260" y="511" width="261" height="39" backcolor="#E0E0E0" uuid="dca05945-3526-438d-a9b8-cc56bb81e625"/>
                 <box topPadding="5" leftPadding="14"/>
                 <textElement>
                     <font fontName="Arial"/>
@@ -1009,7 +648,7 @@
                 <text><![CDATA[Reference Person Mobile Number]]></text>
             </staticText>
             <textField>
-                <reportElement x="25" y="649" width="234" height="20" uuid="87efb7a4-b4ee-4982-bc2f-b2f606193b91"/>
+                <reportElement x="23" y="530" width="234" height="20" uuid="87efb7a4-b4ee-4982-bc2f-b2f606193b91"/>
                 <box topPadding="2" leftPadding="5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -1017,12 +656,27 @@
                 <textFieldExpression><![CDATA[$F{personName}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="280" y="649" width="262" height="20" uuid="38d9e712-6fcd-43af-9566-a4c386be4e6d"/>
+                <reportElement x="260" y="530" width="260" height="20" uuid="38d9e712-6fcd-43af-9566-a4c386be4e6d"/>
                 <box topPadding="3" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{referenceMobileNumber}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement mode="Opaque" x="24" y="560" width="510" height="34" backcolor="#E0E0E0" uuid="3042e4a3-70f8-48dc-800a-dcde21c334f5"/>
+                <box topPadding="9" leftPadding="9"/>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[UPLOADED DOCUMENTS]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="24" y="600" width="329" height="110" uuid="facfb90c-7713-4513-885b-0f4d58d96315"/>
+                <textElement>
+                    <font fontName="Arial"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{document1}]]></textFieldExpression>
             </textField>
         </band>
         <band height="743" splitType="Stretch">
@@ -1030,51 +684,15 @@
                 <reportElement x="14" y="30" width="546" height="708" uuid="ce0654fb-51f7-4165-b52a-160345072209"/>
             </rectangle>
             <staticText>
-                <reportElement mode="Opaque" x="26" y="50" width="508" height="34" backcolor="#E0E0E0" uuid="3042e4a3-70f8-48dc-800a-dcde21c334f5"/>
-                <box topPadding="9" leftPadding="12"/>
-                <textElement>
-                    <font fontName="Arial" size="12" isBold="true"/>
-                </textElement>
-                <text><![CDATA[UPLOADED DOCUMENTS]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="40" y="99" width="147" height="20" uuid="facfb90c-7713-4513-885b-0f4d58d96315"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{document1}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="40" y="130" width="147" height="20" uuid="ffd5bcba-9676-46cc-805b-719dbf74fce0"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{document2}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="40" y="160" width="147" height="20" uuid="6b607534-4d39-4953-b988-895f2a26317c"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{document3}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="40" y="190" width="146" height="20" uuid="ef2d2a33-331d-4688-9e1a-2e047ecf7ef8"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{document4}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement mode="Opaque" x="27" y="219" width="507" height="29" backcolor="#E0E0E0" uuid="a875b0ef-ffbb-4a17-b87a-de81400010c8"/>
-                <box topPadding="3" leftPadding="6"/>
+                <reportElement mode="Opaque" x="34" y="50" width="507" height="29" backcolor="#E0E0E0" uuid="a875b0ef-ffbb-4a17-b87a-de81400010c8"/>
+                <box topPadding="3" leftPadding="9"/>
                 <textElement>
                     <font fontName="Arial" size="12" isBold="true"/>
                 </textElement>
                 <text><![CDATA[DECLARATION]]></text>
             </staticText>
             <staticText>
-                <reportElement x="28" y="290" width="507" height="199" uuid="1a21877e-4d31-4622-95ff-4db59ea257bd"/>
+                <reportElement x="32" y="130" width="507" height="190" uuid="1a21877e-4d31-4622-95ff-4db59ea257bd"/>
                 <box topPadding="4" leftPadding="6"/>
                 <textElement>
                     <font fontName="Arial" size="10" isBold="false"/>
@@ -1085,7 +703,7 @@
 3. I understand that Security and confidentiality of personal identity data provided, for the purpose of Aadhaar basedauthentication is ensured by NSDL e-Gov and the data will be stored by NSDL e-Gov till suchtime as mentioned inguidelines from UIDAI from time to time.]]></text>
             </staticText>
             <staticText>
-                <reportElement x="26" y="260" width="508" height="30" uuid="aa9b7895-60e9-4d6b-9ad8-c8aaa0d41302"/>
+                <reportElement x="33" y="90" width="508" height="30" uuid="aa9b7895-60e9-4d6b-9ad8-c8aaa0d41302"/>
                 <box topPadding="0" leftPadding="7"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
@@ -1094,32 +712,21 @@
 I hereby authorize NSDL e-Governance Infrastructure Limited (NSDL e-Gov) to-]]></text>
             </staticText>
             <staticText>
-                <reportElement x="380" y="519" width="39" height="20" uuid="0a74b26d-91bf-4dc3-ac10-446431f468f8"/>
+                <reportElement x="355" y="380" width="52" height="20" uuid="0a74b26d-91bf-4dc3-ac10-446431f468f8"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
                 </textElement>
                 <text><![CDATA[Date :]]></text>
             </staticText>
-            <staticText>
-                <reportElement x="378" y="559" width="40" height="21" uuid="bcf70c99-bda3-41d4-bfa0-7a66bcc6298f"/>
-                <text><![CDATA[Place :]]></text>
-            </staticText>
             <textField>
-                <reportElement x="440" y="519" width="94" height="20" uuid="1a6dbee0-115b-4894-b3e5-2f4fa47fd547"/>
+                <reportElement x="420" y="380" width="94" height="20" uuid="1a6dbee0-115b-4894-b3e5-2f4fa47fd547"/>
                 <textElement>
                     <font fontName="Arial"/>
                 </textElement>
-                <textFieldExpression><![CDATA[38]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="438" y="559" width="95" height="20" uuid="b26bc3ae-5147-4687-bf9c-d1aa42acf72c"/>
-                <textElement>
-                    <font fontName="Arial"/>
-                </textElement>
-                <textFieldExpression><![CDATA[39]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement x="29" y="558" width="131" height="20" uuid="b9b2edf8-87b0-4575-904f-1a6735e53ff5"/>
+                <reportElement x="50" y="380" width="131" height="20" uuid="b9b2edf8-87b0-4575-904f-1a6735e53ff5"/>
                 <textElement>
                     <font fontName="Arial" size="12"/>
                 </textElement>

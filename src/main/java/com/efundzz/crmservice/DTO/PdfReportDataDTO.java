@@ -66,5 +66,6 @@ public class PdfReportDataDTO {
     private String document2;
     private String document3;
     private String document4;
+    private String date;
 
 }

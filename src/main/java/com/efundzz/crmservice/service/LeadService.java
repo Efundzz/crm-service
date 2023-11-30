@@ -42,8 +42,8 @@ public class LeadService {
                 .collect(Collectors.toList());
     }
 
-    public Leads getLeadFormDataById(Long id) {
-        return leadRepository.findById(id);
+    public Leads getLeadFormDataById(String id) {
+        return leadRepository.findById(id).get();
     }
 
     public List<Leads> findLeadFormDataByFilter(String brand, String loanType, String fromDate, String toDate, String status) {
@@ -72,7 +72,7 @@ public class LeadService {
     public Leads createLead(CRMLeadFormRequestDTO leadFormRequestDTO) {
         Long refNum = (long) (Math.random() * 100000);
         Leads lead = new Leads();
-        lead.setId(refNum);
+        lead.setId(String.valueOf(refNum));
         lead.setCity(leadFormRequestDTO.getCity());
         lead.setCreatedAt(LocalDateTime.now());
         lead.setPincode(leadFormRequestDTO.getPincode());

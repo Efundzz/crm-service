@@ -14,9 +14,9 @@ custom:
 
 spring:
   datasource:
-    url: ${DATABASE_URI}
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://terraform-20230416163607232400000001.chlnsunhgm7o.eu-west-1.rds.amazonaws.com:5432/efundzz
+    username: efundzz_admin
+    password: efundzz123!
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:

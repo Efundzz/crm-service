@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Repository
-public interface StepDataRepository extends JpaRepository<StepData, Long> {
+public interface StepDataRepository extends JpaRepository<StepData,Serializable> {
     List<StepData> findByApplicationId(String id);
 
     StepData findTopByApplicationIdAndStepName(String id, String stepName);
@@ -25,7 +26,6 @@ public interface StepDataRepository extends JpaRepository<StepData, Long> {
             "FROM Loan l " +
             "LEFT JOIN LeadStatus ls ON l.id = ls.loanId " +
             "LEFT JOIN StepData s ON l.id = s.applicationId " +
-            "WHERE l.id = :appId AND (:brand is null or l.brand = :brand)")
+            "WHERE l.id =:appId AND (:brand is null or l.brand=:brand)")
     List<CRMAppliacationResponseDTO> findLeadDataByApplicationId(@Param("appId") String appId, @Param("brand") String brand);
-
 }

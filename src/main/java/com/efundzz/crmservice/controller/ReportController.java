@@ -1,5 +1,4 @@
 package com.efundzz.crmservice.controller;
-
 import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
@@ -15,15 +14,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import static com.efundzz.crmservice.constants.AppConstants.ALL_PERMISSION;
 import static com.efundzz.crmservice.constants.AppConstants.EFUNDZZ_ORG;
-
 @RestController
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
@@ -70,12 +68,15 @@ public class ReportController {
                 filterRequest.getFromDate(),
                 filterRequest.getToDate(),
                 filterRequest.getLoanStatus());
-
         Workbook workbook = reportService.generateLeadsDataExcel(leadsList, filterRequest.getLoanType());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllApplicationsData.xlsx");
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String  date = currentDate.format(formatter);
+
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllApplicationsData"+date+".xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
@@ -100,7 +101,10 @@ public class ReportController {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllLeadsFormData.xlsx");
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String  date = currentDate.format(formatter);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=AllLeadsFormData"+date+".xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
@@ -111,13 +115,16 @@ public class ReportController {
     }
 
     @GetMapping("/leadForms/single/download-excel/{id}")
-    public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable String id) throws IOException {
         Leads leaddata = leadService.getLeadFormDataById(id);
         Workbook workbook = reportService.generateSingleLeadFormExcel(leaddata);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SingleLeadFormData.xlsx");
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String  date = currentDate.format(formatter);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SingleLeadFormData"+date+".xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
@@ -136,7 +143,10 @@ public class ReportController {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SingleAppData.xlsx");
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String  date = currentDate.format(formatter);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=SingleAppData"+date+".xlsx");
 
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
         return ResponseEntity
