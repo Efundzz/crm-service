@@ -1,9 +1,7 @@
 package com.efundzz.crmservice.controller;
 
 import com.efundzz.crmservice.DTO.CRMBreFormRequestDTO;
-import com.efundzz.crmservice.entity.DMNEvaluationData;
 import com.efundzz.crmservice.exceptions.ValidationException;
-import com.efundzz.crmservice.repository.DMNEvaluationDataRepository;
 import com.efundzz.crmservice.service.DMNService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +19,6 @@ import java.util.Map;
 public class DMNController {
     @Autowired
     private DMNService dmnService;
-    @Autowired
-    private DMNEvaluationDataRepository dmnDataRepository;
     @PostMapping("/bre/evaluation")
     @PreAuthorize("hasAuthority('write:bre')")
     public ResponseEntity<?> evaluateDecision(JwtAuthenticationToken token ,@RequestBody CRMBreFormRequestDTO requestDTO) {
@@ -41,13 +37,4 @@ public class DMNController {
         }
         return null;
     }
-
-
-    @GetMapping("/bre/getAllEvaluationData")
-    @PreAuthorize("hasAuthority('write:bre')")
-    public ResponseEntity<List<DMNEvaluationData>> getEvaluationData() {
-        List<DMNEvaluationData> evaluationDataList = dmnDataRepository.findAll();
-        return ResponseEntity.ok(evaluationDataList);
-    }
-
 }

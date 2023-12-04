@@ -70,9 +70,9 @@ public class LeadService {
     }
 
     public Leads createLead(CRMLeadFormRequestDTO leadFormRequestDTO) {
-        String refNum = String.valueOf((long) (Math.random() * 100000));
+       // String refNum = String.valueOf((long) (Math.random() * 100000));
         Leads lead = new Leads();
-        lead.setId(refNum);
+       // lead.setId(refNum);
         lead.setCity(leadFormRequestDTO.getCity());
         lead.setCreatedAt(LocalDateTime.now());
         lead.setPincode(leadFormRequestDTO.getPincode());
