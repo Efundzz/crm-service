@@ -1,4 +1,4 @@
-package com.efundzz.crmservice.DTO;
+package com.efundzz.crmservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

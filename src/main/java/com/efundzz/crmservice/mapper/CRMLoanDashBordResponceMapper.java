@@ -1,6 +1,6 @@
-package com.efundzz.crmservice.Mapper;
+package com.efundzz.crmservice.mapper;
 
-import com.efundzz.crmservice.DTO.CRMLoanDashBordResponceDTO;
+import com.efundzz.crmservice.dto.CRMLoanDashBordResponceDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;

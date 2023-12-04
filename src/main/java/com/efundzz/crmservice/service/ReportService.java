@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.service;
 
-import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
-import com.efundzz.crmservice.DTO.PdfReportDataDTO;
+import com.efundzz.crmservice.dto.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.dto.PdfReportDataDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.repository.LeadRepository;
 import com.efundzz.crmservice.repository.LoanRepository;

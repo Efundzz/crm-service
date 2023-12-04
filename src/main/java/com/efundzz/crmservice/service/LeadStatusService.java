@@ -1,6 +1,6 @@
 package com.efundzz.crmservice.service;
 
-import com.efundzz.crmservice.DTO.CRMLeadStatusDTO;
+import com.efundzz.crmservice.dto.CRMLeadStatusDTO;
 import com.efundzz.crmservice.entity.LeadStatus;
 import com.efundzz.crmservice.entity.Loan;
 import com.efundzz.crmservice.repository.LeadStatusRepository;

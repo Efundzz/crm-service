@@ -1,4 +1,4 @@
-package com.efundzz.crmservice.DTO;
+package com.efundzz.crmservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +12,8 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CRMLeadFormRequestDTO {
-
-    private Long id;
+public class CRMLeadDataResponseDTO {
+    private String id;
     private String city;
     private LocalDateTime createdAt;
     private String pincode;

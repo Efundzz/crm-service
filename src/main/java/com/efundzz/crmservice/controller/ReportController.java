@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
-import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
+import com.efundzz.crmservice.dto.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.dto.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.*;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -111,7 +111,7 @@ public class ReportController {
     }
 
     @GetMapping("/leadForms/single/download-excel/{id}")
-    public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> exportSingleLeadsFormToExcel(JwtAuthenticationToken token, @PathVariable String id) throws IOException {
         Leads leaddata = leadService.getLeadFormDataById(id);
         Workbook workbook = reportService.generateSingleLeadFormExcel(leaddata);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

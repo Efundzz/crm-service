@@ -1,8 +1,8 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.DTO.CRMLeadDataResponseDTO;
-import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
-import com.efundzz.crmservice.DTO.CRMLeadFormRequestDTO;
+import com.efundzz.crmservice.dto.CRMLeadDataResponseDTO;
+import com.efundzz.crmservice.dto.CRMLeadFilterRequestDTO;
+import com.efundzz.crmservice.dto.CRMLeadFormRequestDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.service.BrandService;
 import com.efundzz.crmservice.service.FranchiseService;
@@ -57,7 +57,7 @@ public class LeadsDataController {
         return ResponseEntity.ok(filteredLeads);
     }
     @GetMapping("/getLeadsFormData/{id}")
-    public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable Long id) {
+    public ResponseEntity<Leads> getLeadFormDataById(JwtAuthenticationToken token, @PathVariable String id) {
         Leads lead = leadService.getLeadFormDataById(id);
         if (lead != null) {
             return ResponseEntity.ok(lead);

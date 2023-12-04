@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
-import com.efundzz.crmservice.DTO.CRMLeadFilterRequestDTO;
+import com.efundzz.crmservice.dto.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.dto.CRMLeadFilterRequestDTO;
 import com.efundzz.crmservice.entity.Loan;
 import com.efundzz.crmservice.service.BrandAccessService;
 import com.efundzz.crmservice.service.BrandService;
@@ -36,7 +36,6 @@ public class ApplicationsController {
 
     @Autowired
     BrandService brandService;
-
     @GetMapping("/applications")
     @PreAuthorize("hasAuthority('read:applications')")
     public ResponseEntity<List<CRMAppliacationResponseDTO>> getApplications(JwtAuthenticationToken token) {

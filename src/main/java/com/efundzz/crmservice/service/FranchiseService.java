@@ -1,6 +1,6 @@
 package com.efundzz.crmservice.service;
 
-import com.efundzz.crmservice.DTO.FranchiseDTO;
+import com.efundzz.crmservice.dto.FranchiseDTO;
 import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.entity.OrganizationUnit;
 import com.efundzz.crmservice.repository.FranchiseRepository;

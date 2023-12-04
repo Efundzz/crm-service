@@ -1,6 +1,6 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.DTO.FranchiseDTO;
+import com.efundzz.crmservice.dto.FranchiseDTO;
 import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.service.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;

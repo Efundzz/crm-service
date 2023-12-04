@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.controller;
 
 
-import com.efundzz.crmservice.DTO.CRMLeadStatusDTO;
+import com.efundzz.crmservice.dto.CRMLeadStatusDTO;
 import com.efundzz.crmservice.entity.LeadStatus;
 import com.efundzz.crmservice.service.LeadStatusService;
 import org.springframework.beans.factory.annotation.Autowired;

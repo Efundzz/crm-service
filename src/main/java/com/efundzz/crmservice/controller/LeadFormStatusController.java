@@ -1,6 +1,6 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.DTO.CRMLeadFormUpdateDTO;
+import com.efundzz.crmservice.dto.CRMLeadFormUpdateDTO;
 import com.efundzz.crmservice.entity.Leads;
 import com.efundzz.crmservice.entity.LeadsLog;
 import com.efundzz.crmservice.service.BrandService;

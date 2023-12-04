@@ -6,6 +6,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
@@ -32,15 +34,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .mvcMatchers("/api/applications").hasAuthority("read:applications")
-                .mvcMatchers("/api/applications/filter").hasAuthority("read:applications")
-                .mvcMatchers("/api/leadFormData/statusUpdate").hasAuthority("read:applications")
-                .mvcMatchers("/api/allLeadFormData").hasAuthority("read:leads")
-                .mvcMatchers("/api/leadFormData/filter").hasAuthority("read:leads")
-                .mvcMatchers("/api/leadFormData/createLead").hasAuthority("write:leads")
-                .mvcMatchers("/api/updateLeadStatus").hasAuthority("write:applications")
-                .and().cors()
+        http.authorizeRequests(authorize -> authorize
+                        .mvcMatchers("/api/applications", "/api/applications/filter", "/api/leadFormData/statusUpdate")
+                        .hasAuthority("read:applications")
+                        .mvcMatchers("/api/allLeadFormData", "/api/leadFormData/filter")
+                        .hasAuthority("read:leads")
+                        .mvcMatchers("/api/leadFormData/createLead")
+                        .hasAuthority("write:leads")
+                        .mvcMatchers("/api/updateLeadStatus")
+                        .hasAuthority("write:applications")
+                        .mvcMatchers("/api/bre/evaluation", "/api/bre/getAllEvaluationData")
+                        .hasAuthority("write:bre")
+                )
+                .cors()
                 .and().oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer
                                 .jwt(jwt ->
@@ -93,5 +99,10 @@ public class SecurityConfig {
         jwtDecoder.setJwtValidator(withAudience);
 
         return jwtDecoder;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

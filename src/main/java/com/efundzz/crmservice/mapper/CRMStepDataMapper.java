@@ -1,6 +1,6 @@
-package com.efundzz.crmservice.Mapper;
+package com.efundzz.crmservice.mapper;
 
-import com.efundzz.crmservice.DTO.CRMLeadDetailsResponseDTO;
+import com.efundzz.crmservice.dto.CRMLeadDetailsResponseDTO;
 import com.efundzz.crmservice.entity.StepData;
 import org.mapstruct.Mapper;
 

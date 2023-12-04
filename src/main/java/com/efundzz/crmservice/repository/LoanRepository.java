@@ -1,6 +1,6 @@
 package com.efundzz.crmservice.repository;
 
-import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.dto.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.entity.Loan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,20 +15,20 @@ public interface LoanRepository extends JpaRepository<Loan, Serializable> {
 
     Loan findById(String id);
 
-@Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
-        "l.id, l.userId," +
+@Query("SELECT new com.efundzz.crmservice.dto.CRMAppliacationResponseDTO(" +
+        "l.id, l.userId, " +
         "COALESCE(ls.status, l.status) AS status, " +
-        "l.loanType, l.loanSubType, l.brand ,s.data) " +
+        "l.loanType, l.loanSubType, l.brand ,l.createdAt ,s.data) " +
         "FROM Loan l " +
         "LEFT JOIN LeadStatus ls ON l.id = ls.loanId " +
         "LEFT JOIN StepData s ON l.id = s.applicationId " +
         "WHERE (:brand is null or l.brand = :brand)")
     List<CRMAppliacationResponseDTO> findAllWithStepData(@Param("brand") String brand);
 
-    @Query("SELECT new com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO(" +
+    @Query("SELECT new com.efundzz.crmservice.dto.CRMAppliacationResponseDTO(" +
             "l.id, l.userId, " +
             "COALESCE(ls.status, l.status) AS status," +
-            "l.loanType,l.loanSubType,l.brand ,s.data) " +
+            "l.loanType,l.loanSubType,l.brand,l.createdAt , s.data) " +
             "FROM Loan l " +
             "LEFT JOIN LeadStatus ls ON l.id = ls.loanId " +
             "LEFT JOIN StepData s ON l.id = s.applicationId " +

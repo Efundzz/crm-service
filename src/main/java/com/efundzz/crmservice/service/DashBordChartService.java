@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.service;
 
-import com.efundzz.crmservice.DTO.CRMLoanDashBordResponceDTO;
-import com.efundzz.crmservice.Mapper.CRMLoanDashBordResponceMapper;
+import com.efundzz.crmservice.dto.CRMLoanDashBordResponceDTO;
+import com.efundzz.crmservice.mapper.CRMLoanDashBordResponceMapper;
 import com.efundzz.crmservice.repository.DashBordChartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

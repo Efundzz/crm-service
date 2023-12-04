@@ -1,6 +1,6 @@
 package com.efundzz.crmservice.controller;
 
-import com.efundzz.crmservice.DTO.CRMLoanDashBordResponceDTO;
+import com.efundzz.crmservice.dto.CRMLoanDashBordResponceDTO;
 import com.efundzz.crmservice.service.BrandAccessService;
 import com.efundzz.crmservice.service.BrandService;
 import com.efundzz.crmservice.service.DashBordChartService;

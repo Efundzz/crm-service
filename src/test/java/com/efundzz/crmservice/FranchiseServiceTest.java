@@ -3,7 +3,7 @@ package com.efundzz.crmservice;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.efundzz.crmservice.DTO.FranchiseDTO;
+import com.efundzz.crmservice.dto.FranchiseDTO;
 import com.efundzz.crmservice.entity.Franchise;
 import com.efundzz.crmservice.entity.OrganizationUnit;
 import com.efundzz.crmservice.repository.OrganizationUnitRepository;

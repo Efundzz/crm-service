@@ -1,4 +1,4 @@
-package com.efundzz.crmservice.DTO;
+package com.efundzz.crmservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,19 +11,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CRMLeadStatusDTO {
-
-    private String loanId;
-
-    private String agentId;
-
-    private String loanType;
-
-    private String brand;
-
+public class CRMLeadFormUpdateDTO {
+    private String leadId;
     private String status;
-
+    private String agentId;
     private LocalDateTime updatedAt;
-
     private String comments;
 }

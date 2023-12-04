@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -21,8 +19,10 @@ import java.util.Map;
 @NoArgsConstructor
 public class Leads {
     @Id
+    @GenericGenerator(name = "lead_id_gen", strategy = "com.efundzz.crmservice.util.LeadIdGenerator")
+    @GeneratedValue(generator = "lead_id_gen")
     @Column(name = "lead_id")
-    private Long id;
+    private String id;
 
     @Column(name = "city")
     private String city;
@@ -42,7 +42,10 @@ public class Leads {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "loantype")
+//    @Column(name = "loantype")
+//    private String loanType;
+
+    @Column(name = "loan_type")
     private String loanType;
 
     @Column(name = "utm_params")

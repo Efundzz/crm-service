@@ -21,7 +21,7 @@ public class LeadsLog {
     private Long id;
 
     @Column(name = "lead_id")
-    private Long leadId;
+    private String leadId;
 
     @Column(name = "agent_id")
     private String agentId;

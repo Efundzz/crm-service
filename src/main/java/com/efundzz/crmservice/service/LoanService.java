@@ -1,7 +1,7 @@
 package com.efundzz.crmservice.service;
 
 
-import com.efundzz.crmservice.DTO.CRMAppliacationResponseDTO;
+import com.efundzz.crmservice.dto.CRMAppliacationResponseDTO;
 import com.efundzz.crmservice.entity.LeadStatus;
 import com.efundzz.crmservice.entity.Loan;
 import com.efundzz.crmservice.repository.LeadStatusRepository;
@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
