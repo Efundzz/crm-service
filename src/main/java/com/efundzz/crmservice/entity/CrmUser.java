@@ -18,8 +18,8 @@ public class CrmUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
-    private String fullName;
-    private String email;
+    private String organizationName;
+    private String emailId;
     @ManyToOne
     @JoinColumn(name = "franchiseId")
     private FranchiseData franchiseData;

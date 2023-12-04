@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CrmUserRequestDTO {
     private String userName;
-    private String fullName;
-    private String email;
+    private String organizationName;
+    private String emailId;
     private Long franchiseId;
     private String password;
 }

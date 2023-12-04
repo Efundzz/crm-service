@@ -22,8 +22,8 @@ public class FranchiseUserController {
     public ResponseEntity<CrmUser> registerUser(@RequestBody CrmUserRequestDTO userRequestDTO) {
         CrmUser user = CrmUser.builder()
                 .userName(userRequestDTO.getUserName())
-                .fullName(userRequestDTO.getFullName())
-                .email(userRequestDTO.getEmail())
+                .organizationName(userRequestDTO.getOrganizationName())
+                .emailId(userRequestDTO.getEmailId())
                 .franchiseData(FranchiseData.builder().id(userRequestDTO.getFranchiseId()).build())
                 .build();
 
