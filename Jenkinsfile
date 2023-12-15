@@ -1,43 +1,39 @@
-
 pipeline {
-    agent any
-
+  agent any
+  environment{
+        PATH ="/usr/share/man/man1/mvn.1.gz:$PATH"
+  }
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the source code from version control
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                // Run Maven build
                 script {
-                    def mavenHome = tool 'Maven' // Assuming you have configured a Maven tool in Jenkins
-                    def mavenCmd = "${mavenHome}/bin/mvn"
-
-                    sh "${mavenCmd} clean install"
+                    sh 'mvn clean install'
+                    // Add your build commands here
                 }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    echo 'Testing...'
+                   }
             }
         }
 
         stage('Deploy') {
             steps {
-                // You can add deployment steps here if needed
+                script {
+                    echo 'Deploying...'
+                    // Add your deployment commands here
+                }
             }
-        }
-    }
-
-    post {
-        success {
-            // This block will be executed if the pipeline is successful
-            echo 'Build successful! Deploying...'
-        }
-
-        failure {
-            // This block will be executed if the pipeline fails
-            echo 'Build failed! Notify the team...'
         }
     }
 }
